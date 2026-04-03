@@ -1,0 +1,51 @@
+{
+  "name": "jack-file-tree",
+  "version": "0.1.0",
+  "description": "A feature-rich React file tree component with drag-and-drop, inline editing, Monaco editor support, and filesystem adapter for Electron and web apps",
+  "author": "RKK Vishva Kumar <Knurdz>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "./dist/keyboard-shield.js",
+    "./dist/keyboard-shield.cjs"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./keyboard-shield": {
+      "types": "./dist/keyboard-shield.d.ts",
+      "import": "./dist/keyboard-shield.js",
+      "require": "./dist/keyboard-shield.cjs"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "^0.577.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  }
+}
