@@ -27,10 +27,26 @@ jobs:
       - name: Read package metadata
         id: package
         run: |
-          echo "name=$(node -p 'require(\"./package.json\").name')" >> "$GITHUB_OUTPUT"
-          echo "version=$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
-          echo "tag=v$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
-          echo "title=Version $(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+
+          const packageJsonPath = path.join(process.cwd(), "package.json");
+          const pkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+
+          if (!pkg.version) {
+            throw new Error("package.json is missing a version field");
+          }
+
+          const output = [
+            `name=${pkg.name ?? "package"}`,
+            `version=${pkg.version}`,
+            `tag=v${pkg.version}`,
+            `title=Version ${pkg.version}`,
+          ].join("\n");
+
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `${output}\n`);
+          NODE
 
       - name: Find previous version tag
         id: previous-tag
