@@ -1,6 +1,6 @@
 {
   "name": "@knurdz/jack-file-tree",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A feature-rich React file tree component with drag-and-drop, inline editing, Monaco editor support, and filesystem adapter for Electron and web apps",
   "author": "RKK Vishva Kumar <Knurdz>",
   "license": "MIT",
