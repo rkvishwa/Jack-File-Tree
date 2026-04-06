@@ -1,31 +1,31 @@
-import { jsxs as C, jsx as c } from "react/jsx-runtime";
-import de, { forwardRef as Qt, createElement as Bt, useState as Z, useCallback as ft, useEffect as k, useRef as J } from "react";
-import { createPortal as Rt } from "react-dom";
-import { f as Dt, F as we, a as Pe } from "./installFileTreeInputShield-CAwi1K8A.js";
-import { i as Na } from "./installFileTreeInputShield-CAwi1K8A.js";
+import { jsx as s, jsxs as R, Fragment as He } from "react/jsx-runtime";
+import Ee, { forwardRef as Le, createElement as Pe, useState as Z, useCallback as dt, useEffect as E, useRef as J } from "react";
+import { createPortal as ke } from "react-dom";
+import { f as oe, F as Ie, a as Ve } from "./installFileTreeInputShield-CAwi1K8A.js";
+import { i as Gr } from "./installFileTreeInputShield-CAwi1K8A.js";
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ft = (...a) => a.filter((t, n, u) => !!t && t.trim() !== "" && u.indexOf(t) === n).join(" ").trim();
+const De = (...e) => e.filter((t, a, i) => !!t && t.trim() !== "" && i.indexOf(t) === a).join(" ").trim();
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const ge = (a) => a.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+const Me = (e) => e.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const xe = (a) => a.replace(
+const Se = (e) => e.replace(
   /^([A-Z])|[\s-_]+(\w)/g,
-  (t, n, u) => u ? u.toUpperCase() : n.toLowerCase()
+  (t, a, i) => i ? i.toUpperCase() : a.toLowerCase()
 );
 /**
  * @license lucide-react v0.577.0 - ISC
@@ -33,8 +33,8 @@ const xe = (a) => a.replace(
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Yt = (a) => {
-  const t = xe(a);
+const Te = (e) => {
+  const t = Se(e);
   return t.charAt(0).toUpperCase() + t.slice(1);
 };
 /**
@@ -43,7 +43,7 @@ const Yt = (a) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-var Ne = {
+var Ue = {
   xmlns: "http://www.w3.org/2000/svg",
   width: 24,
   height: 24,
@@ -60,8 +60,8 @@ var Ne = {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Te = (a) => {
-  for (const t in a)
+const Ke = (e) => {
+  for (const t in e)
     if (t.startsWith("aria-") || t === "role" || t === "title")
       return !0;
   return !1;
@@ -72,32 +72,32 @@ const Te = (a) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const be = Qt(
+const qe = Le(
   ({
-    color: a = "currentColor",
+    color: e = "currentColor",
     size: t = 24,
-    strokeWidth: n = 2,
-    absoluteStrokeWidth: u,
-    className: T = "",
-    children: l,
-    iconNode: b,
-    ...V
-  }, $) => Bt(
+    strokeWidth: a = 2,
+    absoluteStrokeWidth: i,
+    className: k = "",
+    children: u,
+    iconNode: w,
+    ...z
+  }, X) => Pe(
     "svg",
     {
-      ref: $,
-      ...Ne,
+      ref: X,
+      ...Ue,
       width: t,
       height: t,
-      stroke: a,
-      strokeWidth: u ? Number(n) * 24 / Number(t) : n,
-      className: Ft("lucide", T),
-      ...!l && !Te(V) && { "aria-hidden": "true" },
-      ...V
+      stroke: e,
+      strokeWidth: i ? Number(a) * 24 / Number(t) : a,
+      className: De("lucide", k),
+      ...!u && !Ke(z) && { "aria-hidden": "true" },
+      ...z
     },
     [
-      ...b.map(([y, P]) => Bt(y, P)),
-      ...Array.isArray(l) ? l : [l]
+      ...w.map(([L, p]) => Pe(L, p)),
+      ...Array.isArray(u) ? u : [u]
     ]
   )
 );
@@ -107,20 +107,20 @@ const be = Qt(
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const I = (a, t) => {
-  const n = Qt(
-    ({ className: u, ...T }, l) => Bt(be, {
-      ref: l,
+const I = (e, t) => {
+  const a = Le(
+    ({ className: i, ...k }, u) => Pe(qe, {
+      ref: u,
       iconNode: t,
-      className: Ft(
-        `lucide-${ge(Yt(a))}`,
-        `lucide-${a}`,
-        u
+      className: De(
+        `lucide-${Me(Te(e))}`,
+        `lucide-${e}`,
+        i
       ),
-      ...T
+      ...k
     })
   );
-  return n.displayName = Yt(a), n;
+  return a.displayName = Te(e), a;
 };
 /**
  * @license lucide-react v0.577.0 - ISC
@@ -128,7 +128,7 @@ const I = (a, t) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const ke = [
+const We = [
   [
     "path",
     { d: "M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1", key: "ezmyqa" }
@@ -140,50 +140,50 @@ const ke = [
       key: "e1hn23"
     }
   ]
-], ve = I("braces", ke);
+], Xe = I("braces", We);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Le = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]], Ee = I("chevron-down", Le);
+const Ye = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]], Ge = I("chevron-down", Ye);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ce = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]], _e = I("chevron-right", Ce);
+const Je = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]], Ze = I("chevron-right", Je);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const ze = [
+const Qe = [
   ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
   ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
   ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
-], De = I("code-xml", ze);
+], Oe = I("code-xml", Qe);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ae = [
+const Re = [
   ["ellipse", { cx: "12", cy: "5", rx: "9", ry: "3", key: "msslwz" }],
   ["path", { d: "M3 5V19A9 3 0 0 0 21 19V5", key: "1wlel7" }],
   ["path", { d: "M3 12A9 3 0 0 0 21 12", key: "mv7ke4" }]
-], $e = I("database", Ae);
+], Fe = I("database", Re);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const je = [
+const tr = [
   [
     "path",
     {
@@ -200,14 +200,14 @@ const je = [
     "path",
     { d: "M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1", key: "mpwhp6" }
   ]
-], He = I("file-braces", je);
+], er = I("file-braces", tr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ie = [
+const rr = [
   [
     "path",
     {
@@ -218,14 +218,14 @@ const Ie = [
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
   ["path", { d: "m5 16-3 3 3 3", key: "331omg" }],
   ["path", { d: "m9 22 3-3-3-3", key: "lsp7cz" }]
-], Ve = I("file-code-corner", Ie);
+], ar = I("file-code-corner", rr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Be = [
+const nr = [
   [
     "path",
     {
@@ -236,14 +236,14 @@ const Be = [
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
   ["circle", { cx: "10", cy: "12", r: "2", key: "737tya" }],
   ["path", { d: "m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22", key: "wt3hpn" }]
-], Me = I("file-image", Be);
+], sr = I("file-image", nr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ke = [
+const cr = [
   [
     "path",
     {
@@ -254,14 +254,14 @@ const Ke = [
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
   ["path", { d: "M14 19h6", key: "bvotb8" }],
   ["path", { d: "M17 16v6", key: "18yu1i" }]
-], Oe = I("file-plus-corner", Ke);
+], lr = I("file-plus-corner", cr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ue = [
+const ir = [
   [
     "path",
     {
@@ -273,14 +273,14 @@ const Ue = [
   ["path", { d: "M10 9H8", key: "b1mrlr" }],
   ["path", { d: "M16 13H8", key: "t4e002" }],
   ["path", { d: "M16 17H8", key: "z1uh3a" }]
-], qe = I("file-text", Ue);
+], ur = I("file-text", ir);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Se = [
+const or = [
   [
     "path",
     {
@@ -289,14 +289,14 @@ const Se = [
     }
   ],
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }]
-], te = I("file", Se);
+], _e = I("file", or);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Xe = [
+const fr = [
   ["path", { d: "M12 10v6", key: "1bos4e" }],
   ["path", { d: "M9 13h6", key: "1uhe8q" }],
   [
@@ -306,14 +306,14 @@ const Xe = [
       key: "1kt360"
     }
   ]
-], Je = I("folder-plus", Xe);
+], pr = I("folder-plus", fr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const We = [
+const hr = [
   [
     "path",
     {
@@ -321,14 +321,25 @@ const We = [
       key: "1kt360"
     }
   ]
-], ee = I("folder", We);
+], ze = I("folder", hr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ye = [
+const dr = [
+  ["path", { d: "M15 6a9 9 0 0 0-9 9V3", key: "1cii5b" }],
+  ["circle", { cx: "18", cy: "6", r: "3", key: "1h7g24" }],
+  ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }]
+], yr = I("git-branch", dr);
+/**
+ * @license lucide-react v0.577.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const mr = [
   [
     "path",
     {
@@ -340,14 +351,14 @@ const Ye = [
   ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
   ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
   ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
-], Ze = I("palette", Ye);
+], gr = I("palette", mr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ge = [
+const wr = [
   [
     "path",
     {
@@ -357,139 +368,139 @@ const Ge = [
   ],
   ["path", { d: "M12 8v4", key: "1got3b" }],
   ["path", { d: "M12 16h.01", key: "1drbdi" }]
-], Qe = I("shield-alert", Ge);
+], br = I("shield-alert", wr);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Re = [
+const Pr = [
   ["path", { d: "M12 19h8", key: "baeox8" }],
   ["path", { d: "m4 17 6-6-6-6", key: "1yngyt" }]
-], Fe = I("terminal", Re);
-function m(a) {
-  return a.replace(/\\/g, "/");
+], vr = I("terminal", Pr);
+function m(e) {
+  return e.replace(/\\/g, "/");
 }
-function ht(a) {
-  return m(a).toLowerCase();
+function kt(e) {
+  return m(e).toLowerCase();
 }
-function wt(a) {
-  const t = m(a), n = t.lastIndexOf("/");
-  return n >= 0 ? t.slice(n + 1) : t;
+function st(e) {
+  const t = m(e), a = t.lastIndexOf("/");
+  return a >= 0 ? t.slice(a + 1) : t;
 }
-function pt(a) {
-  const t = m(a), n = t.lastIndexOf("/");
-  return n <= 0 ? n === 0 ? "/" : "" : t.slice(0, n);
+function Lt(e) {
+  const t = m(e), a = t.lastIndexOf("/");
+  return a <= 0 ? a === 0 ? "/" : "" : t.slice(0, a);
 }
-function et(a, t) {
-  const n = m(a).replace(/\/+$/g, "");
-  return n ? `${n}/${t}` : t;
+function at(e, t) {
+  const a = m(e).replace(/\/+$/g, "");
+  return a ? `${a}/${t}` : t;
 }
-function ae(a) {
+function Ae(e) {
   const t = /* @__PURE__ */ new Set();
-  return a.filter((n) => {
-    const u = ht(n.path);
-    return t.has(u) ? !1 : (t.add(u), !0);
+  return e.filter((a) => {
+    const i = kt(a.path);
+    return t.has(i) ? !1 : (t.add(i), !0);
   });
 }
-function tt(a, t) {
-  return ht(a) === ht(t);
+function et(e, t) {
+  return kt(e) === kt(t);
 }
-function ta(a, t) {
-  const n = ht(a), u = ht(t);
-  return u === n || u.startsWith(`${n}/`);
+function Nr(e, t) {
+  const a = kt(e), i = kt(t);
+  return i === a || i.startsWith(`${a}/`);
 }
-const Mt = /* @__PURE__ */ new Set();
-let at = null;
-function At() {
-  Mt.forEach((a) => a()), typeof window < "u" && window.dispatchEvent(new CustomEvent("jack-file-tree:clipboard-updated"));
+const ve = /* @__PURE__ */ new Set();
+let nt = null;
+function fe() {
+  ve.forEach((e) => e()), typeof window < "u" && window.dispatchEvent(new CustomEvent("jack-file-tree:clipboard-updated"));
 }
-function Ct() {
-  return at;
+function le() {
+  return nt;
 }
-function ea(a) {
-  return Mt.add(a), () => Mt.delete(a);
+function Tr(e) {
+  return ve.add(e), () => ve.delete(e);
 }
-function Zt(a) {
-  at = a ? {
-    ...a,
-    path: m(a.path)
-  } : null, At();
+function xe(e) {
+  nt = e ? {
+    ...e,
+    path: m(e.path)
+  } : null, fe();
 }
-function $t() {
-  at && (at = null, At());
+function pe() {
+  nt && (nt = null, fe());
 }
-function ma(a, t) {
-  if (!at)
+function Ur(e, t) {
+  if (!nt)
     return;
-  const n = m(at.path), u = m(a), T = m(t), l = ht(n), b = ht(u);
-  if (l === b) {
-    at = {
-      ...at,
-      path: T
-    }, At();
+  const a = m(nt.path), i = m(e), k = m(t), u = kt(a), w = kt(i);
+  if (u === w) {
+    nt = {
+      ...nt,
+      path: k
+    }, fe();
     return;
   }
-  if (l.startsWith(`${b}/`)) {
-    const V = n.slice(u.length);
-    at = {
-      ...at,
-      path: `${T}${V}`
-    }, At();
+  if (u.startsWith(`${w}/`)) {
+    const z = a.slice(i.length);
+    nt = {
+      ...nt,
+      path: `${k}${z}`
+    }, fe();
   }
 }
-const bt = [];
-let Lt = 0, xt = null, _t = {};
-function aa(a) {
-  if (_t.isEditableTarget)
-    return _t.isEditableTarget(a);
-  if (!(a instanceof HTMLElement))
+const Yt = [];
+let se = 0, Wt = null, ie = {};
+function xr(e) {
+  if (ie.isEditableTarget)
+    return ie.isEditableTarget(e);
+  if (!(e instanceof HTMLElement))
     return !1;
-  const t = _t.monacoSelector ?? ".monaco-editor";
-  return a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.isContentEditable || !!a.closest(t);
+  const t = ie.monacoSelector ?? ".monaco-editor";
+  return e.tagName === "INPUT" || e.tagName === "TEXTAREA" || e.isContentEditable || !!e.closest(t);
 }
-function da() {
-  return bt.length;
+function Kr() {
+  return Yt.length;
 }
-function wa() {
-  bt.length = 0;
+function qr() {
+  Yt.length = 0;
 }
-function ra(a) {
-  bt.push(a);
+function Cr(e) {
+  Yt.push(e);
 }
-async function na() {
-  const a = bt.pop();
-  if (!a)
+async function Er() {
+  const e = Yt.pop();
+  if (!e)
     return !1;
   try {
-    return await a.restore(), !0;
+    return await e.restore(), !0;
   } catch (t) {
-    throw bt.push(a), t;
+    throw Yt.push(e), t;
   }
 }
-function ca(a = {}) {
-  if (_t = a, typeof window > "u")
+function Lr(e = {}) {
+  if (ie = e, typeof window > "u")
     return () => {
     };
-  if (Lt += 1, !xt) {
-    const t = async (n) => {
-      if (!(!(n.ctrlKey || n.metaKey) || n.key.toLowerCase() !== "z") && !aa(n.target))
+  if (se += 1, !Wt) {
+    const t = async (a) => {
+      if (!(!(a.ctrlKey || a.metaKey) || a.key.toLowerCase() !== "z") && !xr(a.target))
         try {
-          await na() && n.preventDefault();
-        } catch (u) {
-          console.error("Failed to restore deleted file tree item:", u);
+          await Er() && a.preventDefault();
+        } catch (i) {
+          console.error("Failed to restore deleted file tree item:", i);
         }
     };
-    window.addEventListener("keydown", t), xt = () => {
+    window.addEventListener("keydown", t), Wt = () => {
       window.removeEventListener("keydown", t);
     };
   }
   return () => {
-    Lt -= 1, Lt <= 0 && xt && (xt(), xt = null, Lt = 0);
+    se -= 1, se <= 0 && Wt && (Wt(), Wt = null, se = 0);
   };
 }
-const sa = {
+const kr = {
   explorer: "Explorer",
   openFolder: "Open Folder",
   noFolderOpened: "No folder opened",
@@ -502,1233 +513,1493 @@ const sa = {
   delete: "Delete",
   createFilePlaceholder: "File name",
   createFolderPlaceholder: "Folder name"
-}, Pt = "jack-file-tree:close-context-menus", zt = "application/x-jack-file-tree-item";
-let Gt = !1, dt = !1;
-function ia() {
-  Gt || typeof window > "u" || (Gt = !0, window.addEventListener(
+}, jt = "jack-file-tree:close-context-menus", ue = "application/x-jack-file-tree-item";
+let Ce = !1, Bt = !1;
+function Dr() {
+  Ce || typeof window > "u" || (Ce = !0, window.addEventListener(
     "mousedown",
     () => {
-      dt = !0;
+      Bt = !0;
     },
     !0
   ), window.addEventListener(
     "mouseup",
     () => {
       setTimeout(() => {
-        dt = !1;
+        Bt = !1;
       }, 0);
     },
     !0
   ), window.addEventListener(
     "keydown",
     () => {
-      dt = !0;
+      Bt = !0;
     },
     !0
   ), window.addEventListener(
     "keyup",
     () => {
       setTimeout(() => {
-        dt = !1;
+        Bt = !1;
       }, 0);
     },
     !0
   ));
 }
-function ua(a) {
-  if (a && a !== "auto")
-    return a;
+function _r(e) {
+  if (e && e !== "auto")
+    return e;
   if (typeof navigator > "u")
     return "mac";
   const t = navigator.userAgent.toLowerCase();
   return t.includes("win") ? "windows" : t.includes("mac") ? "mac" : "linux";
 }
-function Nt(a, t) {
-  return a === "delete" ? t === "mac" ? "⌘⌫" : "Del" : `${t === "mac" ? "⌘" : "Ctrl+"}${a === "cut" ? "X" : a === "copy" ? "C" : "V"}`;
+function zr(e) {
+  const a = (e instanceof Error ? e.message : typeof e == "string" ? e : "Unable to create item").replace(/^Error invoking remote method ['"`].*?['"`]:\s*/i, "").replace(/^Error:\s*/i, "").replace(/^Failed to create (file|folder):\s*/i, "").replace(/^Error:\s*/i, "").trim();
+  return /item with this name already exists/i.test(a) ? "An item with this name already exists" : a || "Unable to create item";
 }
-function Tt(...a) {
-  return a.filter(Boolean).join(" ");
+function Xt(e, t) {
+  return e === "delete" ? t === "mac" ? "⌘⌫" : "Del" : `${t === "mac" ? "⌘" : "Ctrl+"}${e === "cut" ? "X" : e === "copy" ? "C" : "V"}`;
 }
-function oa(a) {
-  if (a.extension)
-    return a.extension.toLowerCase();
-  const t = a.name.toLowerCase(), n = t.lastIndexOf(".");
-  return n === -1 ? "" : t.slice(n + 1);
+function ht(...e) {
+  return e.filter(Boolean).join(" ");
 }
-function la(a) {
-  if (a.type === "directory")
-    return /* @__PURE__ */ c(ee, { size: 14, color: "var(--sft-accent, var(--accent, #3b82f6))" });
-  switch (oa(a)) {
+function Ne(e) {
+  return (e == null ? void 0 : e.enabled) !== !1;
+}
+function O(e, t) {
+  var a;
+  return Ne(e) ? ((a = e == null ? void 0 : e.actions) == null ? void 0 : a[t]) !== !1 : !1;
+}
+function $e(e) {
+  return e.map(
+    (t) => t.filter(
+      (a) => a !== null
+    )
+  ).filter((t) => t.length > 0);
+}
+function Be({
+  groups: e,
+  scope: t,
+  closeMenu: a
+}) {
+  return /* @__PURE__ */ s("div", { className: "sft-context-menu", "data-scope": t, children: e.map((i, k) => /* @__PURE__ */ R(Ee.Fragment, { children: [
+    i.map((u) => /* @__PURE__ */ R(
+      "div",
+      {
+        className: ht(
+          "sft-context-menu-item",
+          u.disabled && "sft-disabled",
+          u.danger && "sft-danger"
+        ),
+        onClick: () => {
+          u.disabled || (a(), u.onSelect());
+        },
+        children: [
+          /* @__PURE__ */ s("span", { children: u.label }),
+          u.shortcut ? /* @__PURE__ */ s("span", { className: "sft-context-menu-shortcut", children: u.shortcut }) : null
+        ]
+      },
+      u.id
+    )),
+    k < e.length - 1 ? /* @__PURE__ */ s("div", { className: "sft-context-menu-separator" }) : null
+  ] }, `group-${k}`)) });
+}
+function Ar(e) {
+  if (e.extension)
+    return e.extension.toLowerCase();
+  const t = e.name.toLowerCase(), a = t.lastIndexOf(".");
+  return a === -1 ? "" : t.slice(a + 1);
+}
+function $r(e) {
+  return e === ".env" || e.startsWith(".env.") || e.endsWith(".env") || e.includes(".env.");
+}
+function Br(e) {
+  return e === ".gitignore" || e === ".gitattributes" || e === ".gitmodules" || e === ".gitkeep" || e.startsWith(".git");
+}
+function jr(e) {
+  if (e.type === "directory")
+    return /* @__PURE__ */ s(ze, { size: 14, color: "var(--sft-accent, var(--accent, #3b82f6))" });
+  const t = e.name.toLowerCase(), a = Ar(e);
+  if (Br(t))
+    return /* @__PURE__ */ s(yr, { size: 14, color: "#f97316" });
+  if ($r(t))
+    return /* @__PURE__ */ s(br, { size: 14, color: "#eab308" });
+  switch (a) {
     case "js":
     case "jsx":
+    case "mjs":
+    case "cjs":
     case "ts":
     case "tsx":
-      return /* @__PURE__ */ c(ve, { size: 14, color: "#eab308" });
+    case "mts":
+    case "cts":
+      return /* @__PURE__ */ s(Xe, { size: 14, color: "#eab308" });
     case "json":
-      return /* @__PURE__ */ c(He, { size: 14, color: "#22c55e" });
+      return /* @__PURE__ */ s(er, { size: 14, color: "#22c55e" });
     case "html":
-      return /* @__PURE__ */ c(De, { size: 14, color: "#ef4444" });
+      return /* @__PURE__ */ s(Oe, { size: 14, color: "#ef4444" });
     case "css":
     case "scss":
     case "less":
-      return /* @__PURE__ */ c(Ze, { size: 14, color: "var(--sft-accent, var(--accent, #3b82f6))" });
+      return /* @__PURE__ */ s(gr, { size: 14, color: "var(--sft-accent, var(--accent, #3b82f6))" });
     case "md":
-      return /* @__PURE__ */ c(qe, { size: 14, color: "#a1a1aa" });
+    case "markdown":
+    case "mdx":
+      return /* @__PURE__ */ s(ur, { size: 14, color: "#a1a1aa" });
     case "png":
     case "jpg":
     case "jpeg":
     case "gif":
     case "svg":
     case "webp":
-      return /* @__PURE__ */ c(Me, { size: 14, color: "#8b5cf6" });
+      return /* @__PURE__ */ s(sr, { size: 14, color: "#8b5cf6" });
     case "sh":
     case "bash":
     case "zsh":
-      return /* @__PURE__ */ c(Fe, { size: 14, color: "#10b981" });
+      return /* @__PURE__ */ s(vr, { size: 14, color: "#10b981" });
     case "php":
-      return /* @__PURE__ */ c(Ve, { size: 14, color: "#7b7fb5" });
+      return /* @__PURE__ */ s(ar, { size: 14, color: "#7b7fb5" });
     case "sql":
-      return /* @__PURE__ */ c($e, { size: 14, color: "#f97316" });
-    case "env":
-      return /* @__PURE__ */ c(Qe, { size: 14, color: "#eab308" });
+      return /* @__PURE__ */ s(Fe, { size: 14, color: "#f97316" });
     default:
-      return /* @__PURE__ */ c(te, { size: 14, color: "var(--sft-text-muted, var(--text-muted, #71717a))" });
+      return /* @__PURE__ */ s(_e, { size: 14, color: "var(--sft-text-muted, var(--text-muted, #71717a))" });
   }
 }
-function Et(a, t) {
-  return a ? a.type === "directory" ? m(a.path) : pt(a.path) : m(t);
+function ce(e, t) {
+  return e ? e.type === "directory" ? m(e.path) : Lt(e.path) : m(t);
 }
-function re(a) {
-  return a || (typeof document > "u" ? null : document.body);
+function je(e) {
+  return e || (typeof document > "u" ? null : document.getElementById("root") ?? document.body);
 }
-function jt({
-  type: a,
+function we(e) {
+  return e instanceof Element && !!e.closest(".sft-tree-node-wrapper");
+}
+function be(e) {
+  if (e !== void 0)
+    return typeof e == "number" ? `${e}px` : e;
+}
+function v(e, t, a) {
+  a !== void 0 && (e[t] = a);
+}
+function Hr(e) {
+  const t = {};
+  return e && (v(t, "--sft-bg-primary", e.backgroundPrimary), v(t, "--sft-bg-secondary", e.backgroundSecondary), v(t, "--sft-bg-hover", e.backgroundHover), v(t, "--sft-text-primary", e.textPrimary), v(t, "--sft-text-secondary", e.textSecondary), v(t, "--sft-text-muted", e.textMuted), v(t, "--sft-accent", e.accent), v(t, "--sft-accent-transparent", e.accentTransparent), v(t, "--sft-danger", e.danger), v(t, "--sft-menu-bg", e.menuBackground), v(t, "--sft-menu-border", e.menuBorder), v(t, "--sft-menu-hover", e.menuHover), v(t, "--sft-menu-text", e.menuText), v(t, "--sft-sidebar-border", e.sidebarBorder), v(
+    t,
+    "--sft-open-folder-btn-bg",
+    e.openFolderButtonBackground
+  ), v(
+    t,
+    "--sft-open-folder-btn-bg-hover",
+    e.openFolderButtonBackgroundHover
+  ), v(
+    t,
+    "--sft-open-folder-btn-text",
+    e.openFolderButtonText
+  ), v(
+    t,
+    "--sft-open-folder-btn-border",
+    e.openFolderButtonBorder
+  ), v(t, "--sft-font-family", e.fontFamily), v(t, "--sft-font-family-windows", e.fontFamilyWindows), v(
+    t,
+    "--sft-panel-top-padding",
+    be(e.panelTopPadding)
+  ), v(
+    t,
+    "--sft-header-title-offset-y",
+    be(e.headerTitleOffsetY)
+  ), v(
+    t,
+    "--sft-header-actions-offset-y",
+    be(e.headerActionsOffsetY)
+  )), t;
+}
+function he({
+  type: e,
   depth: t,
-  hasFolders: n,
-  indentPx: u,
-  labels: T,
-  monacoSelector: l,
-  onSubmit: b,
-  onCancel: V
+  hasFolders: a,
+  indentPx: i,
+  labels: k,
+  monacoSelector: u,
+  onSubmit: w,
+  onCancel: z
 }) {
-  const [$, y] = Z(""), P = J(null), _ = J(!1), d = J(null), S = J(Date.now()), h = J(b), x = J(V);
-  h.current = b, x.current = V, k(() => {
-    const s = P.current;
-    s && s.focus();
-    const M = requestAnimationFrame(() => {
-      var G;
-      return (G = P.current) == null ? void 0 : G.focus();
+  const [X, L] = Z(""), [p, A] = Z(null), P = J(null), V = J(!1), h = J(null), N = J(Date.now()), D = J(w), U = J(z);
+  D.current = w, U.current = z, E(() => {
+    const g = P.current;
+    g && g.focus();
+    const S = requestAnimationFrame(() => {
+      var _;
+      return (_ = P.current) == null ? void 0 : _.focus();
     });
-    return () => cancelAnimationFrame(M);
-  }, []), k(() => {
-    const s = P.current;
-    if (s)
-      return Dt.set(s, {
+    return () => cancelAnimationFrame(S);
+  }, []), E(() => {
+    const g = P.current;
+    if (g)
+      return oe.set(g, {
         onSubmit: () => {
-          d.current && (clearTimeout(d.current), d.current = null), B();
+          h.current && (clearTimeout(h.current), h.current = null), K();
         },
         onCancel: () => {
-          d.current && (clearTimeout(d.current), d.current = null), x.current();
+          h.current && (clearTimeout(h.current), h.current = null), U.current();
         }
       }), () => {
-        Dt.delete(s);
+        oe.delete(g);
       };
-  }), k(() => () => {
-    d.current && clearTimeout(d.current);
+  }), E(() => () => {
+    h.current && clearTimeout(h.current);
   }, []);
-  const B = ft(() => {
-    if (_.current)
+  const K = dt(async () => {
+    if (V.current)
       return;
-    const s = $.trim();
-    if (!s) {
-      x.current();
+    const g = X.trim();
+    if (!g) {
+      U.current();
       return;
     }
-    _.current = !0, h.current(s);
-  }, [$]), X = ft(
-    (s) => {
-      const M = s.relatedTarget, G = dt, W = M && !!M.closest(l), Y = M === document.body || !M, ct = Date.now() - S.current < 500;
-      d.current && clearTimeout(d.current), d.current = setTimeout(() => {
-        var g;
+    V.current = !0, A(null);
+    try {
+      await D.current(g);
+    } catch (S) {
+      V.current = !1, A(zr(S)), requestAnimationFrame(() => {
+        var _;
+        return (_ = P.current) == null ? void 0 : _.focus();
+      });
+    }
+  }, [X]), ct = dt(
+    (g) => {
+      const S = g.relatedTarget, _ = Bt, H = S && !!S.closest(u), F = S === document.body || !S, Pt = Date.now() - N.current < 500;
+      h.current && clearTimeout(h.current), h.current = setTimeout(() => {
+        var x;
         if (document.activeElement !== P.current) {
-          if (ct || !G && (W || Y)) {
-            (g = P.current) == null || g.focus();
+          if (Pt || !_ && (H || F)) {
+            (x = P.current) == null || x.focus();
             return;
           }
-          B();
+          K();
         }
       }, 300);
     },
-    [B, l]
-  ), rt = ft(() => {
-    d.current && (clearTimeout(d.current), d.current = null);
+    [K, u]
+  ), $ = dt(() => {
+    h.current && (clearTimeout(h.current), h.current = null);
   }, []);
-  return /* @__PURE__ */ C(
+  return /* @__PURE__ */ R(
     "div",
     {
       className: "sft-tree-node sft-inline-create",
-      style: { paddingLeft: `${t * u + 8}px` },
-      onClick: (s) => s.stopPropagation(),
-      onMouseDown: (s) => s.stopPropagation(),
+      style: { paddingLeft: `${t * i + 8}px` },
+      onClick: (g) => g.stopPropagation(),
+      onMouseDown: (g) => g.stopPropagation(),
       children: [
-        n ? /* @__PURE__ */ c("span", { className: "sft-expand-icon" }) : /* @__PURE__ */ c("span", { className: "sft-expand-icon sft-expand-icon-empty" }),
-        /* @__PURE__ */ c("span", { className: "sft-file-icon", children: a === "folder" ? /* @__PURE__ */ c(ee, { size: 14, color: "var(--sft-accent, var(--accent, #3b82f6))" }) : /* @__PURE__ */ c(te, { size: 14 }) }),
-        /* @__PURE__ */ c(
-          "input",
-          {
-            ref: P,
-            className: we,
-            title: a === "folder" ? T.newFolder : T.newFile,
-            value: $,
-            placeholder: a === "folder" ? T.createFolderPlaceholder : T.createFilePlaceholder,
-            onChange: (s) => y(s.target.value),
-            onBlur: X,
-            onFocus: rt,
-            onClick: (s) => s.stopPropagation(),
-            onMouseDown: (s) => s.stopPropagation()
-          }
-        )
+        a ? /* @__PURE__ */ s("span", { className: "sft-expand-icon" }) : /* @__PURE__ */ s("span", { className: "sft-expand-icon sft-expand-icon-empty" }),
+        /* @__PURE__ */ s("span", { className: "sft-file-icon", children: e === "folder" ? /* @__PURE__ */ s(ze, { size: 14, color: "var(--sft-accent, var(--accent, #3b82f6))" }) : /* @__PURE__ */ s(_e, { size: 14 }) }),
+        /* @__PURE__ */ R("div", { className: "sft-inline-create-field", children: [
+          /* @__PURE__ */ s(
+            "input",
+            {
+              ref: P,
+              className: `${Ie}${p ? " sft-inline-create-input-error" : ""}`,
+              title: e === "folder" ? k.newFolder : k.newFile,
+              value: X,
+              placeholder: e === "folder" ? k.createFolderPlaceholder : k.createFilePlaceholder,
+              onChange: (g) => {
+                L(g.target.value), p && A(null);
+              },
+              onBlur: ct,
+              onFocus: $,
+              onClick: (g) => g.stopPropagation(),
+              onMouseDown: (g) => g.stopPropagation(),
+              "aria-invalid": p ? !0 : void 0
+            }
+          ),
+          p ? /* @__PURE__ */ s("span", { className: "sft-inline-create-error", role: "alert", children: p }) : null
+        ] })
       ]
     }
   );
 }
-function Ht({
-  fs: a,
+function de({
+  fs: e,
   node: t,
-  depth: n,
-  indentPx: u,
-  platform: T,
-  labels: l,
-  activeFilePath: b,
-  onFileClick: V,
-  onRefresh: $,
-  creatingItem: y,
-  onSetCreating: P,
-  selectedNode: _,
-  onSelectNode: d,
-  onFileOpened: S,
-  onFileDeleted: h,
-  onFileRenamed: x,
-  onFileCreated: B,
-  onFolderCreated: X,
-  onFileCopied: rt,
-  onFileMoved: s,
-  refreshTrigger: M,
-  renderIcon: G,
-  clipboardSnapshot: W,
-  monacoSelector: Y,
-  portalContainer: ct,
-  reportError: g
+  depth: a,
+  indentPx: i,
+  hasDirectoriesAtLevel: k,
+  platform: u,
+  labels: w,
+  activeFilePath: z,
+  onFileClick: X,
+  onRefresh: L,
+  creatingItem: p,
+  onSetCreating: A,
+  selectedNode: P,
+  onSelectNode: V,
+  onFileOpened: h,
+  onFileDeleted: N,
+  onFileRenamed: D,
+  onFileCreated: U,
+  onFolderCreated: K,
+  onFileCopied: ct,
+  onFileMoved: $,
+  refreshTrigger: g,
+  renderIcon: S,
+  clipboardSnapshot: _,
+  contextMenuOptions: H,
+  monacoSelector: F,
+  portalContainer: Pt,
+  reportError: x
 }) {
-  const [K, st] = Z(!1), [ot, It] = Z(t.children || []), [j, z] = Z(null), [O, U] = Z(!1), [Q, R] = Z(!1), [nt, kt] = Z(t.name), F = J(null), v = J(null), H = J(null), gt = J(null), D = J(!1), L = J(0), it = J(0), yt = ot.some((e) => e.type === "directory"), vt = re(ct), lt = y && tt(y.parentPath, t.path) && t.type === "directory", Vt = (W == null ? void 0 : W.action) === "cut" && tt(W.path, t.path), r = ft(async () => {
+  const [Q, Ht] = Z(!1), [It, Gt] = Z(t.children || []), [lt, yt] = Z(null), [Jt, it] = Z(!1), [mt, Vt] = Z(!1), [gt, Mt] = Z(t.name), vt = J(null), M = J(null), Zt = J(null), Dt = J(null), wt = J(!1), B = J(0), ut = J(0), Nt = It.some((r) => r.type === "directory"), ot = je(Pt), ft = p && et(p.parentPath, t.path) && t.type === "directory", _t = (_ == null ? void 0 : _.action) === "cut" && et(_.path, t.path), Tt = Ne(H) && [
+    "new-file",
+    "new-folder",
+    "cut",
+    "copy",
+    "paste",
+    "rename",
+    "delete"
+  ].some(
+    (r) => O(
+      H,
+      r
+    )
+  ), q = dt(async () => {
     if (t.type === "directory")
       try {
-        const e = await a.readDirectory(t.path);
-        It(ae(e));
-      } catch (e) {
-        g({
+        const r = await e.readDirectory(t.path);
+        Gt(Ae(r));
+      } catch (r) {
+        x({
           action: "load-children",
-          error: e,
+          error: r,
           node: t,
           sourcePath: t.path
         });
       }
-  }, [a, t, g]);
-  k(() => {
-    lt && !K && (st(!0), r());
-  }, [K, lt, r]), k(() => {
-    K && typeof M == "number" && M > 0 && r();
-  }, [K, r, M]), k(() => {
-    b !== H.current && (H.current = b ?? null, t.type === "directory" && b && ta(t.path, b) && (K || (st(!0), r())));
-  }, [b, K, r, t.path, t.type]), k(() => {
-    if (j) {
-      const e = (f) => {
-        const N = f.target instanceof HTMLElement ? f.target : null;
-        N != null && N.closest(".sft-context-menu") || z(null);
-      }, i = () => z(null), p = () => z(null);
-      return window.addEventListener("mousedown", e), window.addEventListener("blur", i), document.addEventListener(Pt, p), () => {
-        window.removeEventListener("mousedown", e), window.removeEventListener("blur", i), document.removeEventListener(Pt, p);
+  }, [e, t, x]);
+  E(() => {
+    ft && !Q && (Ht(!0), q());
+  }, [Q, ft, q]), E(() => {
+    Q && typeof g == "number" && g > 0 && q();
+  }, [Q, q, g]), E(() => {
+    z !== Zt.current && (Zt.current = z ?? null, t.type === "directory" && z && Nr(t.path, z) && (Q || (Ht(!0), q())));
+  }, [z, Q, q, t.path, t.type]), E(() => {
+    if (lt) {
+      const r = (f) => {
+        const o = f.target instanceof HTMLElement ? f.target : null;
+        o != null && o.closest(".sft-context-menu") || yt(null);
+      }, c = () => yt(null), d = () => yt(null);
+      return window.addEventListener("mousedown", r), window.addEventListener("blur", c), document.addEventListener(jt, d), () => {
+        window.removeEventListener("mousedown", r), window.removeEventListener("blur", c), document.removeEventListener(jt, d);
       };
     }
-  }, [j]), k(() => {
-    if (Q) {
-      const e = F.current;
-      return e && Dt.set(e, {
+  }, [lt]), E(() => {
+    if (mt) {
+      const r = vt.current;
+      return r && oe.set(r, {
         onSubmit: () => {
-          v.current && (clearTimeout(v.current), v.current = null), Jt();
+          M.current && (clearTimeout(M.current), M.current = null), Et();
         },
         onCancel: () => {
-          v.current && (clearTimeout(v.current), v.current = null), R(!1);
+          M.current && (clearTimeout(M.current), M.current = null), Vt(!1);
         }
       }), () => {
-        v.current && clearTimeout(v.current), e && Dt.delete(e);
+        M.current && clearTimeout(M.current), r && oe.delete(r);
       };
     }
-  }, [nt, t.name, t.path, Q]), k(() => {
-    (_ == null ? void 0 : _.type) === "file" && tt(_.path, t.path) && setTimeout(() => {
-      var e;
-      (e = gt.current) == null || e.scrollIntoView({
+  }, [gt, t.name, t.path, mt]), E(() => {
+    (P == null ? void 0 : P.type) === "file" && et(P.path, t.path) && setTimeout(() => {
+      var r;
+      (r = Dt.current) == null || r.scrollIntoView({
         behavior: "smooth",
         block: "nearest"
       });
     }, 50);
-  }, [t.path, _]);
-  const w = async () => {
-    t.type === "directory" && (K || await r(), st((e) => !e));
-  }, o = () => z(null), E = (e) => {
-    e.preventDefault(), e.stopPropagation(), document.dispatchEvent(new CustomEvent(Pt)), z({ x: e.clientX, y: e.clientY });
-  }, ut = () => {
-    o();
-    const e = t.type === "directory" ? m(t.path) : pt(t.path);
-    setTimeout(() => P({ type: "file", parentPath: e }), 0);
-  }, mt = () => {
-    o();
-    const e = t.type === "directory" ? m(t.path) : pt(t.path);
-    setTimeout(() => P({ type: "folder", parentPath: e }), 0);
-  }, Kt = async (e) => {
-    if (!y)
+  }, [t.path, P]);
+  const Y = async () => {
+    t.type === "directory" && (Q || await q(), Ht((r) => !r));
+  }, T = () => yt(null), j = (r, c) => {
+    Tt && (document.dispatchEvent(new CustomEvent(jt)), yt({ x: r, y: c }));
+  }, rt = (r) => {
+    r.preventDefault(), r.stopPropagation(), j(r.clientX, r.clientY);
+  }, pt = (r) => {
+    r.button === 2 && (V({ path: t.path, type: t.type }), Tt && rt(r));
+  }, tt = (r) => {
+    r.button === 2 && r.stopPropagation();
+  }, zt = (r) => {
+    Tt && (V({ path: t.path, type: t.type }), rt(r));
+  }, ye = () => {
+    T();
+    const r = t.type === "directory" ? m(t.path) : Lt(t.path);
+    setTimeout(() => A({ type: "file", parentPath: r }), 0);
+  }, bt = () => {
+    T();
+    const r = t.type === "directory" ? m(t.path) : Lt(t.path);
+    setTimeout(() => A({ type: "folder", parentPath: r }), 0);
+  }, xt = async (r) => {
+    if (!p)
       return;
-    const i = m(y.parentPath), p = et(i, e), f = y.type;
-    P(null);
+    const c = m(p.parentPath), d = at(c, r), f = p.type;
     try {
-      f === "file" ? (await a.createFile(p), await r(), B == null || B(p, e), S == null || S(p, e, !1)) : (await a.createFolder(p), await r(), X == null || X(p));
-    } catch (N) {
-      g({
+      if (f === "file") {
+        const o = await e.createFile(d), n = o ? m(o) : d;
+        await q(), A(null), U == null || U(n, st(n)), h == null || h(n, st(n), !1);
+      } else {
+        const o = await e.createFolder(d), n = o ? m(o) : d;
+        await q(), A(null), K == null || K(n);
+      }
+    } catch (o) {
+      throw x({
         action: f === "file" ? "create-file" : "create-folder",
-        error: N,
+        error: o,
         node: t,
-        targetPath: p
-      }), await r().catch(() => {
-      });
+        targetPath: d
+      }), await q().catch(() => {
+      }), o;
     }
-  }, Ot = async () => {
-    o();
+  }, C = async () => {
+    T();
     try {
       document.activeElement instanceof HTMLElement && document.activeElement.blur();
-      const e = pt(t.path), i = et(e, `.trash_${Date.now()}_${t.name}`);
-      let p;
-      if (t.type === "file" && a.readFile)
+      const r = Lt(t.path), c = at(r, `.trash_${Date.now()}_${t.name}`);
+      let d;
+      if (t.type === "file" && e.readFile)
         try {
-          p = await a.readFile(t.path);
+          d = await e.readFile(t.path);
         } catch (f) {
-          g({
+          x({
             action: "delete-item",
             error: f,
             node: t,
             sourcePath: t.path
           });
         }
-      await a.renameItem(t.path, i), ra({
+      await e.renameItem(t.path, c), Cr({
         originalPath: t.path,
-        trashPath: i,
+        trashPath: c,
         type: t.type,
         restore: async () => {
-          await a.renameItem(i, t.path), t.type === "file" ? B == null || B(t.path, t.name, p, !0) : X == null || X(t.path, !0), $();
+          await e.renameItem(c, t.path), t.type === "file" ? U == null || U(t.path, t.name, d, !0) : K == null || K(t.path, !0), L();
         }
-      }), h == null || h(t.path, t.type), $();
-    } catch (e) {
-      g({
+      }), N == null || N(t.path, t.type), L();
+    } catch (r) {
+      x({
         action: "delete-item",
-        error: e,
+        error: r,
         node: t,
         sourcePath: t.path
       });
     }
-  }, Ut = (e) => {
-    e == null || e.stopPropagation(), o(), Zt({ path: t.path, type: t.type, action: "cut" });
-  }, qt = (e) => {
-    e == null || e.stopPropagation(), o(), Zt({ path: t.path, type: t.type, action: "copy" });
-  }, St = async (e) => {
-    e == null || e.stopPropagation(), o();
-    const i = Ct();
-    if (!i)
+  }, St = (r) => {
+    T(), xe({ path: t.path, type: t.type, action: "cut" });
+  }, Qt = (r) => {
+    T(), xe({ path: t.path, type: t.type, action: "copy" });
+  }, Ut = async (r) => {
+    T();
+    const c = le();
+    if (!c)
       return;
-    const p = t.type === "directory" ? m(t.path) : pt(t.path), f = wt(i.path), N = et(p, f);
-    if (i.action === "cut" && tt(N, i.path)) {
-      $t();
+    const d = t.type === "directory" ? m(t.path) : Lt(t.path), f = st(c.path), o = at(d, f);
+    if (c.action === "cut" && et(o, c.path)) {
+      pe();
       return;
     }
     try {
-      if (i.action === "cut") {
-        h == null || h(i.path, i.type, !0);
-        let A = N;
+      if (c.action === "cut") {
+        N == null || N(c.path, c.type, !0);
+        let n = o;
         try {
-          const q = await a.renameItem(i.path, N);
-          q && (A = m(q));
-        } catch (q) {
-          g({
+          const l = await e.renameItem(c.path, o);
+          l && (n = m(l));
+        } catch (l) {
+          x({
             action: "paste-item",
-            error: q,
+            error: l,
             node: t,
-            sourcePath: i.path,
-            targetPath: N
+            sourcePath: c.path,
+            targetPath: o
           });
           return;
         }
-        x == null || x(i.path, A), $t(), s == null || s();
+        D == null || D(c.path, n), pe(), $ == null || $();
       } else {
-        let A = N;
+        let n = o;
         try {
-          const q = await a.copyItem(i.path, N);
-          q && (A = m(q));
-        } catch (q) {
-          g({
+          const l = await e.copyItem(c.path, o);
+          l && (n = m(l));
+        } catch (l) {
+          x({
             action: "paste-item",
-            error: q,
+            error: l,
             node: t,
-            sourcePath: i.path,
-            targetPath: N
+            sourcePath: c.path,
+            targetPath: o
           });
           return;
         }
-        rt == null || rt(A, i.type), s == null || s();
+        ct == null || ct(n, c.type), $ == null || $();
       }
-      $();
-    } catch (A) {
-      g({
+      L();
+    } catch (n) {
+      x({
         action: "paste-item",
-        error: A,
+        error: n,
         node: t,
-        sourcePath: i.path,
-        targetPath: N
+        sourcePath: c.path,
+        targetPath: o
       });
     }
-  }, ne = (e) => {
-    e.stopPropagation(), e.dataTransfer.setData(
-      zt,
+  }, G = (r) => {
+    r.stopPropagation(), r.dataTransfer.setData(
+      ue,
       JSON.stringify({ path: t.path, type: t.type })
-    ), e.dataTransfer.effectAllowed = "move";
-  }, ce = (e) => {
-    t.type === "directory" && (e.preventDefault(), e.stopPropagation(), L.current += 1, L.current === 1 && U(!0));
-  }, se = (e) => {
-    e.preventDefault(), t.type === "directory" && e.stopPropagation(), e.dataTransfer.dropEffect = "move";
-  }, ie = (e) => {
-    t.type === "directory" && (e.preventDefault(), e.stopPropagation(), L.current -= 1, L.current === 0 && U(!1));
-  }, ue = async (e) => {
-    e.preventDefault(), e.stopPropagation(), L.current = 0, U(!1);
-    const i = e.dataTransfer.getData(zt);
-    if (!i)
+    ), r.dataTransfer.effectAllowed = "move";
+  }, W = (r) => {
+    t.type === "directory" && (r.preventDefault(), r.stopPropagation(), B.current += 1, B.current === 1 && it(!0));
+  }, Ot = (r) => {
+    r.preventDefault(), t.type === "directory" && r.stopPropagation(), r.dataTransfer.dropEffect = "move";
+  }, Rt = (r) => {
+    t.type === "directory" && (r.preventDefault(), r.stopPropagation(), B.current -= 1, B.current === 0 && it(!1));
+  }, Ft = async (r) => {
+    r.preventDefault(), r.stopPropagation(), B.current = 0, it(!1);
+    const c = r.dataTransfer.getData(ue);
+    if (!c)
       return;
-    const p = t.type === "directory" ? m(t.path) : pt(t.path);
+    const d = t.type === "directory" ? m(t.path) : Lt(t.path);
     try {
-      const f = JSON.parse(i), N = et(p, wt(f.path));
-      if (tt(N, f.path))
+      const f = JSON.parse(c), o = at(d, st(f.path));
+      if (et(o, f.path))
         return;
-      h == null || h(f.path, f.type, !0);
-      let A = N;
+      N == null || N(f.path, f.type, !0);
+      let n = o;
       try {
-        const q = await a.renameItem(f.path, N);
-        q && (A = m(q));
-      } catch (q) {
-        g({
+        const l = await e.renameItem(f.path, o);
+        l && (n = m(l));
+      } catch (l) {
+        x({
           action: "move-item",
-          error: q,
+          error: l,
           node: t,
           sourcePath: f.path,
-          targetPath: N
+          targetPath: o
         });
         return;
       }
-      x == null || x(f.path, A), $(), s == null || s();
+      D == null || D(f.path, n), L(), $ == null || $();
     } catch (f) {
-      g({
+      x({
         action: "move-item",
         error: f,
         node: t
       });
     }
-  }, oe = (e) => {
-    e.preventDefault(), e.stopPropagation(), it.current += 1, it.current === 1 && U(!0);
-  }, le = (e) => {
-    e.preventDefault(), e.stopPropagation(), e.dataTransfer.dropEffect = "move";
-  }, pe = (e) => {
-    e.preventDefault(), e.stopPropagation(), it.current -= 1, it.current === 0 && U(!1);
-  }, fe = async (e) => {
-    e.preventDefault(), e.stopPropagation(), it.current = 0, L.current = 0, U(!1);
-    const i = e.dataTransfer.getData(zt);
-    if (i)
+  }, me = (r) => {
+    r.preventDefault(), r.stopPropagation(), ut.current += 1, ut.current === 1 && it(!0);
+  }, At = (r) => {
+    r.preventDefault(), r.stopPropagation(), r.dataTransfer.dropEffect = "move";
+  }, te = (r) => {
+    r.preventDefault(), r.stopPropagation(), ut.current -= 1, ut.current === 0 && it(!1);
+  }, Ct = async (r) => {
+    r.preventDefault(), r.stopPropagation(), ut.current = 0, B.current = 0, it(!1);
+    const c = r.dataTransfer.getData(ue);
+    if (c)
       try {
-        const p = JSON.parse(i), f = et(t.path, wt(p.path));
-        if (tt(f, p.path))
+        const d = JSON.parse(c), f = at(t.path, st(d.path));
+        if (et(f, d.path))
           return;
-        h == null || h(p.path, p.type, !0);
-        let N = f;
+        N == null || N(d.path, d.type, !0);
+        let o = f;
         try {
-          const A = await a.renameItem(p.path, f);
-          A && (N = m(A));
-        } catch (A) {
-          g({
+          const n = await e.renameItem(d.path, f);
+          n && (o = m(n));
+        } catch (n) {
+          x({
             action: "move-item",
-            error: A,
+            error: n,
             node: t,
-            sourcePath: p.path,
+            sourcePath: d.path,
             targetPath: f
           });
           return;
         }
-        x == null || x(p.path, N), $(), s == null || s();
-      } catch (p) {
-        g({
+        D == null || D(d.path, o), L(), $ == null || $();
+      } catch (d) {
+        x({
           action: "move-item",
-          error: p,
+          error: d,
           node: t
         });
       }
-  }, Xt = () => {
-    o(), kt(t.name), R(!0), D.current = !1;
-  }, Jt = async () => {
-    if (D.current)
+  }, ee = () => {
+    T(), Mt(t.name), Vt(!0), wt.current = !1;
+  }, Et = async () => {
+    if (wt.current)
       return;
-    D.current = !0, R(!1);
-    const e = nt.trim();
-    if (!e || e === t.name) {
-      D.current = !1;
+    wt.current = !0, Vt(!1);
+    const r = gt.trim();
+    if (!r || r === t.name) {
+      wt.current = !1;
       return;
     }
-    const i = et(pt(t.path), e);
-    let p = i;
+    const c = at(Lt(t.path), r);
+    let d = c;
     try {
-      const f = await a.renameItem(t.path, i);
-      f && (p = m(f));
+      const f = await e.renameItem(t.path, c);
+      f && (d = m(f));
     } catch (f) {
-      D.current = !1, g({
+      wt.current = !1, x({
         action: "rename-item",
         error: f,
         node: t,
         sourcePath: t.path,
-        targetPath: i
-      }), $();
+        targetPath: c
+      }), L();
       return;
     }
-    x == null || x(t.path, p), $(), D.current = !1;
-  }, he = ft(
-    (e) => {
-      const i = e.relatedTarget, p = dt, f = i && !!i.closest(Y), N = i === document.body || !i;
-      v.current && clearTimeout(v.current), v.current = setTimeout(() => {
-        var A;
-        if (document.activeElement !== F.current) {
-          if (!p && (f || N)) {
-            (A = F.current) == null || A.focus();
+    D == null || D(t.path, d), L(), wt.current = !1;
+  }, ge = dt(
+    (r) => {
+      const c = r.relatedTarget, d = Bt, f = c && !!c.closest(F), o = c === document.body || !c;
+      M.current && clearTimeout(M.current), M.current = setTimeout(() => {
+        var n;
+        if (document.activeElement !== vt.current) {
+          if (!d && (f || o)) {
+            (n = vt.current) == null || n.focus();
             return;
           }
-          Jt();
+          Et();
         }
       }, 300);
     },
-    [Y, nt, t.name, t.path]
-  ), Wt = _ ? tt(_.path, t.path) : !1, ye = Wt && t.type === "file", me = Wt && t.type === "directory";
-  return /* @__PURE__ */ C("div", { className: "sft-tree-node-wrapper", ref: gt, children: [
-    /* @__PURE__ */ C(
+    [F, gt, t.name, t.path]
+  ), Kt = lt ? $e([
+    [
+      O(H, "new-file") ? {
+        id: "new-file",
+        label: w.newFile,
+        onSelect: ye
+      } : null,
+      O(H, "new-folder") ? {
+        id: "new-folder",
+        label: w.newFolder,
+        onSelect: bt
+      } : null
+    ],
+    [
+      O(H, "cut") ? {
+        id: "cut",
+        label: w.cut,
+        shortcut: Xt("cut", u),
+        onSelect: () => St()
+      } : null,
+      O(H, "copy") ? {
+        id: "copy",
+        label: w.copy,
+        shortcut: Xt("copy", u),
+        onSelect: () => Qt()
+      } : null,
+      O(H, "paste") ? {
+        id: "paste",
+        label: w.paste,
+        shortcut: Xt("paste", u),
+        disabled: !_,
+        onSelect: () => Ut()
+      } : null
+    ],
+    [
+      O(H, "rename") ? {
+        id: "rename",
+        label: w.rename,
+        shortcut: "F2",
+        onSelect: ee
+      } : null
+    ],
+    [
+      O(H, "delete") ? {
+        id: "delete",
+        label: w.delete,
+        shortcut: Xt("delete", u),
+        danger: !0,
+        onSelect: C
+      } : null
+    ]
+  ]) : [], re = P ? et(P.path, t.path) : !1, qt = re && t.type === "file", ae = re && t.type === "directory";
+  return /* @__PURE__ */ R("div", { className: "sft-tree-node-wrapper", ref: Dt, children: [
+    /* @__PURE__ */ R(
       "div",
       {
-        className: Tt(
+        className: ht(
           "sft-tree-node",
-          ye && "sft-active",
-          me && "sft-selected-folder",
-          O && t.type === "directory" && "sft-drag-over",
-          Vt && "sft-cut-node"
+          qt && "sft-active",
+          ae && "sft-selected-folder",
+          Jt && t.type === "directory" && "sft-drag-over",
+          _t && "sft-cut-node"
         ),
-        style: { paddingLeft: `${n * u + 8}px` },
-        draggable: !Q,
-        onDragStart: ne,
+        style: { paddingLeft: `${a * i + 8}px` },
+        draggable: !mt,
+        onDragStart: G,
         ...t.type === "directory" ? {
-          onDragEnter: ce,
-          onDragOver: se,
-          onDragLeave: ie,
-          onDrop: ue
+          onDragEnter: W,
+          onDragOver: Ot,
+          onDragLeave: Rt,
+          onDrop: Ft
         } : {
-          onDragOver: (e) => {
-            e.preventDefault(), e.dataTransfer.dropEffect = "move";
+          onDragOver: (r) => {
+            r.preventDefault(), r.dataTransfer.dropEffect = "move";
           }
         },
-        onKeyDown: (e) => {
-          if (!Q) {
-            if (e.key.toLowerCase() === "x" && (e.metaKey || e.ctrlKey)) {
-              e.preventDefault(), e.stopPropagation(), Ut();
+        onKeyDown: (r) => {
+          if (!mt) {
+            if (r.key.toLowerCase() === "x" && (r.metaKey || r.ctrlKey)) {
+              r.preventDefault(), r.stopPropagation(), St();
               return;
             }
-            if (e.key.toLowerCase() === "c" && (e.metaKey || e.ctrlKey)) {
-              e.preventDefault(), e.stopPropagation(), qt();
+            if (r.key.toLowerCase() === "c" && (r.metaKey || r.ctrlKey)) {
+              r.preventDefault(), r.stopPropagation(), Qt();
               return;
             }
-            if (e.key.toLowerCase() === "v" && (e.metaKey || e.ctrlKey)) {
-              e.preventDefault(), e.stopPropagation(), St();
+            if (r.key.toLowerCase() === "v" && (r.metaKey || r.ctrlKey)) {
+              r.preventDefault(), r.stopPropagation(), Ut();
               return;
             }
-            if (e.key === "F2") {
-              e.preventDefault(), e.stopPropagation(), Xt();
+            if (r.key === "F2") {
+              r.preventDefault(), r.stopPropagation(), ee();
               return;
             }
-            if (e.key === "Delete" || e.key === "Del" || e.metaKey && e.key === "Backspace") {
-              e.preventDefault(), e.stopPropagation(), Ot();
+            if (r.key === "Delete" || r.key === "Del" || r.metaKey && r.key === "Backspace") {
+              r.preventDefault(), r.stopPropagation(), C();
               return;
             }
-            e.key === "Enter" && (e.preventDefault(), e.stopPropagation(), d({ path: t.path, type: t.type }), t.type === "file" ? V(t.path, t.name) : w());
+            r.key === "Enter" && (r.preventDefault(), r.stopPropagation(), V({ path: t.path, type: t.type }), t.type === "file" ? X(t.path, t.name) : Y());
           }
         },
         tabIndex: 0,
-        onClick: (e) => {
-          e.stopPropagation(), e.currentTarget.focus(), d({ path: t.path, type: t.type }), t.type === "file" ? V(t.path, t.name) : w();
+        onMouseDownCapture: tt,
+        onContextMenuCapture: zt,
+        onClick: (r) => {
+          r.stopPropagation(), r.currentTarget.focus(), V({ path: t.path, type: t.type }), t.type === "file" ? X(t.path, t.name) : Y();
         },
-        onContextMenu: (e) => {
-          d({ path: t.path, type: t.type }), E(e);
-        },
+        onMouseDown: pt,
         children: [
-          yt || t.type === "directory" ? t.type === "directory" ? /* @__PURE__ */ c("span", { className: "sft-expand-icon", children: K ? /* @__PURE__ */ c(Ee, { size: 14 }) : /* @__PURE__ */ c(_e, { size: 14 }) }) : /* @__PURE__ */ c("span", { className: "sft-expand-icon" }) : /* @__PURE__ */ c("span", { className: "sft-expand-icon sft-expand-icon-empty" }),
-          /* @__PURE__ */ c("span", { className: "sft-file-icon", children: G ? G(t) : la(t) }),
-          Q ? /* @__PURE__ */ c(
+          k || t.type === "directory" ? t.type === "directory" ? /* @__PURE__ */ s("span", { className: "sft-expand-icon", children: Q ? /* @__PURE__ */ s(Ge, { size: 14 }) : /* @__PURE__ */ s(Ze, { size: 14 }) }) : /* @__PURE__ */ s("span", { className: "sft-expand-icon" }) : /* @__PURE__ */ s("span", { className: "sft-expand-icon sft-expand-icon-empty" }),
+          /* @__PURE__ */ s("span", { className: "sft-file-icon", children: S ? S(t) : jr(t) }),
+          mt ? /* @__PURE__ */ s(
             "input",
             {
-              ref: F,
+              ref: vt,
               autoFocus: !0,
-              className: Pe,
-              title: l.rename,
-              value: nt,
-              onChange: (e) => kt(e.target.value),
-              onFocus: (e) => {
-                v.current && (clearTimeout(v.current), v.current = null), e.target.select();
+              className: Ve,
+              title: w.rename,
+              value: gt,
+              onChange: (r) => Mt(r.target.value),
+              onFocus: (r) => {
+                M.current && (clearTimeout(M.current), M.current = null), r.target.select();
               },
-              onBlur: he,
-              onClick: (e) => e.stopPropagation(),
-              onMouseDown: (e) => e.stopPropagation()
+              onBlur: ge,
+              onClick: (r) => r.stopPropagation(),
+              onMouseDown: (r) => r.stopPropagation()
             }
-          ) : /* @__PURE__ */ c("span", { className: "sft-node-name", children: t.name })
+          ) : /* @__PURE__ */ s("span", { className: "sft-node-name", children: t.name })
         ]
       }
     ),
-    j && vt ? Rt(
-      /* @__PURE__ */ C(
+    lt && ot && Kt.length > 0 ? ke(
+      /* @__PURE__ */ s(
         "div",
         {
-          className: "sft-context-menu",
-          style: { top: j.y, left: j.x },
-          children: [
-            /* @__PURE__ */ c("div", { className: "sft-context-menu-item", onClick: ut, children: /* @__PURE__ */ c("span", { children: l.newFile }) }),
-            /* @__PURE__ */ c("div", { className: "sft-context-menu-item", onClick: mt, children: /* @__PURE__ */ c("span", { children: l.newFolder }) }),
-            /* @__PURE__ */ c("div", { className: "sft-context-menu-separator" }),
-            /* @__PURE__ */ C("div", { className: "sft-context-menu-item", onClick: Ut, children: [
-              /* @__PURE__ */ c("span", { children: l.cut }),
-              /* @__PURE__ */ c("span", { className: "sft-context-menu-shortcut", children: Nt("cut", T) })
-            ] }),
-            /* @__PURE__ */ C("div", { className: "sft-context-menu-item", onClick: qt, children: [
-              /* @__PURE__ */ c("span", { children: l.copy }),
-              /* @__PURE__ */ c("span", { className: "sft-context-menu-shortcut", children: Nt("copy", T) })
-            ] }),
-            /* @__PURE__ */ C(
-              "div",
-              {
-                className: Tt(
-                  "sft-context-menu-item",
-                  !W && "sft-disabled"
-                ),
-                onClick: (e) => {
-                  W && St(e);
-                },
-                children: [
-                  /* @__PURE__ */ c("span", { children: l.paste }),
-                  /* @__PURE__ */ c("span", { className: "sft-context-menu-shortcut", children: Nt("paste", T) })
-                ]
-              }
-            ),
-            /* @__PURE__ */ c("div", { className: "sft-context-menu-separator" }),
-            /* @__PURE__ */ C("div", { className: "sft-context-menu-item", onClick: Xt, children: [
-              /* @__PURE__ */ c("span", { children: l.rename }),
-              /* @__PURE__ */ c("span", { className: "sft-context-menu-shortcut", children: "F2" })
-            ] }),
-            /* @__PURE__ */ c("div", { className: "sft-context-menu-separator" }),
-            /* @__PURE__ */ C(
-              "div",
-              {
-                className: "sft-context-menu-item sft-danger",
-                onClick: () => {
-                  Ot();
-                },
-                children: [
-                  /* @__PURE__ */ c("span", { children: l.delete }),
-                  /* @__PURE__ */ c("span", { className: "sft-context-menu-shortcut", children: Nt("delete", T) })
-                ]
-              }
-            )
-          ]
+          className: "sft-context-menu-layer",
+          style: { top: lt.y, left: lt.x },
+          children: H != null && H.renderMenu ? H.renderMenu({
+            scope: "node",
+            node: t,
+            position: lt,
+            groups: Kt,
+            closeMenu: T,
+            clipboard: _,
+            labels: w,
+            platform: u
+          }) : Be({
+            scope: "node",
+            groups: Kt,
+            closeMenu: T
+          })
         }
       ),
-      vt
+      ot
     ) : null,
-    K && t.type === "directory" ? /* @__PURE__ */ C(
+    Q && t.type === "directory" ? /* @__PURE__ */ R(
       "div",
       {
         className: "sft-tree-children",
-        onDragEnter: oe,
-        onDragOver: le,
-        onDragLeave: pe,
-        onDrop: fe,
+        onDragEnter: me,
+        onDragOver: At,
+        onDragLeave: te,
+        onDrop: Ct,
         children: [
-          lt && (y == null ? void 0 : y.type) === "folder" ? /* @__PURE__ */ c(
-            jt,
+          ft && (p == null ? void 0 : p.type) === "folder" ? /* @__PURE__ */ s(
+            he,
             {
-              type: y.type,
-              depth: n + 1,
-              hasFolders: yt,
-              indentPx: u,
-              labels: l,
-              monacoSelector: Y,
-              onSubmit: Kt,
-              onCancel: () => P(null)
+              type: p.type,
+              depth: a + 1,
+              hasFolders: Nt,
+              indentPx: i,
+              labels: w,
+              monacoSelector: F,
+              onSubmit: xt,
+              onCancel: () => A(null)
             }
           ) : null,
-          ot.filter((e) => e.type === "directory").map((e) => /* @__PURE__ */ c(
-            Ht,
+          It.filter((r) => r.type === "directory").map((r) => /* @__PURE__ */ s(
+            de,
             {
-              fs: a,
-              node: e,
-              depth: n + 1,
-              indentPx: u,
-              platform: T,
-              labels: l,
-              activeFilePath: b,
-              onFileClick: V,
-              onRefresh: r,
-              creatingItem: y,
-              onSetCreating: P,
-              selectedNode: _,
-              onSelectNode: d,
-              onFileOpened: S,
-              onFileDeleted: h,
-              onFileRenamed: x,
-              onFileCreated: B,
-              onFolderCreated: X,
-              onFileCopied: rt,
-              onFileMoved: s,
-              refreshTrigger: M,
-              renderIcon: G,
-              clipboardSnapshot: W,
-              monacoSelector: Y,
-              portalContainer: ct,
-              reportError: g
+              fs: e,
+              node: r,
+              depth: a + 1,
+              indentPx: i,
+              hasDirectoriesAtLevel: Nt,
+              platform: u,
+              labels: w,
+              activeFilePath: z,
+              onFileClick: X,
+              onRefresh: q,
+              creatingItem: p,
+              onSetCreating: A,
+              selectedNode: P,
+              onSelectNode: V,
+              onFileOpened: h,
+              onFileDeleted: N,
+              onFileRenamed: D,
+              onFileCreated: U,
+              onFolderCreated: K,
+              onFileCopied: ct,
+              onFileMoved: $,
+              refreshTrigger: g,
+              renderIcon: S,
+              clipboardSnapshot: _,
+              monacoSelector: F,
+              portalContainer: Pt,
+              reportError: x
             },
-            e.path
+            r.path
           )),
-          lt && (y == null ? void 0 : y.type) === "file" ? /* @__PURE__ */ c(
-            jt,
+          ft && (p == null ? void 0 : p.type) === "file" ? /* @__PURE__ */ s(
+            he,
             {
-              type: y.type,
-              depth: n + 1,
-              hasFolders: yt,
-              indentPx: u,
-              labels: l,
-              monacoSelector: Y,
-              onSubmit: Kt,
-              onCancel: () => P(null)
+              type: p.type,
+              depth: a + 1,
+              hasFolders: Nt,
+              indentPx: i,
+              labels: w,
+              monacoSelector: F,
+              onSubmit: xt,
+              onCancel: () => A(null)
             }
           ) : null,
-          ot.filter((e) => e.type !== "directory").map((e) => /* @__PURE__ */ c(
-            Ht,
+          It.filter((r) => r.type !== "directory").map((r) => /* @__PURE__ */ s(
+            de,
             {
-              fs: a,
-              node: e,
-              depth: n + 1,
-              indentPx: u,
-              platform: T,
-              labels: l,
-              activeFilePath: b,
-              onFileClick: V,
-              onRefresh: r,
-              creatingItem: y,
-              onSetCreating: P,
-              selectedNode: _,
-              onSelectNode: d,
-              onFileOpened: S,
-              onFileDeleted: h,
-              onFileRenamed: x,
-              onFileCreated: B,
-              onFolderCreated: X,
-              onFileCopied: rt,
-              onFileMoved: s,
-              refreshTrigger: M,
-              renderIcon: G,
-              clipboardSnapshot: W,
-              monacoSelector: Y,
-              portalContainer: ct,
-              reportError: g
+              fs: e,
+              node: r,
+              depth: a + 1,
+              indentPx: i,
+              hasDirectoriesAtLevel: Nt,
+              platform: u,
+              labels: w,
+              activeFilePath: z,
+              onFileClick: X,
+              onRefresh: q,
+              creatingItem: p,
+              onSetCreating: A,
+              selectedNode: P,
+              onSelectNode: V,
+              onFileOpened: h,
+              onFileDeleted: N,
+              onFileRenamed: D,
+              onFileCreated: U,
+              onFolderCreated: K,
+              onFileCopied: ct,
+              onFileMoved: $,
+              refreshTrigger: g,
+              renderIcon: S,
+              clipboardSnapshot: _,
+              monacoSelector: F,
+              portalContainer: Pt,
+              reportError: x
             },
-            e.path
+            r.path
           ))
         ]
       }
     ) : null
   ] });
 }
-const Pa = de.memo(function({
+const Wr = Ee.memo(function({
   fs: t,
-  workspaceRoot: n,
-  onOpenFolder: u,
-  onFileClick: T,
-  activeFilePath: l,
-  onFileOpened: b,
-  newFileTrigger: V,
-  newFolderTrigger: $,
-  onFileDeleted: y,
-  onFileRenamed: P,
-  onFileCreated: _,
-  onFolderCreated: d,
-  onFileCopied: S,
+  workspaceRoot: a,
+  onOpenFolder: i,
+  onFileClick: k,
+  activeFilePath: u,
+  onFileOpened: w,
+  newFileTrigger: z,
+  newFolderTrigger: X,
+  onFileDeleted: L,
+  onFileRenamed: p,
+  onFileCreated: A,
+  onFolderCreated: P,
+  onFileCopied: V,
   onFileMoved: h,
-  refreshTrigger: x,
-  className: B,
-  style: X,
-  headerTitle: rt,
-  emptyState: s,
-  renderIcon: M,
-  labels: G,
-  platform: W = "auto",
-  portalContainer: Y,
-  enableUndoHotkeys: ct = !0,
-  monacoSelector: g = ".monaco-editor",
-  onSelectionChange: K,
-  onError: st
+  refreshTrigger: N,
+  className: D,
+  style: U,
+  width: K,
+  minWidth: ct,
+  maxWidth: $,
+  headerTitle: g,
+  showHeader: S = !0,
+  showHeaderActions: _ = !0,
+  headerClassName: H,
+  headerStyle: F,
+  headerActionsClassName: Pt,
+  headerActionsStyle: x,
+  renderHeader: Q,
+  contentClassName: Ht,
+  contentStyle: It,
+  footer: Gt,
+  footerClassName: lt,
+  footerStyle: yt,
+  renderFooter: Jt,
+  emptyState: it,
+  renderEmptyState: mt,
+  showOpenFolderButton: Vt = !0,
+  openFolderButtonPosition: gt = "top",
+  renderOpenFolderButton: Mt,
+  renderIcon: vt,
+  labels: M,
+  platform: Zt = "auto",
+  sidebarPosition: Dt = "left",
+  theme: wt,
+  contextMenu: B,
+  portalContainer: ut,
+  enableUndoHotkeys: Nt = !0,
+  monacoSelector: ot = ".monaco-editor",
+  onSelectionChange: ft,
+  onError: _t
 }) {
-  const [ot, It] = Z([]), [j, z] = Z(null), [O, U] = Z(
-    n ? { path: n, type: "directory" } : null
-  ), [Q, R] = Z(null), [nt, kt] = Z(
-    () => Ct()
-  ), F = ua(W), v = F === "windows" ? 16 : 28, H = { ...sa, ...G }, gt = re(Y), D = ft(
-    (r) => {
-      st == null || st(r), console.error("[jack-file-tree]", r.action, r.error);
+  const [Tt, q] = Z([]), [Y, T] = Z(null), [j, rt] = Z(
+    a ? { path: a, type: "directory" } : null
+  ), [pt, tt] = Z(null), [zt, ye] = Z(
+    () => le()
+  ), bt = _r(Zt), xt = bt === "windows" ? 16 : 28, C = { ...kr, ...M }, St = je(ut), Qt = {
+    ...Hr(wt),
+    width: K,
+    minWidth: ct,
+    maxWidth: $,
+    ...U
+  }, Ut = Ne(B) && ["new-file", "new-folder", "paste"].some(
+    (n) => O(
+      B,
+      n
+    )
+  ), G = dt(
+    (n) => {
+      _t == null || _t(n), console.error("[jack-file-tree]", n.action, n.error);
     },
-    [st]
+    [_t]
   );
-  k(() => {
-    ia();
-  }, []), k(() => ea(() => {
-    kt(Ct());
-  }), []), k(() => {
-    if (ct)
-      return ca({ monacoSelector: g });
-  }, [ct, g]), k(() => {
-    U(n ? { path: n, type: "directory" } : null);
-  }, [n]), k(() => {
-    l && U({ path: l, type: "file" });
-  }, [l]), k(() => {
-    n && !O && U({ path: n, type: "directory" });
-  }, [O, n]), k(() => {
-    K == null || K(O);
-  }, [K, O]);
-  const L = ft(async () => {
-    if (n)
+  E(() => {
+    Dr();
+  }, []), E(() => Tr(() => {
+    ye(le());
+  }), []), E(() => {
+    if (Nt)
+      return Lr({ monacoSelector: ot });
+  }, [Nt, ot]), E(() => {
+    rt(a ? { path: a, type: "directory" } : null);
+  }, [a]), E(() => {
+    u && rt({ path: u, type: "file" });
+  }, [u]), E(() => {
+    a && !j && rt({ path: a, type: "directory" });
+  }, [j, a]), E(() => {
+    ft == null || ft(j);
+  }, [ft, j]);
+  const W = dt(async () => {
+    if (a)
       try {
-        const r = await t.readDirectory(n);
-        It(ae(r));
-      } catch (r) {
-        D({
+        const n = await t.readDirectory(a);
+        q(Ae(n));
+      } catch (n) {
+        G({
           action: "load-root",
-          error: r,
-          sourcePath: n
+          error: n,
+          sourcePath: a
         });
       }
-  }, [t, D, n]);
-  k(() => {
-    L();
-  }, [L]), k(() => {
-    typeof x == "number" && x > 0 && (L(), z((r) => r || null));
-  }, [L, x]), k(() => {
-    !V || !n || setTimeout(() => {
-      z({
+  }, [t, G, a]);
+  E(() => {
+    W();
+  }, [W]), E(() => {
+    typeof N == "number" && N > 0 && (W(), T((n) => n || null));
+  }, [W, N]), E(() => {
+    !z || !a || setTimeout(() => {
+      T({
         type: "file",
-        parentPath: Et(O, n)
+        parentPath: ce(j, a)
       });
     }, 0);
-  }, [V, O, n]), k(() => {
-    !$ || !n || setTimeout(() => {
-      z({
+  }, [z, j, a]), E(() => {
+    !X || !a || setTimeout(() => {
+      T({
         type: "folder",
-        parentPath: Et(O, n)
+        parentPath: ce(j, a)
       });
     }, 0);
-  }, [$, O, n]), k(() => {
-    if (Q) {
-      const r = (E) => {
-        const ut = E.target instanceof HTMLElement ? E.target : null;
-        ut != null && ut.closest(".sft-context-menu") || R(null);
-      }, w = () => R(null), o = () => R(null);
-      return window.addEventListener("mousedown", r), window.addEventListener("blur", w), document.addEventListener(Pt, o), () => {
-        window.removeEventListener("mousedown", r), window.removeEventListener("blur", w), document.removeEventListener(Pt, o);
+  }, [X, j, a]), E(() => {
+    if (pt) {
+      const n = (b) => {
+        const $t = b.target instanceof HTMLElement ? b.target : null;
+        $t != null && $t.closest(".sft-context-menu") || tt(null);
+      }, l = () => tt(null), y = () => tt(null);
+      return window.addEventListener("mousedown", n), window.addEventListener("blur", l), document.addEventListener(jt, y), () => {
+        window.removeEventListener("mousedown", n), window.removeEventListener("blur", l), document.removeEventListener(jt, y);
       };
     }
-  }, [Q]);
-  const it = (r) => {
-    z(r);
-  }, yt = async () => {
-    R(null);
-    const r = Ct();
-    if (!r || !n)
+  }, [pt]);
+  const Ot = (n) => {
+    T(n);
+  }, Rt = (n, l) => {
+    a && (document.dispatchEvent(new CustomEvent(jt)), tt({ x: n, y: l }), rt({ path: a, type: "directory" }));
+  }, Ft = async () => {
+    tt(null);
+    const n = le();
+    if (!n || !a)
       return;
-    const w = et(m(n), wt(r.path));
-    if (r.action === "cut" && tt(w, r.path)) {
-      $t();
+    const l = at(m(a), st(n.path));
+    if (n.action === "cut" && et(l, n.path)) {
+      pe();
       return;
     }
     try {
-      if (r.action === "cut") {
-        y == null || y(r.path, r.type, !0);
-        let o = w;
+      if (n.action === "cut") {
+        L == null || L(n.path, n.type, !0);
+        let y = l;
         try {
-          const E = await t.renameItem(r.path, w);
-          E && (o = m(E));
-        } catch (E) {
-          D({
+          const b = await t.renameItem(n.path, l);
+          b && (y = m(b));
+        } catch (b) {
+          G({
             action: "paste-item",
-            error: E,
-            sourcePath: r.path,
-            targetPath: w
+            error: b,
+            sourcePath: n.path,
+            targetPath: l
           });
           return;
         }
-        P == null || P(r.path, o), $t(), h == null || h();
+        p == null || p(n.path, y), pe(), h == null || h();
       } else {
-        let o = w;
+        let y = l;
         try {
-          const E = await t.copyItem(r.path, w);
-          E && (o = m(E));
-        } catch (E) {
-          D({
+          const b = await t.copyItem(n.path, l);
+          b && (y = m(b));
+        } catch (b) {
+          G({
             action: "paste-item",
-            error: E,
-            sourcePath: r.path,
-            targetPath: w
+            error: b,
+            sourcePath: n.path,
+            targetPath: l
           });
           return;
         }
-        S == null || S(o, r.type), h == null || h();
+        V == null || V(y, n.type), h == null || h();
       }
-      await L();
-    } catch (o) {
-      D({
+      await W();
+    } catch (y) {
+      G({
         action: "paste-item",
-        error: o,
-        sourcePath: r.path,
-        targetPath: w
+        error: y,
+        sourcePath: n.path,
+        targetPath: l
       });
     }
-  }, vt = async (r) => {
-    r.preventDefault();
-    const w = r.dataTransfer.getData(zt);
-    if (!(!w || !n))
+  }, me = async (n) => {
+    n.preventDefault();
+    const l = n.dataTransfer.getData(ue);
+    if (!(!l || !a))
       try {
-        const o = JSON.parse(w), E = et(m(n), wt(o.path));
-        if (tt(E, o.path))
+        const y = JSON.parse(l), b = at(m(a), st(y.path));
+        if (et(b, y.path))
           return;
-        y == null || y(o.path, o.type, !0);
-        let ut = E;
+        L == null || L(y.path, y.type, !0);
+        let $t = b;
         try {
-          const mt = await t.renameItem(o.path, E);
-          mt && (ut = m(mt));
-        } catch (mt) {
-          D({
+          const ne = await t.renameItem(y.path, b);
+          ne && ($t = m(ne));
+        } catch (ne) {
+          G({
             action: "move-item",
-            error: mt,
-            sourcePath: o.path,
-            targetPath: E
+            error: ne,
+            sourcePath: y.path,
+            targetPath: b
           });
           return;
         }
-        P == null || P(o.path, ut), await L(), h == null || h();
-      } catch (o) {
-        D({
+        p == null || p(y.path, $t), await W(), h == null || h();
+      } catch (y) {
+        G({
           action: "move-item",
-          error: o
+          error: y
         });
       }
-  }, lt = ot.some((r) => r.type === "directory"), Vt = rt || (n ? wt(n) : H.explorer);
-  return n ? /* @__PURE__ */ C(
+  }, At = Tt.some((n) => n.type === "directory"), te = g || (a ? st(a) : C.explorer), Ct = {
+    label: C.openFolder,
+    onClick: i,
+    disabled: !i,
+    className: "sft-open-folder-btn",
+    style: void 0
+  }, ee = {
+    labels: C,
+    onOpenFolder: i,
+    openFolderButton: Ct
+  }, Et = Vt ? Mt ? Mt(Ct) : /* @__PURE__ */ s(
+    "button",
+    {
+      type: "button",
+      onClick: i,
+      className: ht(
+        "sft-empty-folder-btn",
+        Ct.className
+      ),
+      disabled: Ct.disabled,
+      children: Ct.label
+    }
+  ) : null, ge = mt ? mt(ee) : it || /* @__PURE__ */ R(
     "div",
     {
-      className: Tt(
-        "sft-file-tree-panel",
-        F === "windows" && "sft-platform-windows",
-        B
+      className: ht(
+        "sft-empty-folder-container",
+        gt === "top" ? "sft-open-folder-top" : "sft-open-folder-center"
       ),
-      style: X,
-      onClick: () => U({ path: n, type: "directory" }),
-      onDragEnter: (r) => {
-        r.preventDefault(), r.stopPropagation();
-      },
-      onDragOver: (r) => {
-        r.preventDefault(), r.stopPropagation(), r.dataTransfer.dropEffect = "move";
-      },
-      onDrop: (r) => {
-        vt(r);
-      },
-      tabIndex: 0,
-      onKeyDown: (r) => {
-        if (r.key.toLowerCase() === "v" && (r.metaKey || r.ctrlKey)) {
-          if (r.target.closest(".sft-tree-node"))
-            return;
-          r.preventDefault(), yt();
-        }
-      },
-      onContextMenu: (r) => {
-        r.target.closest(".sft-tree-node") || (r.preventDefault(), r.stopPropagation(), document.dispatchEvent(new CustomEvent(Pt)), R({ x: r.clientX, y: r.clientY }), U({ path: n, type: "directory" }));
-      },
       children: [
-        /* @__PURE__ */ C("div", { className: "sft-tree-header", title: n, children: [
-          /* @__PURE__ */ c("span", { className: "sft-tree-header-title", children: Vt }),
-          /* @__PURE__ */ C("div", { className: "sft-tree-actions", children: [
-            /* @__PURE__ */ c(
-              "button",
-              {
-                type: "button",
-                className: "sft-tree-action-btn",
-                title: H.newFile,
-                onClick: (r) => {
-                  r.stopPropagation(), setTimeout(() => {
-                    z({
-                      type: "file",
-                      parentPath: Et(O, n)
-                    });
-                  }, 0);
-                },
-                children: /* @__PURE__ */ c(Oe, { size: 18 })
-              }
-            ),
-            /* @__PURE__ */ c(
-              "button",
-              {
-                type: "button",
-                className: "sft-tree-action-btn",
-                title: H.newFolder,
-                onClick: (r) => {
-                  r.stopPropagation(), setTimeout(() => {
-                    z({
-                      type: "folder",
-                      parentPath: Et(O, n)
-                    });
-                  }, 0);
-                },
-                children: /* @__PURE__ */ c(Je, { size: 18 })
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ C("div", { className: "sft-tree-content", children: [
-          j && tt(j.parentPath, n) && j.type === "folder" ? /* @__PURE__ */ c(
-            jt,
-            {
-              type: j.type,
-              depth: 0,
-              hasFolders: lt,
-              indentPx: v,
-              labels: H,
-              monacoSelector: g,
-              onSubmit: async (r) => {
-                const w = et(m(n), r);
-                z(null);
-                try {
-                  await t.createFolder(w), await L(), d == null || d(w);
-                } catch (o) {
-                  D({
-                    action: "create-folder",
-                    error: o,
-                    targetPath: w
-                  }), await L();
-                }
-              },
-              onCancel: () => z(null)
-            }
-          ) : null,
-          ot.filter((r) => r.type === "directory").map((r) => /* @__PURE__ */ c(
-            Ht,
-            {
-              fs: t,
-              node: r,
-              depth: 0,
-              indentPx: v,
-              platform: F,
-              labels: H,
-              activeFilePath: l,
-              onFileClick: T,
-              onRefresh: L,
-              creatingItem: j,
-              onSetCreating: it,
-              selectedNode: O,
-              onSelectNode: U,
-              onFileOpened: b,
-              onFileDeleted: y,
-              onFileRenamed: P,
-              onFileCreated: _,
-              onFolderCreated: d,
-              onFileCopied: S,
-              onFileMoved: h,
-              refreshTrigger: x,
-              renderIcon: M,
-              clipboardSnapshot: nt,
-              monacoSelector: g,
-              portalContainer: Y,
-              reportError: D
-            },
-            r.path
-          )),
-          j && tt(j.parentPath, n) && j.type === "file" ? /* @__PURE__ */ c(
-            jt,
-            {
-              type: j.type,
-              depth: 0,
-              hasFolders: lt,
-              indentPx: v,
-              labels: H,
-              monacoSelector: g,
-              onSubmit: async (r) => {
-                const w = et(m(n), r);
-                z(null);
-                try {
-                  await t.createFile(w), await L(), _ == null || _(w, r), b == null || b(w, r, !1);
-                } catch (o) {
-                  D({
-                    action: "create-file",
-                    error: o,
-                    targetPath: w
-                  }), await L();
-                }
-              },
-              onCancel: () => z(null)
-            }
-          ) : null,
-          ot.filter((r) => r.type !== "directory").map((r) => /* @__PURE__ */ c(
-            Ht,
-            {
-              fs: t,
-              node: r,
-              depth: 0,
-              indentPx: v,
-              platform: F,
-              labels: H,
-              activeFilePath: l,
-              onFileClick: T,
-              onRefresh: L,
-              creatingItem: j,
-              onSetCreating: it,
-              selectedNode: O,
-              onSelectNode: U,
-              onFileOpened: b,
-              onFileDeleted: y,
-              onFileRenamed: P,
-              onFileCreated: _,
-              onFolderCreated: d,
-              onFileCopied: S,
-              onFileMoved: h,
-              refreshTrigger: x,
-              renderIcon: M,
-              clipboardSnapshot: nt,
-              monacoSelector: g,
-              portalContainer: Y,
-              reportError: D
-            },
-            r.path
-          ))
-        ] }),
-        Q && gt ? Rt(
-          /* @__PURE__ */ C(
-            "div",
-            {
-              className: "sft-context-menu",
-              style: { top: Q.y, left: Q.x },
-              children: [
-                /* @__PURE__ */ c(
-                  "div",
-                  {
-                    className: "sft-context-menu-item",
-                    onClick: () => {
-                      setTimeout(
-                        () => z({
-                          type: "file",
-                          parentPath: n
-                        }),
-                        0
-                      ), R(null);
-                    },
-                    children: /* @__PURE__ */ c("span", { children: H.newFile })
-                  }
-                ),
-                /* @__PURE__ */ c(
-                  "div",
-                  {
-                    className: "sft-context-menu-item",
-                    onClick: () => {
-                      setTimeout(
-                        () => z({
-                          type: "folder",
-                          parentPath: n
-                        }),
-                        0
-                      ), R(null);
-                    },
-                    children: /* @__PURE__ */ c("span", { children: H.newFolder })
-                  }
-                ),
-                /* @__PURE__ */ c("div", { className: "sft-context-menu-separator" }),
-                /* @__PURE__ */ C(
-                  "div",
-                  {
-                    className: Tt(
-                      "sft-context-menu-item",
-                      !nt && "sft-disabled"
-                    ),
-                    onClick: () => {
-                      nt && yt();
-                    },
-                    children: [
-                      /* @__PURE__ */ c("span", { children: H.paste }),
-                      /* @__PURE__ */ c("span", { className: "sft-context-menu-shortcut", children: Nt("paste", F) })
-                    ]
-                  }
-                )
-              ]
-            }
-          ),
-          gt
+        gt === "top" && Et ? /* @__PURE__ */ s("div", { className: "sft-empty-folder-open-slot", children: Et }) : null,
+        /* @__PURE__ */ R("div", { className: "sft-empty-folder-body", children: [
+          /* @__PURE__ */ s("p", { className: "sft-empty-folder-text", children: C.noFolderOpened }),
+          gt === "center" && Et ? /* @__PURE__ */ s("div", { className: "sft-empty-folder-actions", children: Et }) : null
+        ] })
+      ]
+    }
+  ), Kt = dt(() => {
+    a && setTimeout(() => {
+      T({
+        type: "file",
+        parentPath: ce(j, a)
+      });
+    }, 0);
+  }, [j, a]), re = dt(() => {
+    a && setTimeout(() => {
+      T({
+        type: "folder",
+        parentPath: ce(j, a)
+      });
+    }, 0);
+  }, [j, a]), qt = a ? [
+    {
+      id: "new-file",
+      label: C.newFile,
+      title: C.newFile,
+      className: "sft-tree-action-btn",
+      icon: /* @__PURE__ */ s(lr, { size: 18 }),
+      onClick: Kt
+    },
+    {
+      id: "new-folder",
+      label: C.newFolder,
+      title: C.newFolder,
+      className: "sft-tree-action-btn",
+      icon: /* @__PURE__ */ s(pr, { size: 18 }),
+      onClick: re
+    }
+  ] : [], ae = _ && qt.length > 0 ? qt.map((n) => /* @__PURE__ */ s(
+    "button",
+    {
+      type: "button",
+      className: n.className,
+      title: n.title,
+      onClick: (l) => {
+        l.stopPropagation(), n.onClick();
+      },
+      children: n.icon
+    },
+    n.id
+  )) : null, r = {
+    workspaceRoot: a,
+    title: te,
+    labels: C,
+    selection: j,
+    sidebarPosition: Dt,
+    className: ht("sft-tree-header", H),
+    style: F,
+    titleClassName: "sft-tree-header-title",
+    actionsClassName: ht("sft-tree-actions", Pt),
+    actionsStyle: x,
+    actions: qt,
+    defaultActions: ae
+  }, c = {
+    workspaceRoot: a,
+    labels: C,
+    selection: j,
+    sidebarPosition: Dt,
+    className: ht("sft-tree-footer", lt),
+    style: yt
+  }, d = S ? Q ? Q(r) : /* @__PURE__ */ R(
+    "div",
+    {
+      className: r.className,
+      style: F,
+      title: a ?? te,
+      children: [
+        /* @__PURE__ */ s("span", { className: r.titleClassName, children: r.title }),
+        _ ? /* @__PURE__ */ s(
+          "div",
+          {
+            className: r.actionsClassName,
+            style: x,
+            children: ae
+          }
         ) : null
       ]
     }
-  ) : /* @__PURE__ */ C(
+  ) : null, f = Jt ? Jt(c) : Gt ? /* @__PURE__ */ s("div", { className: c.className, style: yt, children: Gt }) : null, o = pt ? $e([
+    [
+      O(B, "new-file") ? {
+        id: "new-file",
+        label: C.newFile,
+        onSelect: () => {
+          setTimeout(
+            () => T({
+              type: "file",
+              parentPath: a
+            }),
+            0
+          ), tt(null);
+        }
+      } : null,
+      O(B, "new-folder") ? {
+        id: "new-folder",
+        label: C.newFolder,
+        onSelect: () => {
+          setTimeout(
+            () => T({
+              type: "folder",
+              parentPath: a
+            }),
+            0
+          ), tt(null);
+        }
+      } : null
+    ],
+    [
+      O(B, "paste") ? {
+        id: "paste",
+        label: C.paste,
+        shortcut: Xt("paste", bt),
+        disabled: !zt,
+        onSelect: Ft
+      } : null
+    ]
+  ]) : [];
+  return /* @__PURE__ */ R(
     "div",
     {
-      className: Tt(
+      className: ht(
         "sft-file-tree-panel",
-        F === "windows" && "sft-platform-windows",
-        B
+        Dt === "right" ? "sft-sidebar-right" : "sft-sidebar-left",
+        bt === "windows" && "sft-platform-windows",
+        D
       ),
-      style: X,
+      style: Qt,
+      onClick: a ? () => rt({ path: a, type: "directory" }) : void 0,
+      onDragEnter: a ? (n) => {
+        n.preventDefault(), n.stopPropagation();
+      } : void 0,
+      onDragOver: a ? (n) => {
+        n.preventDefault(), n.stopPropagation(), n.dataTransfer.dropEffect = "move";
+      } : void 0,
+      onDrop: a ? (n) => {
+        me(n);
+      } : void 0,
+      tabIndex: a ? 0 : void 0,
+      onKeyDown: (n) => {
+        if (a && n.key.toLowerCase() === "v" && (n.metaKey || n.ctrlKey)) {
+          if (we(n.target))
+            return;
+          n.preventDefault(), Ft();
+        }
+      },
+      onMouseDown: (n) => {
+        a && n.button === 2 && (we(n.target) || Ut && (n.preventDefault(), n.stopPropagation(), Rt(n.clientX, n.clientY)));
+      },
+      onContextMenu: (n) => {
+        a && (we(n.target) || Ut && (n.preventDefault(), n.stopPropagation(), Rt(n.clientX, n.clientY)));
+      },
       children: [
-        /* @__PURE__ */ C("div", { className: "sft-tree-header", children: [
-          /* @__PURE__ */ c("span", { className: "sft-tree-header-title", children: H.explorer }),
-          /* @__PURE__ */ c("div", { className: "sft-tree-actions" })
-        ] }),
-        s || /* @__PURE__ */ C("div", { className: "sft-empty-folder-container", children: [
-          /* @__PURE__ */ c("p", { className: "sft-empty-folder-text", children: H.noFolderOpened }),
-          u ? /* @__PURE__ */ c("div", { className: "sft-empty-folder-actions", children: /* @__PURE__ */ c(
-            "button",
+        d,
+        /* @__PURE__ */ s("div", { className: ht("sft-tree-content", Ht), style: It, children: a ? /* @__PURE__ */ R(He, { children: [
+          Y && et(Y.parentPath, a) && Y.type === "folder" ? /* @__PURE__ */ s(
+            he,
             {
-              type: "button",
-              onClick: u,
-              className: "sft-empty-folder-btn",
-              children: H.openFolder
+              type: Y.type,
+              depth: 0,
+              hasFolders: At,
+              indentPx: xt,
+              labels: C,
+              monacoSelector: ot,
+              onSubmit: async (n) => {
+                const l = at(m(a), n);
+                try {
+                  const y = await t.createFolder(l), b = y ? m(y) : l;
+                  await W(), T(null), P == null || P(b);
+                } catch (y) {
+                  throw G({
+                    action: "create-folder",
+                    error: y,
+                    targetPath: l
+                  }), await W(), y;
+                }
+              },
+              onCancel: () => T(null)
             }
-          ) }) : null
-        ] })
+          ) : null,
+          Tt.filter((n) => n.type === "directory").map((n) => /* @__PURE__ */ s(
+            de,
+            {
+              fs: t,
+              node: n,
+              depth: 0,
+              indentPx: xt,
+              hasDirectoriesAtLevel: At,
+              platform: bt,
+              labels: C,
+              activeFilePath: u,
+              onFileClick: k,
+              onRefresh: W,
+              creatingItem: Y,
+              onSetCreating: Ot,
+              selectedNode: j,
+              onSelectNode: rt,
+              onFileOpened: w,
+              onFileDeleted: L,
+              onFileRenamed: p,
+              onFileCreated: A,
+              onFolderCreated: P,
+              onFileCopied: V,
+              onFileMoved: h,
+              refreshTrigger: N,
+              renderIcon: vt,
+              clipboardSnapshot: zt,
+              contextMenuOptions: B,
+              monacoSelector: ot,
+              portalContainer: ut,
+              reportError: G
+            },
+            n.path
+          )),
+          Y && et(Y.parentPath, a) && Y.type === "file" ? /* @__PURE__ */ s(
+            he,
+            {
+              type: Y.type,
+              depth: 0,
+              hasFolders: At,
+              indentPx: xt,
+              labels: C,
+              monacoSelector: ot,
+              onSubmit: async (n) => {
+                const l = at(m(a), n);
+                try {
+                  const y = await t.createFile(l), b = y ? m(y) : l;
+                  await W(), T(null), A == null || A(b, st(b)), w == null || w(b, st(b), !1);
+                } catch (y) {
+                  throw G({
+                    action: "create-file",
+                    error: y,
+                    targetPath: l
+                  }), await W(), y;
+                }
+              },
+              onCancel: () => T(null)
+            }
+          ) : null,
+          Tt.filter((n) => n.type !== "directory").map((n) => /* @__PURE__ */ s(
+            de,
+            {
+              fs: t,
+              node: n,
+              depth: 0,
+              indentPx: xt,
+              hasDirectoriesAtLevel: At,
+              platform: bt,
+              labels: C,
+              activeFilePath: u,
+              onFileClick: k,
+              onRefresh: W,
+              creatingItem: Y,
+              onSetCreating: Ot,
+              selectedNode: j,
+              onSelectNode: rt,
+              onFileOpened: w,
+              onFileDeleted: L,
+              onFileRenamed: p,
+              onFileCreated: A,
+              onFolderCreated: P,
+              onFileCopied: V,
+              onFileMoved: h,
+              refreshTrigger: N,
+              renderIcon: vt,
+              clipboardSnapshot: zt,
+              contextMenuOptions: B,
+              monacoSelector: ot,
+              portalContainer: ut,
+              reportError: G
+            },
+            n.path
+          ))
+        ] }) : ge }),
+        f,
+        a && pt && St && o.length > 0 ? ke(
+          /* @__PURE__ */ s(
+            "div",
+            {
+              className: "sft-context-menu-layer",
+              style: { top: pt.y, left: pt.x },
+              children: B != null && B.renderMenu ? B.renderMenu({
+                scope: "root",
+                position: pt,
+                groups: o,
+                closeMenu: () => tt(null),
+                clipboard: zt,
+                labels: C,
+                platform: bt
+              }) : Be({
+                scope: "root",
+                groups: o,
+                closeMenu: () => tt(null)
+              })
+            }
+          ),
+          St
+        ) : null
       ]
     }
   );
 });
 export {
-  Pa as FileTree,
-  ca as attachFileTreeUndoHotkeys,
-  $t as clearFileTreeClipboard,
-  wa as clearFileTreeUndoStack,
-  sa as defaultFileTreeLabels,
-  Ct as getFileTreeClipboard,
-  da as getFileTreeUndoCount,
-  Na as installFileTreeInputShield,
-  na as restoreLastFileTreeDeletion,
-  Zt as setFileTreeClipboard,
-  ea as subscribeFileTreeClipboard,
-  ma as updateFileTreeClipboardPath
+  Wr as FileTree,
+  Lr as attachFileTreeUndoHotkeys,
+  pe as clearFileTreeClipboard,
+  qr as clearFileTreeUndoStack,
+  kr as defaultFileTreeLabels,
+  le as getFileTreeClipboard,
+  Kr as getFileTreeUndoCount,
+  Gr as installFileTreeInputShield,
+  Er as restoreLastFileTreeDeletion,
+  xe as setFileTreeClipboard,
+  Tr as subscribeFileTreeClipboard,
+  Ur as updateFileTreeClipboardPath
 };

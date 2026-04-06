@@ -16,11 +16,107 @@ export interface FileTreeClipboardItem {
     type: FileTreeItemType;
     action: "cut" | "copy";
 }
+export type FileTreeSidebarPosition = "left" | "right";
+export type FileTreeContextMenuScope = "root" | "node";
+export type FileTreeContextMenuActionId = "new-file" | "new-folder" | "cut" | "copy" | "paste" | "rename" | "delete";
+export interface FileTreeOpenFolderButtonRenderProps {
+    label: string;
+    onClick?: () => void;
+    disabled: boolean;
+    className: string;
+    style?: CSSProperties;
+}
+export interface FileTreeEmptyStateRenderProps {
+    labels: FileTreeLabels;
+    onOpenFolder?: () => void;
+    openFolderButton: FileTreeOpenFolderButtonRenderProps;
+}
+export interface FileTreeTheme {
+    backgroundPrimary?: string;
+    backgroundSecondary?: string;
+    backgroundHover?: string;
+    textPrimary?: string;
+    textSecondary?: string;
+    textMuted?: string;
+    accent?: string;
+    accentTransparent?: string;
+    danger?: string;
+    menuBackground?: string;
+    menuBorder?: string;
+    menuHover?: string;
+    menuText?: string;
+    sidebarBorder?: string;
+    openFolderButtonBackground?: string;
+    openFolderButtonBackgroundHover?: string;
+    openFolderButtonText?: string;
+    openFolderButtonBorder?: string;
+    fontFamily?: string;
+    fontFamilyWindows?: string;
+    panelTopPadding?: string | number;
+    headerTitleOffsetY?: string | number;
+    headerActionsOffsetY?: string | number;
+}
+export interface FileTreeHeaderActionRenderProps {
+    id: "new-file" | "new-folder";
+    label: string;
+    title: string;
+    className: string;
+    icon: ReactNode;
+    onClick: () => void;
+}
+export interface FileTreeHeaderRenderProps {
+    workspaceRoot: string | null;
+    title: string;
+    labels: FileTreeLabels;
+    selection: FileTreeSelection | null;
+    sidebarPosition: FileTreeSidebarPosition;
+    className: string;
+    style?: CSSProperties;
+    titleClassName: string;
+    actionsClassName: string;
+    actionsStyle?: CSSProperties;
+    actions: FileTreeHeaderActionRenderProps[];
+    defaultActions: ReactNode;
+}
+export interface FileTreeFooterRenderProps {
+    workspaceRoot: string | null;
+    labels: FileTreeLabels;
+    selection: FileTreeSelection | null;
+    sidebarPosition: FileTreeSidebarPosition;
+    className: string;
+    style?: CSSProperties;
+}
+export interface FileTreeContextMenuActionItem {
+    id: FileTreeContextMenuActionId;
+    label: string;
+    shortcut?: string;
+    danger?: boolean;
+    disabled?: boolean;
+    onSelect: () => void | Promise<void>;
+}
+export interface FileTreeContextMenuRenderProps {
+    scope: FileTreeContextMenuScope;
+    node?: FileTreeNode;
+    position: {
+        x: number;
+        y: number;
+    };
+    groups: FileTreeContextMenuActionItem[][];
+    closeMenu: () => void;
+    clipboard: FileTreeClipboardItem | null;
+    labels: FileTreeLabels;
+    platform: "windows" | "mac" | "linux";
+}
+export interface FileTreeContextMenuOptions {
+    enabled?: boolean;
+    actions?: Partial<Record<FileTreeContextMenuActionId, boolean>>;
+    renderMenu?: (props: FileTreeContextMenuRenderProps) => ReactNode;
+}
 export interface FileTreeFsAdapter {
     readDirectory: (path: string) => Promise<FileTreeNode[]>;
     readFile?: (path: string) => Promise<string>;
-    createFile: (path: string) => Promise<void>;
-    createFolder: (path: string) => Promise<void>;
+    createFile: (path: string) => Promise<string | void>;
+    createFolder: (path: string) => Promise<string | void>;
     renameItem: (oldPath: string, newPath: string) => Promise<string | void>;
     copyItem: (oldPath: string, newPath: string) => Promise<string | void>;
 }
@@ -66,11 +162,34 @@ export interface FileTreeProps {
     refreshTrigger?: number;
     className?: string;
     style?: CSSProperties;
+    width?: CSSProperties["width"];
+    minWidth?: CSSProperties["minWidth"];
+    maxWidth?: CSSProperties["maxWidth"];
     headerTitle?: string;
+    showHeader?: boolean;
+    showHeaderActions?: boolean;
+    headerClassName?: string;
+    headerStyle?: CSSProperties;
+    headerActionsClassName?: string;
+    headerActionsStyle?: CSSProperties;
+    renderHeader?: (props: FileTreeHeaderRenderProps) => ReactNode;
+    contentClassName?: string;
+    contentStyle?: CSSProperties;
+    footer?: ReactNode;
+    footerClassName?: string;
+    footerStyle?: CSSProperties;
+    renderFooter?: (props: FileTreeFooterRenderProps) => ReactNode;
     emptyState?: ReactNode;
+    renderEmptyState?: (props: FileTreeEmptyStateRenderProps) => ReactNode;
+    showOpenFolderButton?: boolean;
+    openFolderButtonPosition?: "top" | "center";
+    renderOpenFolderButton?: (props: FileTreeOpenFolderButtonRenderProps) => ReactNode;
     renderIcon?: (node: FileTreeNode) => ReactNode;
     labels?: Partial<FileTreeLabels>;
     platform?: FileTreePlatform;
+    sidebarPosition?: FileTreeSidebarPosition;
+    theme?: FileTreeTheme;
+    contextMenu?: FileTreeContextMenuOptions;
     portalContainer?: Element | null;
     enableUndoHotkeys?: boolean;
     monacoSelector?: string;

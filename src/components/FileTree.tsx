@@ -14,6 +14,7 @@ import {
   FileText,
   Folder,
   FolderPlus,
+  GitBranch,
   Palette,
   ShieldAlert,
   Terminal,
@@ -32,15 +33,26 @@ import {
 } from "../state/fileTreeUndo";
 import {
   defaultFileTreeLabels,
+  type FileTreeContextMenuActionId,
+  type FileTreeContextMenuActionItem,
+  type FileTreeContextMenuOptions,
+  type FileTreeContextMenuRenderProps,
   type FileTreeClipboardItem,
   type FileTreeError,
+  type FileTreeEmptyStateRenderProps,
   type FileTreeFsAdapter,
+  type FileTreeFooterRenderProps,
+  type FileTreeHeaderActionRenderProps,
+  type FileTreeHeaderRenderProps,
   type FileTreeItemType,
   type FileTreeLabels,
   type FileTreeNode,
+  type FileTreeOpenFolderButtonRenderProps,
   type FileTreePlatform,
   type FileTreeProps,
   type FileTreeSelection,
+  type FileTreeSidebarPosition,
+  type FileTreeTheme,
 } from "../types";
 import {
   dedupeNodes,
@@ -130,6 +142,28 @@ function resolvePlatform(
   return "linux";
 }
 
+function getInlineCreateErrorMessage(error: unknown): string {
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === "string"
+        ? error
+        : "Unable to create item";
+
+  const cleanedMessage = message
+    .replace(/^Error invoking remote method ['"`].*?['"`]:\s*/i, "")
+    .replace(/^Error:\s*/i, "")
+    .replace(/^Failed to create (file|folder):\s*/i, "")
+    .replace(/^Error:\s*/i, "")
+    .trim();
+
+  if (/item with this name already exists/i.test(cleanedMessage)) {
+    return "An item with this name already exists";
+  }
+
+  return cleanedMessage || "Unable to create item";
+}
+
 function getShortcutLabel(
   action: "cut" | "copy" | "paste" | "delete",
   platform: "windows" | "mac" | "linux",
@@ -147,6 +181,75 @@ function cx(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(" ");
 }
 
+function isContextMenuEnabled(
+  options: FileTreeContextMenuOptions | undefined,
+): boolean {
+  return options?.enabled !== false;
+}
+
+function isContextMenuActionVisible(
+  options: FileTreeContextMenuOptions | undefined,
+  actionId: FileTreeContextMenuActionId,
+): boolean {
+  if (!isContextMenuEnabled(options)) {
+    return false;
+  }
+
+  return options?.actions?.[actionId] !== false;
+}
+
+function compactContextMenuGroups(
+  groups: Array<Array<FileTreeContextMenuActionItem | null>>,
+): FileTreeContextMenuActionItem[][] {
+  return groups
+    .map((group) =>
+      group.filter(
+        (item): item is FileTreeContextMenuActionItem => item !== null,
+      ),
+    )
+    .filter((group) => group.length > 0);
+}
+
+function renderDefaultContextMenu({
+  groups,
+  scope,
+  closeMenu,
+}: FileTreeContextMenuRenderProps): React.ReactNode {
+  return (
+    <div className="sft-context-menu" data-scope={scope}>
+      {groups.map((group, groupIndex) => (
+        <React.Fragment key={`group-${groupIndex}`}>
+          {group.map((item) => (
+            <div
+              key={item.id}
+              className={cx(
+                "sft-context-menu-item",
+                item.disabled && "sft-disabled",
+                item.danger && "sft-danger",
+              )}
+              onClick={() => {
+                if (item.disabled) {
+                  return;
+                }
+                closeMenu();
+                void item.onSelect();
+              }}
+            >
+              <span>{item.label}</span>
+              {item.shortcut ? (
+                <span className="sft-context-menu-shortcut">{item.shortcut}</span>
+              ) : null}
+            </div>
+          ))}
+          {groupIndex < groups.length - 1 ? (
+            <div className="sft-context-menu-separator" />
+          ) : null}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
 function resolveExtension(node: FileTreeNode): string {
   if (node.extension) {
     return node.extension.toLowerCase();
@@ -162,16 +265,50 @@ function resolveExtension(node: FileTreeNode): string {
   return name.slice(lastDot + 1);
 }
 
+function isEnvLikeFileName(name: string): boolean {
+  return (
+    name === ".env" ||
+    name.startsWith(".env.") ||
+    name.endsWith(".env") ||
+    name.includes(".env.")
+  );
+}
+
+function isGitRelatedFileName(name: string): boolean {
+  return (
+    name === ".gitignore" ||
+    name === ".gitattributes" ||
+    name === ".gitmodules" ||
+    name === ".gitkeep" ||
+    name.startsWith(".git")
+  );
+}
+
 function renderDefaultIcon(node: FileTreeNode) {
   if (node.type === "directory") {
     return <Folder size={14} color="var(--sft-accent, var(--accent, #3b82f6))" />;
   }
 
-  switch (resolveExtension(node)) {
+  const name = node.name.toLowerCase();
+  const extension = resolveExtension(node);
+
+  if (isGitRelatedFileName(name)) {
+    return <GitBranch size={14} color="#f97316" />;
+  }
+
+  if (isEnvLikeFileName(name)) {
+    return <ShieldAlert size={14} color="#eab308" />;
+  }
+
+  switch (extension) {
     case "js":
     case "jsx":
+    case "mjs":
+    case "cjs":
     case "ts":
     case "tsx":
+    case "mts":
+    case "cts":
       return <Braces size={14} color="#eab308" />;
     case "json":
       return <FileJson size={14} color="#22c55e" />;
@@ -182,6 +319,8 @@ function renderDefaultIcon(node: FileTreeNode) {
     case "less":
       return <Palette size={14} color="var(--sft-accent, var(--accent, #3b82f6))" />;
     case "md":
+    case "markdown":
+    case "mdx":
       return <FileText size={14} color="#a1a1aa" />;
     case "png":
     case "jpg":
@@ -198,8 +337,6 @@ function renderDefaultIcon(node: FileTreeNode) {
       return <FileCode2 size={14} color="#7b7fb5" />;
     case "sql":
       return <Database size={14} color="#f97316" />;
-    case "env":
-      return <ShieldAlert size={14} color="#eab308" />;
     default:
       return <File size={14} color="var(--sft-text-muted, var(--text-muted, #71717a))" />;
   }
@@ -227,7 +364,91 @@ function getPortalTarget(portalContainer?: Element | null): Element | null {
     return null;
   }
 
-  return document.body;
+  return document.getElementById("root") ?? document.body;
+}
+
+function isWithinTreeNode(target: EventTarget | null): boolean {
+  return target instanceof Element && !!target.closest(".sft-tree-node-wrapper");
+}
+
+function toCssLength(value: string | number | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return typeof value === "number" ? `${value}px` : value;
+}
+
+function applyCssVar(
+  target: React.CSSProperties & Record<string, string | number>,
+  name: string,
+  value: string | undefined,
+): void {
+  if (value !== undefined) {
+    target[name] = value;
+  }
+}
+
+function resolveThemeStyle(theme: FileTreeTheme | undefined): React.CSSProperties {
+  const cssVars: React.CSSProperties & Record<string, string | number> = {};
+
+  if (!theme) {
+    return cssVars;
+  }
+
+  applyCssVar(cssVars, "--sft-bg-primary", theme.backgroundPrimary);
+  applyCssVar(cssVars, "--sft-bg-secondary", theme.backgroundSecondary);
+  applyCssVar(cssVars, "--sft-bg-hover", theme.backgroundHover);
+  applyCssVar(cssVars, "--sft-text-primary", theme.textPrimary);
+  applyCssVar(cssVars, "--sft-text-secondary", theme.textSecondary);
+  applyCssVar(cssVars, "--sft-text-muted", theme.textMuted);
+  applyCssVar(cssVars, "--sft-accent", theme.accent);
+  applyCssVar(cssVars, "--sft-accent-transparent", theme.accentTransparent);
+  applyCssVar(cssVars, "--sft-danger", theme.danger);
+  applyCssVar(cssVars, "--sft-menu-bg", theme.menuBackground);
+  applyCssVar(cssVars, "--sft-menu-border", theme.menuBorder);
+  applyCssVar(cssVars, "--sft-menu-hover", theme.menuHover);
+  applyCssVar(cssVars, "--sft-menu-text", theme.menuText);
+  applyCssVar(cssVars, "--sft-sidebar-border", theme.sidebarBorder);
+  applyCssVar(
+    cssVars,
+    "--sft-open-folder-btn-bg",
+    theme.openFolderButtonBackground,
+  );
+  applyCssVar(
+    cssVars,
+    "--sft-open-folder-btn-bg-hover",
+    theme.openFolderButtonBackgroundHover,
+  );
+  applyCssVar(
+    cssVars,
+    "--sft-open-folder-btn-text",
+    theme.openFolderButtonText,
+  );
+  applyCssVar(
+    cssVars,
+    "--sft-open-folder-btn-border",
+    theme.openFolderButtonBorder,
+  );
+  applyCssVar(cssVars, "--sft-font-family", theme.fontFamily);
+  applyCssVar(cssVars, "--sft-font-family-windows", theme.fontFamilyWindows);
+  applyCssVar(
+    cssVars,
+    "--sft-panel-top-padding",
+    toCssLength(theme.panelTopPadding),
+  );
+  applyCssVar(
+    cssVars,
+    "--sft-header-title-offset-y",
+    toCssLength(theme.headerTitleOffsetY),
+  );
+  applyCssVar(
+    cssVars,
+    "--sft-header-actions-offset-y",
+    toCssLength(theme.headerActionsOffsetY),
+  );
+
+  return cssVars;
 }
 
 interface CreatingItem {
@@ -242,7 +463,7 @@ interface InlineCreateInputProps {
   indentPx: number;
   labels: FileTreeLabels;
   monacoSelector: string;
-  onSubmit: (name: string) => void;
+  onSubmit: (name: string) => Promise<void> | void;
   onCancel: () => void;
 }
 
@@ -257,6 +478,7 @@ function InlineCreateInput({
   onCancel,
 }: InlineCreateInputProps) {
   const [value, setValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const submittedRef = useRef(false);
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -289,7 +511,7 @@ function InlineCreateInput({
           clearTimeout(blurTimeoutRef.current);
           blurTimeoutRef.current = null;
         }
-        handleSubmit();
+        void handleSubmit();
       },
       onCancel: () => {
         if (blurTimeoutRef.current) {
@@ -313,7 +535,7 @@ function InlineCreateInput({
     };
   }, []);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (submittedRef.current) {
       return;
     }
@@ -325,7 +547,15 @@ function InlineCreateInput({
     }
 
     submittedRef.current = true;
-    onSubmitRef.current(trimmedValue);
+    setErrorMessage(null);
+
+    try {
+      await onSubmitRef.current(trimmedValue);
+    } catch (error) {
+      submittedRef.current = false;
+      setErrorMessage(getInlineCreateErrorMessage(error));
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
   }, [value]);
 
   const handleBlur = useCallback(
@@ -350,7 +580,7 @@ function InlineCreateInput({
           return;
         }
 
-        handleSubmit();
+        void handleSubmit();
       }, 300);
     },
     [handleSubmit, monacoSelector],
@@ -382,22 +612,37 @@ function InlineCreateInput({
           <File size={14} />
         )}
       </span>
-      <input
-        ref={inputRef}
-        className={FILE_TREE_INLINE_CREATE_INPUT_CLASS}
-        title={type === "folder" ? labels.newFolder : labels.newFile}
-        value={value}
-        placeholder={
-          type === "folder"
-            ? labels.createFolderPlaceholder
-            : labels.createFilePlaceholder
-        }
-        onChange={(event) => setValue(event.target.value)}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        onClick={(event) => event.stopPropagation()}
-        onMouseDown={(event) => event.stopPropagation()}
-      />
+      <div className="sft-inline-create-field">
+        <input
+          ref={inputRef}
+          className={`${FILE_TREE_INLINE_CREATE_INPUT_CLASS}${
+            errorMessage ? " sft-inline-create-input-error" : ""
+          }`}
+          title={type === "folder" ? labels.newFolder : labels.newFile}
+          value={value}
+          placeholder={
+            type === "folder"
+              ? labels.createFolderPlaceholder
+              : labels.createFilePlaceholder
+          }
+          onChange={(event) => {
+            setValue(event.target.value);
+            if (errorMessage) {
+              setErrorMessage(null);
+            }
+          }}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          onClick={(event) => event.stopPropagation()}
+          onMouseDown={(event) => event.stopPropagation()}
+          aria-invalid={errorMessage ? true : undefined}
+        />
+        {errorMessage ? (
+          <span className="sft-inline-create-error" role="alert">
+            {errorMessage}
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -407,6 +652,7 @@ interface FileTreeNodeProps {
   node: FileTreeNode;
   depth: number;
   indentPx: number;
+  hasDirectoriesAtLevel: boolean;
   platform: "windows" | "mac" | "linux";
   labels: FileTreeLabels;
   activeFilePath: string | null | undefined;
@@ -426,6 +672,7 @@ interface FileTreeNodeProps {
   refreshTrigger?: number;
   renderIcon?: (node: FileTreeNode) => React.ReactNode;
   clipboardSnapshot: FileTreeClipboardItem | null;
+  contextMenuOptions?: FileTreeContextMenuOptions;
   monacoSelector: string;
   portalContainer?: Element | null;
   reportError: (details: FileTreeError) => void;
@@ -436,6 +683,7 @@ function FileTreeNodeComponent({
   node,
   depth,
   indentPx,
+  hasDirectoriesAtLevel,
   platform,
   labels,
   activeFilePath,
@@ -455,6 +703,7 @@ function FileTreeNodeComponent({
   refreshTrigger,
   renderIcon,
   clipboardSnapshot,
+  contextMenuOptions,
   monacoSelector,
   portalContainer,
   reportError,
@@ -481,6 +730,22 @@ function FileTreeNodeComponent({
   const isCut =
     clipboardSnapshot?.action === "cut" &&
     isSamePath(clipboardSnapshot.path, node.path);
+  const canOpenNodeContextMenu =
+    isContextMenuEnabled(contextMenuOptions) &&
+    [
+      "new-file",
+      "new-folder",
+      "cut",
+      "copy",
+      "paste",
+      "rename",
+      "delete",
+    ].some((actionId) =>
+      isContextMenuActionVisible(
+        contextMenuOptions,
+        actionId as FileTreeContextMenuActionId,
+      ),
+    );
 
   const loadChildren = useCallback(async () => {
     if (node.type !== "directory") {
@@ -609,11 +874,48 @@ function FileTreeNodeComponent({
 
   const closeContextMenu = () => setContextMenu(null);
 
+  const openContextMenu = (x: number, y: number) => {
+    if (!canOpenNodeContextMenu) {
+      return;
+    }
+
+    document.dispatchEvent(new CustomEvent(CLOSE_CONTEXT_MENUS_EVENT));
+    setContextMenu({ x, y });
+  };
+
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    document.dispatchEvent(new CustomEvent(CLOSE_CONTEXT_MENUS_EVENT));
-    setContextMenu({ x: event.clientX, y: event.clientY });
+    openContextMenu(event.clientX, event.clientY);
+  };
+
+  const handleMouseDown = (event: React.MouseEvent) => {
+    if (event.button !== 2) {
+      return;
+    }
+
+    onSelectNode({ path: node.path, type: node.type });
+
+    if (canOpenNodeContextMenu) {
+      handleContextMenu(event);
+    }
+  };
+
+  const handleMouseDownCapture = (event: React.MouseEvent) => {
+    if (event.button !== 2) {
+      return;
+    }
+
+    event.stopPropagation();
+  };
+
+  const handleContextMenuCapture = (event: React.MouseEvent) => {
+    if (!canOpenNodeContextMenu) {
+      return;
+    }
+
+    onSelectNode({ path: node.path, type: node.type });
+    handleContextMenu(event);
   };
 
   const handleNewFile = () => {
@@ -638,18 +940,21 @@ function FileTreeNodeComponent({
     const parentPath = normalizePath(creatingItem.parentPath);
     const fullPath = joinTreePath(parentPath, name);
     const itemType = creatingItem.type;
-    onSetCreating(null);
 
     try {
       if (itemType === "file") {
-        await fs.createFile(fullPath);
+        const createdPath = await fs.createFile(fullPath);
+        const actualPath = createdPath ? normalizePath(createdPath) : fullPath;
         await loadChildren();
-        onFileCreated?.(fullPath, name);
-        onFileOpened?.(fullPath, name, false);
+        onSetCreating(null);
+        onFileCreated?.(actualPath, getBaseName(actualPath));
+        onFileOpened?.(actualPath, getBaseName(actualPath), false);
       } else {
-        await fs.createFolder(fullPath);
+        const createdPath = await fs.createFolder(fullPath);
+        const actualPath = createdPath ? normalizePath(createdPath) : fullPath;
         await loadChildren();
-        onFolderCreated?.(fullPath);
+        onSetCreating(null);
+        onFolderCreated?.(actualPath);
       }
     } catch (error) {
       reportError({
@@ -659,6 +964,7 @@ function FileTreeNodeComponent({
         targetPath: fullPath,
       });
       await loadChildren().catch(() => undefined);
+      throw error;
     }
   };
 
@@ -1050,6 +1356,75 @@ function FileTreeNodeComponent({
     [monacoSelector, newName, node.name, node.path],
   );
 
+  const nodeContextMenuGroups = contextMenu
+    ? compactContextMenuGroups([
+        [
+          isContextMenuActionVisible(contextMenuOptions, "new-file")
+            ? {
+                id: "new-file",
+                label: labels.newFile,
+                onSelect: handleNewFile,
+              }
+            : null,
+          isContextMenuActionVisible(contextMenuOptions, "new-folder")
+            ? {
+                id: "new-folder",
+                label: labels.newFolder,
+                onSelect: handleNewFolder,
+              }
+            : null,
+        ],
+        [
+          isContextMenuActionVisible(contextMenuOptions, "cut")
+            ? {
+                id: "cut",
+                label: labels.cut,
+                shortcut: getShortcutLabel("cut", platform),
+                onSelect: () => handleCut(),
+              }
+            : null,
+          isContextMenuActionVisible(contextMenuOptions, "copy")
+            ? {
+                id: "copy",
+                label: labels.copy,
+                shortcut: getShortcutLabel("copy", platform),
+                onSelect: () => handleCopy(),
+              }
+            : null,
+          isContextMenuActionVisible(contextMenuOptions, "paste")
+            ? {
+                id: "paste",
+                label: labels.paste,
+                shortcut: getShortcutLabel("paste", platform),
+                disabled: !clipboardSnapshot,
+                onSelect: () => handlePaste(),
+              }
+            : null,
+        ],
+        [
+          isContextMenuActionVisible(contextMenuOptions, "rename")
+            ? {
+                id: "rename",
+                label: labels.rename,
+                shortcut: "F2",
+                onSelect: startRename,
+              }
+            : null,
+        ],
+        [
+          isContextMenuActionVisible(contextMenuOptions, "delete")
+            ? {
+                id: "delete",
+                label: labels.delete,
+                shortcut: getShortcutLabel("delete", platform),
+                danger: true,
+                onSelect: handleDeleteMenuClick,
+              }
+            : null,
+        ],
+      ])
+    : [];
+
   const isSelected = selectedNode ? isSamePath(selectedNode.path, node.path) : false;
   const isSelectedFile = isSelected && node.type === "file";
   const isSelectedFolder = isSelected && node.type === "directory";
@@ -1136,6 +1511,8 @@ function FileTreeNodeComponent({
           }
         }}
         tabIndex={0}
+        onMouseDownCapture={handleMouseDownCapture}
+        onContextMenuCapture={handleContextMenuCapture}
         onClick={(event) => {
           event.stopPropagation();
           (event.currentTarget as HTMLElement).focus();
@@ -1146,12 +1523,9 @@ function FileTreeNodeComponent({
             void toggleExpanded();
           }
         }}
-        onContextMenu={(event) => {
-          onSelectNode({ path: node.path, type: node.type });
-          handleContextMenu(event);
-        }}
+        onMouseDown={handleMouseDown}
       >
-        {hasChildFolders || node.type === "directory" ? (
+        {hasDirectoriesAtLevel || node.type === "directory" ? (
           node.type === "directory" ? (
             <span className="sft-expand-icon">
               {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
@@ -1189,65 +1563,33 @@ function FileTreeNodeComponent({
         )}
       </div>
 
-      {contextMenu && portalTarget
+      {contextMenu && portalTarget && nodeContextMenuGroups.length > 0
         ? createPortal(
             <div
-              className="sft-context-menu"
+              className="sft-context-menu-layer"
               style={{ top: contextMenu.y, left: contextMenu.x }}
             >
-              <div className="sft-context-menu-item" onClick={handleNewFile}>
-                <span>{labels.newFile}</span>
-              </div>
-              <div className="sft-context-menu-item" onClick={handleNewFolder}>
-                <span>{labels.newFolder}</span>
-              </div>
-              <div className="sft-context-menu-separator" />
-              <div className="sft-context-menu-item" onClick={handleCut}>
-                <span>{labels.cut}</span>
-                <span className="sft-context-menu-shortcut">
-                  {getShortcutLabel("cut", platform)}
-                </span>
-              </div>
-              <div className="sft-context-menu-item" onClick={handleCopy}>
-                <span>{labels.copy}</span>
-                <span className="sft-context-menu-shortcut">
-                  {getShortcutLabel("copy", platform)}
-                </span>
-              </div>
-              <div
-                className={cx(
-                  "sft-context-menu-item",
-                  !clipboardSnapshot && "sft-disabled",
-                )}
-                onClick={(event) => {
-                  if (!clipboardSnapshot) {
-                    return;
-                  }
-                  void handlePaste(event);
-                }}
-              >
-                <span>{labels.paste}</span>
-                <span className="sft-context-menu-shortcut">
-                  {getShortcutLabel("paste", platform)}
-                </span>
-              </div>
-              <div className="sft-context-menu-separator" />
-              <div className="sft-context-menu-item" onClick={startRename}>
-                <span>{labels.rename}</span>
-                <span className="sft-context-menu-shortcut">F2</span>
-              </div>
-              <div className="sft-context-menu-separator" />
-              <div
-                className="sft-context-menu-item sft-danger"
-                onClick={() => {
-                  void handleDeleteMenuClick();
-                }}
-              >
-                <span>{labels.delete}</span>
-                <span className="sft-context-menu-shortcut">
-                  {getShortcutLabel("delete", platform)}
-                </span>
-              </div>
+              {contextMenuOptions?.renderMenu
+                ? contextMenuOptions.renderMenu({
+                    scope: "node",
+                    node,
+                    position: contextMenu,
+                    groups: nodeContextMenuGroups,
+                    closeMenu: closeContextMenu,
+                    clipboard: clipboardSnapshot,
+                    labels,
+                    platform,
+                  })
+                : renderDefaultContextMenu({
+                    scope: "node",
+                    node,
+                    position: contextMenu,
+                    groups: nodeContextMenuGroups,
+                    closeMenu: closeContextMenu,
+                    clipboard: clipboardSnapshot,
+                    labels,
+                    platform,
+                  })}
             </div>,
             portalTarget,
           )
@@ -1282,6 +1624,7 @@ function FileTreeNodeComponent({
                 node={child}
                 depth={depth + 1}
                 indentPx={indentPx}
+                hasDirectoriesAtLevel={hasChildFolders}
                 platform={platform}
                 labels={labels}
                 activeFilePath={activeFilePath}
@@ -1327,6 +1670,7 @@ function FileTreeNodeComponent({
                 node={child}
                 depth={depth + 1}
                 indentPx={indentPx}
+                hasDirectoriesAtLevel={hasChildFolders}
                 platform={platform}
                 labels={labels}
                 activeFilePath={activeFilePath}
@@ -1375,11 +1719,34 @@ const FileTree = React.memo(function FileTree({
   refreshTrigger,
   className,
   style,
+  width,
+  minWidth,
+  maxWidth,
   headerTitle,
+  showHeader = true,
+  showHeaderActions = true,
+  headerClassName,
+  headerStyle,
+  headerActionsClassName,
+  headerActionsStyle,
+  renderHeader,
+  contentClassName,
+  contentStyle,
+  footer,
+  footerClassName,
+  footerStyle,
+  renderFooter,
   emptyState,
+  renderEmptyState,
+  showOpenFolderButton = true,
+  openFolderButtonPosition = "top",
+  renderOpenFolderButton,
   renderIcon,
   labels,
   platform = "auto",
+  sidebarPosition = "left",
+  theme,
+  contextMenu: contextMenuOptions,
   portalContainer,
   enableUndoHotkeys = true,
   monacoSelector = ".monaco-editor",
@@ -1399,6 +1766,21 @@ const FileTree = React.memo(function FileTree({
   const indentPx = resolvedPlatform === "windows" ? 16 : 28;
   const resolvedLabels = { ...defaultFileTreeLabels, ...labels };
   const portalTarget = getPortalTarget(portalContainer);
+  const panelStyle = {
+    ...resolveThemeStyle(theme),
+    width,
+    minWidth,
+    maxWidth,
+    ...style,
+  };
+  const canOpenRootContextMenu =
+    isContextMenuEnabled(contextMenuOptions) &&
+    ["new-file", "new-folder", "paste"].some((actionId) =>
+      isContextMenuActionVisible(
+        contextMenuOptions,
+        actionId as FileTreeContextMenuActionId,
+      ),
+    );
 
   const reportError = useCallback(
     (details: FileTreeError) => {
@@ -1529,6 +1911,16 @@ const FileTree = React.memo(function FileTree({
     setCreatingItem(item);
   };
 
+  const openRootContextMenu = (x: number, y: number) => {
+    if (!workspaceRoot) {
+      return;
+    }
+
+    document.dispatchEvent(new CustomEvent(CLOSE_CONTEXT_MENUS_EVENT));
+    setContextMenu({ x, y });
+    setSelectedNode({ path: workspaceRoot, type: "directory" });
+  };
+
   const handleRootPaste = async () => {
     setContextMenu(null);
 
@@ -1647,312 +2039,497 @@ const FileTree = React.memo(function FileTree({
   const hasRootFolders = rootNodes.some((node) => node.type === "directory");
   const resolvedHeaderTitle =
     headerTitle || (workspaceRoot ? getBaseName(workspaceRoot) : resolvedLabels.explorer);
-
-  if (!workspaceRoot) {
-    return (
-      <div
+  const openFolderButtonProps: FileTreeOpenFolderButtonRenderProps = {
+    label: resolvedLabels.openFolder,
+    onClick: onOpenFolder,
+    disabled: !onOpenFolder,
+    className: "sft-open-folder-btn",
+    style: undefined,
+  };
+  const emptyStateProps: FileTreeEmptyStateRenderProps = {
+    labels: resolvedLabels,
+    onOpenFolder,
+    openFolderButton: openFolderButtonProps,
+  };
+  const defaultOpenFolderButton = showOpenFolderButton ? (
+    renderOpenFolderButton ? (
+      renderOpenFolderButton(openFolderButtonProps)
+    ) : (
+      <button
+        type="button"
+        onClick={onOpenFolder}
         className={cx(
-          "sft-file-tree-panel",
-          resolvedPlatform === "windows" && "sft-platform-windows",
-          className,
+          "sft-empty-folder-btn",
+          openFolderButtonProps.className,
         )}
-        style={style}
+        disabled={openFolderButtonProps.disabled}
       >
-        <div className="sft-tree-header">
-          <span className="sft-tree-header-title">{resolvedLabels.explorer}</span>
-          <div className="sft-tree-actions" />
-        </div>
-        {emptyState ? (
-          emptyState
-        ) : (
-          <div className="sft-empty-folder-container">
-            <p className="sft-empty-folder-text">{resolvedLabels.noFolderOpened}</p>
-            {onOpenFolder ? (
-              <div className="sft-empty-folder-actions">
-                <button
-                  type="button"
-                  onClick={onOpenFolder}
-                  className="sft-empty-folder-btn"
-                >
-                  {resolvedLabels.openFolder}
-                </button>
+        {openFolderButtonProps.label}
+      </button>
+    )
+  ) : null;
+  const resolvedEmptyState = renderEmptyState
+    ? renderEmptyState(emptyStateProps)
+    : emptyState
+      ? emptyState
+      : (
+          <div
+            className={cx(
+              "sft-empty-folder-container",
+              openFolderButtonPosition === "top"
+                ? "sft-open-folder-top"
+                : "sft-open-folder-center",
+            )}
+          >
+            {openFolderButtonPosition === "top" && defaultOpenFolderButton ? (
+              <div className="sft-empty-folder-open-slot">{defaultOpenFolderButton}</div>
+            ) : null}
+            <div className="sft-empty-folder-body">
+              <p className="sft-empty-folder-text">{resolvedLabels.noFolderOpened}</p>
+              {openFolderButtonPosition === "center" && defaultOpenFolderButton ? (
+                <div className="sft-empty-folder-actions">
+                  {defaultOpenFolderButton}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        );
+
+  const openCreateFileInput = useCallback(() => {
+    if (!workspaceRoot) {
+      return;
+    }
+
+    setTimeout(() => {
+      setCreatingItem({
+        type: "file",
+        parentPath: getSelectedContainerPath(selectedNode, workspaceRoot),
+      });
+    }, 0);
+  }, [selectedNode, workspaceRoot]);
+
+  const openCreateFolderInput = useCallback(() => {
+    if (!workspaceRoot) {
+      return;
+    }
+
+    setTimeout(() => {
+      setCreatingItem({
+        type: "folder",
+        parentPath: getSelectedContainerPath(selectedNode, workspaceRoot),
+      });
+    }, 0);
+  }, [selectedNode, workspaceRoot]);
+
+  const headerActions: FileTreeHeaderActionRenderProps[] = workspaceRoot
+    ? [
+        {
+          id: "new-file",
+          label: resolvedLabels.newFile,
+          title: resolvedLabels.newFile,
+          className: "sft-tree-action-btn",
+          icon: <FilePlus2 size={18} />,
+          onClick: openCreateFileInput,
+        },
+        {
+          id: "new-folder",
+          label: resolvedLabels.newFolder,
+          title: resolvedLabels.newFolder,
+          className: "sft-tree-action-btn",
+          icon: <FolderPlus size={18} />,
+          onClick: openCreateFolderInput,
+        },
+      ]
+    : [];
+
+  const defaultHeaderActions =
+    showHeaderActions && headerActions.length > 0
+      ? headerActions.map((action) => (
+          <button
+            key={action.id}
+            type="button"
+            className={action.className}
+            title={action.title}
+            onClick={(event) => {
+              event.stopPropagation();
+              action.onClick();
+            }}
+          >
+            {action.icon}
+          </button>
+        ))
+      : null;
+
+  const headerRenderProps: FileTreeHeaderRenderProps = {
+    workspaceRoot,
+    title: resolvedHeaderTitle,
+    labels: resolvedLabels,
+    selection: selectedNode,
+    sidebarPosition,
+    className: cx("sft-tree-header", headerClassName),
+    style: headerStyle,
+    titleClassName: "sft-tree-header-title",
+    actionsClassName: cx("sft-tree-actions", headerActionsClassName),
+    actionsStyle: headerActionsStyle,
+    actions: headerActions,
+    defaultActions: defaultHeaderActions,
+  };
+
+  const footerRenderProps: FileTreeFooterRenderProps = {
+    workspaceRoot,
+    labels: resolvedLabels,
+    selection: selectedNode,
+    sidebarPosition,
+    className: cx("sft-tree-footer", footerClassName),
+    style: footerStyle,
+  };
+
+  const resolvedHeader = showHeader
+    ? renderHeader
+      ? renderHeader(headerRenderProps)
+      : (
+          <div
+            className={headerRenderProps.className}
+            style={headerStyle}
+            title={workspaceRoot ?? resolvedHeaderTitle}
+          >
+            <span className={headerRenderProps.titleClassName}>
+              {headerRenderProps.title}
+            </span>
+            {showHeaderActions ? (
+              <div
+                className={headerRenderProps.actionsClassName}
+                style={headerActionsStyle}
+              >
+                {defaultHeaderActions}
               </div>
             ) : null}
           </div>
-        )}
-      </div>
-    );
-  }
+        )
+    : null;
+
+  const resolvedFooter = renderFooter
+    ? renderFooter(footerRenderProps)
+    : footer
+      ? (
+          <div className={footerRenderProps.className} style={footerStyle}>
+            {footer}
+          </div>
+        )
+      : null;
+
+  const rootContextMenuGroups = contextMenu
+    ? compactContextMenuGroups([
+        [
+          isContextMenuActionVisible(contextMenuOptions, "new-file")
+            ? {
+                id: "new-file",
+                label: resolvedLabels.newFile,
+                onSelect: () => {
+                  setTimeout(
+                    () =>
+                      setCreatingItem({
+                        type: "file",
+                        parentPath: workspaceRoot!,
+                      }),
+                    0,
+                  );
+                  setContextMenu(null);
+                },
+              }
+            : null,
+          isContextMenuActionVisible(contextMenuOptions, "new-folder")
+            ? {
+                id: "new-folder",
+                label: resolvedLabels.newFolder,
+                onSelect: () => {
+                  setTimeout(
+                    () =>
+                      setCreatingItem({
+                        type: "folder",
+                        parentPath: workspaceRoot!,
+                      }),
+                    0,
+                  );
+                  setContextMenu(null);
+                },
+              }
+            : null,
+        ],
+        [
+          isContextMenuActionVisible(contextMenuOptions, "paste")
+            ? {
+                id: "paste",
+                label: resolvedLabels.paste,
+                shortcut: getShortcutLabel("paste", resolvedPlatform),
+                disabled: !clipboardSnapshot,
+                onSelect: handleRootPaste,
+              }
+            : null,
+        ],
+      ])
+    : [];
 
   return (
     <div
       className={cx(
         "sft-file-tree-panel",
+        sidebarPosition === "right" ? "sft-sidebar-right" : "sft-sidebar-left",
         resolvedPlatform === "windows" && "sft-platform-windows",
         className,
       )}
-      style={style}
-      onClick={() => setSelectedNode({ path: workspaceRoot, type: "directory" })}
-      onDragEnter={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-      }}
-      onDragOver={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        event.dataTransfer.dropEffect = "move";
-      }}
-      onDrop={(event) => {
-        void handleRootDrop(event);
-      }}
-      tabIndex={0}
+      style={panelStyle}
+      onClick={
+        workspaceRoot ? () => setSelectedNode({ path: workspaceRoot, type: "directory" }) : undefined
+      }
+      onDragEnter={
+        workspaceRoot
+          ? (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+          : undefined
+      }
+      onDragOver={
+        workspaceRoot
+          ? (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              event.dataTransfer.dropEffect = "move";
+            }
+          : undefined
+      }
+      onDrop={
+        workspaceRoot
+          ? (event) => {
+              void handleRootDrop(event);
+            }
+          : undefined
+      }
+      tabIndex={workspaceRoot ? 0 : undefined}
       onKeyDown={(event) => {
+        if (!workspaceRoot) {
+          return;
+        }
         if (event.key.toLowerCase() === "v" && (event.metaKey || event.ctrlKey)) {
-          if ((event.target as HTMLElement).closest(".sft-tree-node")) {
+          if (isWithinTreeNode(event.target)) {
             return;
           }
           event.preventDefault();
           void handleRootPaste();
         }
       }}
+      onMouseDown={(event) => {
+        if (!workspaceRoot) {
+          return;
+        }
+        if (event.button !== 2) {
+          return;
+        }
+
+        if (isWithinTreeNode(event.target)) {
+          return;
+        }
+
+        if (!canOpenRootContextMenu) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        openRootContextMenu(event.clientX, event.clientY);
+      }}
       onContextMenu={(event) => {
-        if ((event.target as HTMLElement).closest(".sft-tree-node")) {
+        if (!workspaceRoot) {
+          return;
+        }
+        if (isWithinTreeNode(event.target)) {
+          return;
+        }
+        if (!canOpenRootContextMenu) {
           return;
         }
         event.preventDefault();
         event.stopPropagation();
-        document.dispatchEvent(new CustomEvent(CLOSE_CONTEXT_MENUS_EVENT));
-        setContextMenu({ x: event.clientX, y: event.clientY });
-        setSelectedNode({ path: workspaceRoot, type: "directory" });
+        openRootContextMenu(event.clientX, event.clientY);
       }}
     >
-      <div className="sft-tree-header" title={workspaceRoot}>
-        <span className="sft-tree-header-title">{resolvedHeaderTitle}</span>
-        <div className="sft-tree-actions">
-          <button
-            type="button"
-            className="sft-tree-action-btn"
-            title={resolvedLabels.newFile}
-            onClick={(event) => {
-              event.stopPropagation();
-              setTimeout(() => {
-                setCreatingItem({
-                  type: "file",
-                  parentPath: getSelectedContainerPath(selectedNode, workspaceRoot),
-                });
-              }, 0);
-            }}
-          >
-            <FilePlus2 size={18} />
-          </button>
-          <button
-            type="button"
-            className="sft-tree-action-btn"
-            title={resolvedLabels.newFolder}
-            onClick={(event) => {
-              event.stopPropagation();
-              setTimeout(() => {
-                setCreatingItem({
-                  type: "folder",
-                  parentPath: getSelectedContainerPath(selectedNode, workspaceRoot),
-                });
-              }, 0);
-            }}
-          >
-            <FolderPlus size={18} />
-          </button>
-        </div>
+      {resolvedHeader}
+
+      <div className={cx("sft-tree-content", contentClassName)} style={contentStyle}>
+        {!workspaceRoot
+          ? resolvedEmptyState
+          : (
+              <>
+                {creatingItem &&
+                isSamePath(creatingItem.parentPath, workspaceRoot) &&
+                creatingItem.type === "folder" ? (
+                  <InlineCreateInput
+                    type={creatingItem.type}
+                    depth={0}
+                    hasFolders={hasRootFolders}
+                    indentPx={indentPx}
+                    labels={resolvedLabels}
+                    monacoSelector={monacoSelector}
+                    onSubmit={async (name) => {
+                      const fullPath = joinTreePath(normalizePath(workspaceRoot), name);
+
+                      try {
+                        const createdPath = await fs.createFolder(fullPath);
+                        const actualPath = createdPath ? normalizePath(createdPath) : fullPath;
+                        await loadRoot();
+                        setCreatingItem(null);
+                        onFolderCreated?.(actualPath);
+                      } catch (error) {
+                        reportError({
+                          action: "create-folder",
+                          error,
+                          targetPath: fullPath,
+                        });
+                        await loadRoot();
+                        throw error;
+                      }
+                    }}
+                    onCancel={() => setCreatingItem(null)}
+                  />
+                ) : null}
+
+                {rootNodes
+                  .filter((node) => node.type === "directory")
+                  .map((node) => (
+                    <FileTreeNodeComponent
+                      key={node.path}
+                      fs={fs}
+                      node={node}
+                      depth={0}
+                      indentPx={indentPx}
+                      hasDirectoriesAtLevel={hasRootFolders}
+                      platform={resolvedPlatform}
+                      labels={resolvedLabels}
+                      activeFilePath={activeFilePath}
+                      onFileClick={onFileClick}
+                      onRefresh={loadRoot}
+                      creatingItem={creatingItem}
+                      onSetCreating={handleSetCreating}
+                      selectedNode={selectedNode}
+                      onSelectNode={setSelectedNode}
+                      onFileOpened={onFileOpened}
+                      onFileDeleted={onFileDeleted}
+                      onFileRenamed={onFileRenamed}
+                      onFileCreated={onFileCreated}
+                      onFolderCreated={onFolderCreated}
+                      onFileCopied={onFileCopied}
+                      onFileMoved={onFileMoved}
+                      refreshTrigger={refreshTrigger}
+                      renderIcon={renderIcon}
+                      clipboardSnapshot={clipboardSnapshot}
+                      contextMenuOptions={contextMenuOptions}
+                      monacoSelector={monacoSelector}
+                      portalContainer={portalContainer}
+                      reportError={reportError}
+                    />
+                  ))}
+
+                {creatingItem &&
+                isSamePath(creatingItem.parentPath, workspaceRoot) &&
+                creatingItem.type === "file" ? (
+                  <InlineCreateInput
+                    type={creatingItem.type}
+                    depth={0}
+                    hasFolders={hasRootFolders}
+                    indentPx={indentPx}
+                    labels={resolvedLabels}
+                    monacoSelector={monacoSelector}
+                    onSubmit={async (name) => {
+                      const fullPath = joinTreePath(normalizePath(workspaceRoot), name);
+
+                      try {
+                        const createdPath = await fs.createFile(fullPath);
+                        const actualPath = createdPath ? normalizePath(createdPath) : fullPath;
+                        await loadRoot();
+                        setCreatingItem(null);
+                        onFileCreated?.(actualPath, getBaseName(actualPath));
+                        onFileOpened?.(actualPath, getBaseName(actualPath), false);
+                      } catch (error) {
+                        reportError({
+                          action: "create-file",
+                          error,
+                          targetPath: fullPath,
+                        });
+                        await loadRoot();
+                        throw error;
+                      }
+                    }}
+                    onCancel={() => setCreatingItem(null)}
+                  />
+                ) : null}
+
+                {rootNodes
+                  .filter((node) => node.type !== "directory")
+                  .map((node) => (
+                    <FileTreeNodeComponent
+                      key={node.path}
+                      fs={fs}
+                      node={node}
+                      depth={0}
+                      indentPx={indentPx}
+                      hasDirectoriesAtLevel={hasRootFolders}
+                      platform={resolvedPlatform}
+                      labels={resolvedLabels}
+                      activeFilePath={activeFilePath}
+                      onFileClick={onFileClick}
+                      onRefresh={loadRoot}
+                      creatingItem={creatingItem}
+                      onSetCreating={handleSetCreating}
+                      selectedNode={selectedNode}
+                      onSelectNode={setSelectedNode}
+                      onFileOpened={onFileOpened}
+                      onFileDeleted={onFileDeleted}
+                      onFileRenamed={onFileRenamed}
+                      onFileCreated={onFileCreated}
+                      onFolderCreated={onFolderCreated}
+                      onFileCopied={onFileCopied}
+                      onFileMoved={onFileMoved}
+                      refreshTrigger={refreshTrigger}
+                      renderIcon={renderIcon}
+                      clipboardSnapshot={clipboardSnapshot}
+                      contextMenuOptions={contextMenuOptions}
+                      monacoSelector={monacoSelector}
+                      portalContainer={portalContainer}
+                      reportError={reportError}
+                    />
+                  ))}
+              </>
+            )}
       </div>
 
-      <div className="sft-tree-content">
-        {creatingItem &&
-        isSamePath(creatingItem.parentPath, workspaceRoot) &&
-        creatingItem.type === "folder" ? (
-          <InlineCreateInput
-            type={creatingItem.type}
-            depth={0}
-            hasFolders={hasRootFolders}
-            indentPx={indentPx}
-            labels={resolvedLabels}
-            monacoSelector={monacoSelector}
-            onSubmit={async (name) => {
-              const fullPath = joinTreePath(normalizePath(workspaceRoot), name);
-              setCreatingItem(null);
+      {resolvedFooter}
 
-              try {
-                await fs.createFolder(fullPath);
-                await loadRoot();
-                onFolderCreated?.(fullPath);
-              } catch (error) {
-                reportError({
-                  action: "create-folder",
-                  error,
-                  targetPath: fullPath,
-                });
-                await loadRoot();
-              }
-            }}
-            onCancel={() => setCreatingItem(null)}
-          />
-        ) : null}
-
-        {rootNodes
-          .filter((node) => node.type === "directory")
-          .map((node) => (
-            <FileTreeNodeComponent
-              key={node.path}
-              fs={fs}
-              node={node}
-              depth={0}
-              indentPx={indentPx}
-              platform={resolvedPlatform}
-              labels={resolvedLabels}
-              activeFilePath={activeFilePath}
-              onFileClick={onFileClick}
-              onRefresh={loadRoot}
-              creatingItem={creatingItem}
-              onSetCreating={handleSetCreating}
-              selectedNode={selectedNode}
-              onSelectNode={setSelectedNode}
-              onFileOpened={onFileOpened}
-              onFileDeleted={onFileDeleted}
-              onFileRenamed={onFileRenamed}
-              onFileCreated={onFileCreated}
-              onFolderCreated={onFolderCreated}
-              onFileCopied={onFileCopied}
-              onFileMoved={onFileMoved}
-              refreshTrigger={refreshTrigger}
-              renderIcon={renderIcon}
-              clipboardSnapshot={clipboardSnapshot}
-              monacoSelector={monacoSelector}
-              portalContainer={portalContainer}
-              reportError={reportError}
-            />
-          ))}
-
-        {creatingItem &&
-        isSamePath(creatingItem.parentPath, workspaceRoot) &&
-        creatingItem.type === "file" ? (
-          <InlineCreateInput
-            type={creatingItem.type}
-            depth={0}
-            hasFolders={hasRootFolders}
-            indentPx={indentPx}
-            labels={resolvedLabels}
-            monacoSelector={monacoSelector}
-            onSubmit={async (name) => {
-              const fullPath = joinTreePath(normalizePath(workspaceRoot), name);
-              setCreatingItem(null);
-
-              try {
-                await fs.createFile(fullPath);
-                await loadRoot();
-                onFileCreated?.(fullPath, name);
-                onFileOpened?.(fullPath, name, false);
-              } catch (error) {
-                reportError({
-                  action: "create-file",
-                  error,
-                  targetPath: fullPath,
-                });
-                await loadRoot();
-              }
-            }}
-            onCancel={() => setCreatingItem(null)}
-          />
-        ) : null}
-
-        {rootNodes
-          .filter((node) => node.type !== "directory")
-          .map((node) => (
-            <FileTreeNodeComponent
-              key={node.path}
-              fs={fs}
-              node={node}
-              depth={0}
-              indentPx={indentPx}
-              platform={resolvedPlatform}
-              labels={resolvedLabels}
-              activeFilePath={activeFilePath}
-              onFileClick={onFileClick}
-              onRefresh={loadRoot}
-              creatingItem={creatingItem}
-              onSetCreating={handleSetCreating}
-              selectedNode={selectedNode}
-              onSelectNode={setSelectedNode}
-              onFileOpened={onFileOpened}
-              onFileDeleted={onFileDeleted}
-              onFileRenamed={onFileRenamed}
-              onFileCreated={onFileCreated}
-              onFolderCreated={onFolderCreated}
-              onFileCopied={onFileCopied}
-              onFileMoved={onFileMoved}
-              refreshTrigger={refreshTrigger}
-              renderIcon={renderIcon}
-              clipboardSnapshot={clipboardSnapshot}
-              monacoSelector={monacoSelector}
-              portalContainer={portalContainer}
-              reportError={reportError}
-            />
-          ))}
-      </div>
-
-      {contextMenu && portalTarget
+      {workspaceRoot && contextMenu && portalTarget && rootContextMenuGroups.length > 0
         ? createPortal(
             <div
-              className="sft-context-menu"
+              className="sft-context-menu-layer"
               style={{ top: contextMenu.y, left: contextMenu.x }}
             >
-              <div
-                className="sft-context-menu-item"
-                onClick={() => {
-                  setTimeout(
-                    () =>
-                      setCreatingItem({
-                        type: "file",
-                        parentPath: workspaceRoot,
-                      }),
-                    0,
-                  );
-                  setContextMenu(null);
-                }}
-              >
-                <span>{resolvedLabels.newFile}</span>
-              </div>
-              <div
-                className="sft-context-menu-item"
-                onClick={() => {
-                  setTimeout(
-                    () =>
-                      setCreatingItem({
-                        type: "folder",
-                        parentPath: workspaceRoot,
-                      }),
-                    0,
-                  );
-                  setContextMenu(null);
-                }}
-              >
-                <span>{resolvedLabels.newFolder}</span>
-              </div>
-              <div className="sft-context-menu-separator" />
-              <div
-                className={cx(
-                  "sft-context-menu-item",
-                  !clipboardSnapshot && "sft-disabled",
-                )}
-                onClick={() => {
-                  if (!clipboardSnapshot) {
-                    return;
-                  }
-                  void handleRootPaste();
-                }}
-              >
-                <span>{resolvedLabels.paste}</span>
-                <span className="sft-context-menu-shortcut">
-                  {getShortcutLabel("paste", resolvedPlatform)}
-                </span>
-              </div>
+              {contextMenuOptions?.renderMenu
+                ? contextMenuOptions.renderMenu({
+                    scope: "root",
+                    position: contextMenu,
+                    groups: rootContextMenuGroups,
+                    closeMenu: () => setContextMenu(null),
+                    clipboard: clipboardSnapshot,
+                    labels: resolvedLabels,
+                    platform: resolvedPlatform,
+                  })
+                : renderDefaultContextMenu({
+                    scope: "root",
+                    position: contextMenu,
+                    groups: rootContextMenuGroups,
+                    closeMenu: () => setContextMenu(null),
+                    clipboard: clipboardSnapshot,
+                    labels: resolvedLabels,
+                    platform: resolvedPlatform,
+                  })}
             </div>,
             portalTarget,
           )
