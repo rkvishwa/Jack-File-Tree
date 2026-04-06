@@ -1,0 +1,82 @@
+name: Draft Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: draft-release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Read package metadata
+        id: package
+        run: |
+          echo "name=$(node -p 'require(\"./package.json\").name')" >> "$GITHUB_OUTPUT"
+          echo "version=$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
+          echo "tag=v$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Check existing release
+        id: release-check
+        uses: actions/github-script@v7
+        env:
+          RELEASE_TAG: ${{ steps.package.outputs.tag }}
+        with:
+          script: |
+            const tag = process.env.RELEASE_TAG;
+
+            try {
+              const { data } = await github.rest.repos.getReleaseByTag({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag,
+              });
+
+              core.setOutput("exists", "true");
+              core.setOutput("draft", String(data.draft));
+              core.setOutput("skip", String(!data.draft));
+            } catch (error) {
+              if (error.status === 404) {
+                core.setOutput("exists", "false");
+                core.setOutput("draft", "false");
+                core.setOutput("skip", "false");
+                return;
+              }
+
+              throw error;
+            }
+
+      - name: Skip already published release
+        if: steps.release-check.outputs.skip == 'true'
+        run: |
+          echo "Release ${{ steps.package.outputs.tag }} is already published."
+          echo "Skipping draft release update."
+
+      - name: Create or update draft release
+        if: steps.release-check.outputs.skip != 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          draft: true
+          generateReleaseNotes: true
+          commit: ${{ github.sha }}
+          name: ${{ steps.package.outputs.tag }}
+          tag: ${{ steps.package.outputs.tag }}
+          body: |
+            Auto-generated draft release for `${{ steps.package.outputs.name }}` `${{ steps.package.outputs.version }}`.
+            Review the generated notes and publish this release when you're ready.
