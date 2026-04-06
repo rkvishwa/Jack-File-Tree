@@ -45,6 +45,11 @@ jobs:
           name: dist
           path: dist/
       
+      - name: Configure npm for public registry
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
+          echo "registry=https://registry.npmjs.org" >> .npmrc
+      
       - name: Publish to npm
         run: npm publish --access public
         env:
@@ -63,13 +68,16 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@knurdz'
+          scope: '@rkvishwa'
       
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
+      
+      - name: Update package name for GitHub Packages
+        run: npm pkg set name="@rkvishwa/jack-file-tree"
       
       - name: Publish to GitHub Packages
         run: npm publish
