@@ -1,5 +1,5 @@
 {
-  "name": "@rkvishwa/jack-file-tree",
+  "name": "@knurdz/jack-file-tree",
   "version": "0.1.0",
   "description": "A feature-rich React file tree component with drag-and-drop, inline editing, Monaco editor support, and filesystem adapter for Electron and web apps",
   "author": "RKK Vishva Kumar <Knurdz>",
@@ -7,9 +7,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rkvishwa/Jack-File-Tree.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "type": "module",
   "main": "./dist/index.cjs",

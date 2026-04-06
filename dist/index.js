@@ -1,8 +1,8 @@
 import { jsxs as C, jsx as c } from "react/jsx-runtime";
-import de, { forwardRef as Qt, createElement as Bt, useState as Z, useCallback as ft, useEffect as v, useRef as J } from "react";
+import de, { forwardRef as Qt, createElement as Bt, useState as Z, useCallback as ft, useEffect as k, useRef as J } from "react";
 import { createPortal as Rt } from "react-dom";
-import { f as Dt, F as we, a as Pe } from "./installFileTreeInputShield-CAwi1K8A.mjs";
-import { i as Na } from "./installFileTreeInputShield-CAwi1K8A.mjs";
+import { f as Dt, F as we, a as Pe } from "./installFileTreeInputShield-CAwi1K8A.js";
+import { i as Na } from "./installFileTreeInputShield-CAwi1K8A.js";
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -107,7 +107,7 @@ const be = Qt(
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const j = (a, t) => {
+const I = (a, t) => {
   const n = Qt(
     ({ className: u, ...T }, l) => Bt(be, {
       ref: l,
@@ -128,7 +128,7 @@ const j = (a, t) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const ve = [
+const ke = [
   [
     "path",
     { d: "M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1", key: "ezmyqa" }
@@ -140,21 +140,21 @@ const ve = [
       key: "e1hn23"
     }
   ]
-], ke = j("braces", ve);
+], ve = I("braces", ke);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Le = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]], Ee = j("chevron-down", Le);
+const Le = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]], Ee = I("chevron-down", Le);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const Ce = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]], _e = j("chevron-right", Ce);
+const Ce = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]], _e = I("chevron-right", Ce);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -165,7 +165,7 @@ const ze = [
   ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
   ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
   ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
-], De = j("code-xml", ze);
+], De = I("code-xml", ze);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -176,14 +176,14 @@ const Ae = [
   ["ellipse", { cx: "12", cy: "5", rx: "9", ry: "3", key: "msslwz" }],
   ["path", { d: "M3 5V19A9 3 0 0 0 21 19V5", key: "1wlel7" }],
   ["path", { d: "M3 12A9 3 0 0 0 21 12", key: "mv7ke4" }]
-], $e = j("database", Ae);
+], $e = I("database", Ae);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const He = [
+const je = [
   [
     "path",
     {
@@ -200,14 +200,14 @@ const He = [
     "path",
     { d: "M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1", key: "mpwhp6" }
   ]
-], Ie = j("file-braces", He);
+], He = I("file-braces", je);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const je = [
+const Ie = [
   [
     "path",
     {
@@ -218,7 +218,7 @@ const je = [
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
   ["path", { d: "m5 16-3 3 3 3", key: "331omg" }],
   ["path", { d: "m9 22 3-3-3-3", key: "lsp7cz" }]
-], Ve = j("file-code-corner", je);
+], Ve = I("file-code-corner", Ie);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -236,7 +236,7 @@ const Be = [
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
   ["circle", { cx: "10", cy: "12", r: "2", key: "737tya" }],
   ["path", { d: "m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22", key: "wt3hpn" }]
-], Me = j("file-image", Be);
+], Me = I("file-image", Be);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -254,7 +254,7 @@ const Ke = [
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
   ["path", { d: "M14 19h6", key: "bvotb8" }],
   ["path", { d: "M17 16v6", key: "18yu1i" }]
-], Oe = j("file-plus-corner", Ke);
+], Oe = I("file-plus-corner", Ke);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -273,7 +273,7 @@ const Ue = [
   ["path", { d: "M10 9H8", key: "b1mrlr" }],
   ["path", { d: "M16 13H8", key: "t4e002" }],
   ["path", { d: "M16 17H8", key: "z1uh3a" }]
-], qe = j("file-text", Ue);
+], qe = I("file-text", Ue);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -289,7 +289,7 @@ const Se = [
     }
   ],
   ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }]
-], te = j("file", Se);
+], te = I("file", Se);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -306,7 +306,7 @@ const Xe = [
       key: "1kt360"
     }
   ]
-], Je = j("folder-plus", Xe);
+], Je = I("folder-plus", Xe);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -321,7 +321,7 @@ const We = [
       key: "1kt360"
     }
   ]
-], ee = j("folder", We);
+], ee = I("folder", We);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -340,7 +340,7 @@ const Ye = [
   ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
   ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
   ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
-], Ze = j("palette", Ye);
+], Ze = I("palette", Ye);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -357,7 +357,7 @@ const Ge = [
   ],
   ["path", { d: "M12 8v4", key: "1got3b" }],
   ["path", { d: "M12 16h.01", key: "1drbdi" }]
-], Qe = j("shield-alert", Ge);
+], Qe = I("shield-alert", Ge);
 /**
  * @license lucide-react v0.577.0 - ISC
  *
@@ -367,7 +367,7 @@ const Ge = [
 const Re = [
   ["path", { d: "M12 19h8", key: "baeox8" }],
   ["path", { d: "m4 17 6-6-6-6", key: "1yngyt" }]
-], Fe = j("terminal", Re);
+], Fe = I("terminal", Re);
 function m(a) {
   return a.replace(/\\/g, "/");
 }
@@ -563,9 +563,9 @@ function la(a) {
     case "jsx":
     case "ts":
     case "tsx":
-      return /* @__PURE__ */ c(ke, { size: 14, color: "#eab308" });
+      return /* @__PURE__ */ c(ve, { size: 14, color: "#eab308" });
     case "json":
-      return /* @__PURE__ */ c(Ie, { size: 14, color: "#22c55e" });
+      return /* @__PURE__ */ c(He, { size: 14, color: "#22c55e" });
     case "html":
       return /* @__PURE__ */ c(De, { size: 14, color: "#ef4444" });
     case "css":
@@ -601,7 +601,7 @@ function Et(a, t) {
 function re(a) {
   return a || (typeof document > "u" ? null : document.body);
 }
-function Ht({
+function jt({
   type: a,
   depth: t,
   hasFolders: n,
@@ -612,7 +612,7 @@ function Ht({
   onCancel: V
 }) {
   const [$, y] = Z(""), P = J(null), _ = J(!1), d = J(null), S = J(Date.now()), h = J(b), x = J(V);
-  h.current = b, x.current = V, v(() => {
+  h.current = b, x.current = V, k(() => {
     const s = P.current;
     s && s.focus();
     const M = requestAnimationFrame(() => {
@@ -620,7 +620,7 @@ function Ht({
       return (G = P.current) == null ? void 0 : G.focus();
     });
     return () => cancelAnimationFrame(M);
-  }, []), v(() => {
+  }, []), k(() => {
     const s = P.current;
     if (s)
       return Dt.set(s, {
@@ -633,7 +633,7 @@ function Ht({
       }), () => {
         Dt.delete(s);
       };
-  }), v(() => () => {
+  }), k(() => () => {
     d.current && clearTimeout(d.current);
   }, []);
   const B = ft(() => {
@@ -692,7 +692,7 @@ function Ht({
     }
   );
 }
-function It({
+function Ht({
   fs: a,
   node: t,
   depth: n,
@@ -720,11 +720,11 @@ function It({
   portalContainer: ct,
   reportError: g
 }) {
-  const [K, st] = Z(!1), [ot, jt] = Z(t.children || []), [H, z] = Z(null), [O, U] = Z(!1), [Q, R] = Z(!1), [nt, vt] = Z(t.name), F = J(null), k = J(null), I = J(null), gt = J(null), D = J(!1), L = J(0), it = J(0), yt = ot.some((e) => e.type === "directory"), kt = re(ct), lt = y && tt(y.parentPath, t.path) && t.type === "directory", Vt = (W == null ? void 0 : W.action) === "cut" && tt(W.path, t.path), r = ft(async () => {
+  const [K, st] = Z(!1), [ot, It] = Z(t.children || []), [j, z] = Z(null), [O, U] = Z(!1), [Q, R] = Z(!1), [nt, kt] = Z(t.name), F = J(null), v = J(null), H = J(null), gt = J(null), D = J(!1), L = J(0), it = J(0), yt = ot.some((e) => e.type === "directory"), vt = re(ct), lt = y && tt(y.parentPath, t.path) && t.type === "directory", Vt = (W == null ? void 0 : W.action) === "cut" && tt(W.path, t.path), r = ft(async () => {
     if (t.type === "directory")
       try {
         const e = await a.readDirectory(t.path);
-        jt(ae(e));
+        It(ae(e));
       } catch (e) {
         g({
           action: "load-children",
@@ -734,14 +734,14 @@ function It({
         });
       }
   }, [a, t, g]);
-  v(() => {
+  k(() => {
     lt && !K && (st(!0), r());
-  }, [K, lt, r]), v(() => {
+  }, [K, lt, r]), k(() => {
     K && typeof M == "number" && M > 0 && r();
-  }, [K, r, M]), v(() => {
-    b !== I.current && (I.current = b ?? null, t.type === "directory" && b && ta(t.path, b) && (K || (st(!0), r())));
-  }, [b, K, r, t.path, t.type]), v(() => {
-    if (H) {
+  }, [K, r, M]), k(() => {
+    b !== H.current && (H.current = b ?? null, t.type === "directory" && b && ta(t.path, b) && (K || (st(!0), r())));
+  }, [b, K, r, t.path, t.type]), k(() => {
+    if (j) {
       const e = (f) => {
         const N = f.target instanceof HTMLElement ? f.target : null;
         N != null && N.closest(".sft-context-menu") || z(null);
@@ -750,21 +750,21 @@ function It({
         window.removeEventListener("mousedown", e), window.removeEventListener("blur", i), document.removeEventListener(Pt, p);
       };
     }
-  }, [H]), v(() => {
+  }, [j]), k(() => {
     if (Q) {
       const e = F.current;
       return e && Dt.set(e, {
         onSubmit: () => {
-          k.current && (clearTimeout(k.current), k.current = null), Jt();
+          v.current && (clearTimeout(v.current), v.current = null), Jt();
         },
         onCancel: () => {
-          k.current && (clearTimeout(k.current), k.current = null), R(!1);
+          v.current && (clearTimeout(v.current), v.current = null), R(!1);
         }
       }), () => {
-        k.current && clearTimeout(k.current), e && Dt.delete(e);
+        v.current && clearTimeout(v.current), e && Dt.delete(e);
       };
     }
-  }, [nt, t.name, t.path, Q]), v(() => {
+  }, [nt, t.name, t.path, Q]), k(() => {
     (_ == null ? void 0 : _.type) === "file" && tt(_.path, t.path) && setTimeout(() => {
       var e;
       (e = gt.current) == null || e.scrollIntoView({
@@ -975,7 +975,7 @@ function It({
         });
       }
   }, Xt = () => {
-    o(), vt(t.name), R(!0), D.current = !1;
+    o(), kt(t.name), R(!0), D.current = !1;
   }, Jt = async () => {
     if (D.current)
       return;
@@ -1004,7 +1004,7 @@ function It({
   }, he = ft(
     (e) => {
       const i = e.relatedTarget, p = dt, f = i && !!i.closest(Y), N = i === document.body || !i;
-      k.current && clearTimeout(k.current), k.current = setTimeout(() => {
+      v.current && clearTimeout(v.current), v.current = setTimeout(() => {
         var A;
         if (document.activeElement !== F.current) {
           if (!p && (f || N)) {
@@ -1084,9 +1084,9 @@ function It({
               className: Pe,
               title: l.rename,
               value: nt,
-              onChange: (e) => vt(e.target.value),
+              onChange: (e) => kt(e.target.value),
               onFocus: (e) => {
-                k.current && (clearTimeout(k.current), k.current = null), e.target.select();
+                v.current && (clearTimeout(v.current), v.current = null), e.target.select();
               },
               onBlur: he,
               onClick: (e) => e.stopPropagation(),
@@ -1096,12 +1096,12 @@ function It({
         ]
       }
     ),
-    H && kt ? Rt(
+    j && vt ? Rt(
       /* @__PURE__ */ C(
         "div",
         {
           className: "sft-context-menu",
-          style: { top: H.y, left: H.x },
+          style: { top: j.y, left: j.x },
           children: [
             /* @__PURE__ */ c("div", { className: "sft-context-menu-item", onClick: ut, children: /* @__PURE__ */ c("span", { children: l.newFile }) }),
             /* @__PURE__ */ c("div", { className: "sft-context-menu-item", onClick: mt, children: /* @__PURE__ */ c("span", { children: l.newFolder }) }),
@@ -1152,7 +1152,7 @@ function It({
           ]
         }
       ),
-      kt
+      vt
     ) : null,
     K && t.type === "directory" ? /* @__PURE__ */ C(
       "div",
@@ -1164,7 +1164,7 @@ function It({
         onDrop: fe,
         children: [
           lt && (y == null ? void 0 : y.type) === "folder" ? /* @__PURE__ */ c(
-            Ht,
+            jt,
             {
               type: y.type,
               depth: n + 1,
@@ -1177,7 +1177,7 @@ function It({
             }
           ) : null,
           ot.filter((e) => e.type === "directory").map((e) => /* @__PURE__ */ c(
-            It,
+            Ht,
             {
               fs: a,
               node: e,
@@ -1209,7 +1209,7 @@ function It({
             e.path
           )),
           lt && (y == null ? void 0 : y.type) === "file" ? /* @__PURE__ */ c(
-            Ht,
+            jt,
             {
               type: y.type,
               depth: n + 1,
@@ -1222,7 +1222,7 @@ function It({
             }
           ) : null,
           ot.filter((e) => e.type !== "directory").map((e) => /* @__PURE__ */ c(
-            It,
+            Ht,
             {
               fs: a,
               node: e,
@@ -1287,37 +1287,37 @@ const Pa = de.memo(function({
   onSelectionChange: K,
   onError: st
 }) {
-  const [ot, jt] = Z([]), [H, z] = Z(null), [O, U] = Z(
+  const [ot, It] = Z([]), [j, z] = Z(null), [O, U] = Z(
     n ? { path: n, type: "directory" } : null
-  ), [Q, R] = Z(null), [nt, vt] = Z(
+  ), [Q, R] = Z(null), [nt, kt] = Z(
     () => Ct()
-  ), F = ua(W), k = F === "windows" ? 16 : 28, I = { ...sa, ...G }, gt = re(Y), D = ft(
+  ), F = ua(W), v = F === "windows" ? 16 : 28, H = { ...sa, ...G }, gt = re(Y), D = ft(
     (r) => {
       st == null || st(r), console.error("[jack-file-tree]", r.action, r.error);
     },
     [st]
   );
-  v(() => {
+  k(() => {
     ia();
-  }, []), v(() => ea(() => {
-    vt(Ct());
-  }), []), v(() => {
+  }, []), k(() => ea(() => {
+    kt(Ct());
+  }), []), k(() => {
     if (ct)
       return ca({ monacoSelector: g });
-  }, [ct, g]), v(() => {
+  }, [ct, g]), k(() => {
     U(n ? { path: n, type: "directory" } : null);
-  }, [n]), v(() => {
+  }, [n]), k(() => {
     l && U({ path: l, type: "file" });
-  }, [l]), v(() => {
+  }, [l]), k(() => {
     n && !O && U({ path: n, type: "directory" });
-  }, [O, n]), v(() => {
+  }, [O, n]), k(() => {
     K == null || K(O);
   }, [K, O]);
   const L = ft(async () => {
     if (n)
       try {
         const r = await t.readDirectory(n);
-        jt(ae(r));
+        It(ae(r));
       } catch (r) {
         D({
           action: "load-root",
@@ -1326,25 +1326,25 @@ const Pa = de.memo(function({
         });
       }
   }, [t, D, n]);
-  v(() => {
+  k(() => {
     L();
-  }, [L]), v(() => {
+  }, [L]), k(() => {
     typeof x == "number" && x > 0 && (L(), z((r) => r || null));
-  }, [L, x]), v(() => {
+  }, [L, x]), k(() => {
     !V || !n || setTimeout(() => {
       z({
         type: "file",
         parentPath: Et(O, n)
       });
     }, 0);
-  }, [V, O, n]), v(() => {
+  }, [V, O, n]), k(() => {
     !$ || !n || setTimeout(() => {
       z({
         type: "folder",
         parentPath: Et(O, n)
       });
     }, 0);
-  }, [$, O, n]), v(() => {
+  }, [$, O, n]), k(() => {
     if (Q) {
       const r = (E) => {
         const ut = E.target instanceof HTMLElement ? E.target : null;
@@ -1409,7 +1409,7 @@ const Pa = de.memo(function({
         targetPath: w
       });
     }
-  }, kt = async (r) => {
+  }, vt = async (r) => {
     r.preventDefault();
     const w = r.dataTransfer.getData(zt);
     if (!(!w || !n))
@@ -1438,7 +1438,7 @@ const Pa = de.memo(function({
           error: o
         });
       }
-  }, lt = ot.some((r) => r.type === "directory"), Vt = rt || (n ? wt(n) : I.explorer);
+  }, lt = ot.some((r) => r.type === "directory"), Vt = rt || (n ? wt(n) : H.explorer);
   return n ? /* @__PURE__ */ C(
     "div",
     {
@@ -1456,7 +1456,7 @@ const Pa = de.memo(function({
         r.preventDefault(), r.stopPropagation(), r.dataTransfer.dropEffect = "move";
       },
       onDrop: (r) => {
-        kt(r);
+        vt(r);
       },
       tabIndex: 0,
       onKeyDown: (r) => {
@@ -1478,7 +1478,7 @@ const Pa = de.memo(function({
               {
                 type: "button",
                 className: "sft-tree-action-btn",
-                title: I.newFile,
+                title: H.newFile,
                 onClick: (r) => {
                   r.stopPropagation(), setTimeout(() => {
                     z({
@@ -1495,7 +1495,7 @@ const Pa = de.memo(function({
               {
                 type: "button",
                 className: "sft-tree-action-btn",
-                title: I.newFolder,
+                title: H.newFolder,
                 onClick: (r) => {
                   r.stopPropagation(), setTimeout(() => {
                     z({
@@ -1510,14 +1510,14 @@ const Pa = de.memo(function({
           ] })
         ] }),
         /* @__PURE__ */ C("div", { className: "sft-tree-content", children: [
-          H && tt(H.parentPath, n) && H.type === "folder" ? /* @__PURE__ */ c(
-            Ht,
+          j && tt(j.parentPath, n) && j.type === "folder" ? /* @__PURE__ */ c(
+            jt,
             {
-              type: H.type,
+              type: j.type,
               depth: 0,
               hasFolders: lt,
-              indentPx: k,
-              labels: I,
+              indentPx: v,
+              labels: H,
               monacoSelector: g,
               onSubmit: async (r) => {
                 const w = et(m(n), r);
@@ -1536,18 +1536,18 @@ const Pa = de.memo(function({
             }
           ) : null,
           ot.filter((r) => r.type === "directory").map((r) => /* @__PURE__ */ c(
-            It,
+            Ht,
             {
               fs: t,
               node: r,
               depth: 0,
-              indentPx: k,
+              indentPx: v,
               platform: F,
-              labels: I,
+              labels: H,
               activeFilePath: l,
               onFileClick: T,
               onRefresh: L,
-              creatingItem: H,
+              creatingItem: j,
               onSetCreating: it,
               selectedNode: O,
               onSelectNode: U,
@@ -1567,14 +1567,14 @@ const Pa = de.memo(function({
             },
             r.path
           )),
-          H && tt(H.parentPath, n) && H.type === "file" ? /* @__PURE__ */ c(
-            Ht,
+          j && tt(j.parentPath, n) && j.type === "file" ? /* @__PURE__ */ c(
+            jt,
             {
-              type: H.type,
+              type: j.type,
               depth: 0,
               hasFolders: lt,
-              indentPx: k,
-              labels: I,
+              indentPx: v,
+              labels: H,
               monacoSelector: g,
               onSubmit: async (r) => {
                 const w = et(m(n), r);
@@ -1593,18 +1593,18 @@ const Pa = de.memo(function({
             }
           ) : null,
           ot.filter((r) => r.type !== "directory").map((r) => /* @__PURE__ */ c(
-            It,
+            Ht,
             {
               fs: t,
               node: r,
               depth: 0,
-              indentPx: k,
+              indentPx: v,
               platform: F,
-              labels: I,
+              labels: H,
               activeFilePath: l,
               onFileClick: T,
               onRefresh: L,
-              creatingItem: H,
+              creatingItem: j,
               onSetCreating: it,
               selectedNode: O,
               onSelectNode: U,
@@ -1645,7 +1645,7 @@ const Pa = de.memo(function({
                         0
                       ), R(null);
                     },
-                    children: /* @__PURE__ */ c("span", { children: I.newFile })
+                    children: /* @__PURE__ */ c("span", { children: H.newFile })
                   }
                 ),
                 /* @__PURE__ */ c(
@@ -1661,7 +1661,7 @@ const Pa = de.memo(function({
                         0
                       ), R(null);
                     },
-                    children: /* @__PURE__ */ c("span", { children: I.newFolder })
+                    children: /* @__PURE__ */ c("span", { children: H.newFolder })
                   }
                 ),
                 /* @__PURE__ */ c("div", { className: "sft-context-menu-separator" }),
@@ -1676,7 +1676,7 @@ const Pa = de.memo(function({
                       nt && yt();
                     },
                     children: [
-                      /* @__PURE__ */ c("span", { children: I.paste }),
+                      /* @__PURE__ */ c("span", { children: H.paste }),
                       /* @__PURE__ */ c("span", { className: "sft-context-menu-shortcut", children: Nt("paste", F) })
                     ]
                   }
@@ -1699,18 +1699,18 @@ const Pa = de.memo(function({
       style: X,
       children: [
         /* @__PURE__ */ C("div", { className: "sft-tree-header", children: [
-          /* @__PURE__ */ c("span", { className: "sft-tree-header-title", children: I.explorer }),
+          /* @__PURE__ */ c("span", { className: "sft-tree-header-title", children: H.explorer }),
           /* @__PURE__ */ c("div", { className: "sft-tree-actions" })
         ] }),
         s || /* @__PURE__ */ C("div", { className: "sft-empty-folder-container", children: [
-          /* @__PURE__ */ c("p", { className: "sft-empty-folder-text", children: I.noFolderOpened }),
+          /* @__PURE__ */ c("p", { className: "sft-empty-folder-text", children: H.noFolderOpened }),
           u ? /* @__PURE__ */ c("div", { className: "sft-empty-folder-actions", children: /* @__PURE__ */ c(
             "button",
             {
               type: "button",
               onClick: u,
               className: "sft-empty-folder-btn",
-              children: I.openFolder
+              children: H.openFolder
             }
           ) }) : null
         ] })
