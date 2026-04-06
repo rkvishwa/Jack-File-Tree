@@ -35,7 +35,6 @@ Peer dependencies:
 ## Basic usage
 
 ```tsx
-import "@knurdz/jack-file-tree/styles.css";
 import "@knurdz/jack-file-tree/keyboard-shield";
 
 import { FileTree, type FileTreeFsAdapter } from "@knurdz/jack-file-tree";
@@ -65,6 +64,8 @@ export function Explorer() {
   );
 }
 ```
+
+`@knurdz/jack-file-tree` now auto-injects its built-in styles when you import the package entry, so the extra stylesheet import is optional. If you want explicit stylesheet control for ordering or overrides, you can still import `@knurdz/jack-file-tree/styles.css` manually.
 
 ## Customization
 
