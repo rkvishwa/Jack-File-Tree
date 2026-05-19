@@ -75,12 +75,13 @@ export interface FileTreeTheme {
 }
 
 export interface FileTreeHeaderActionRenderProps {
-  id: "new-file" | "new-folder";
+  id: "new-file" | "new-folder" | "toggle-folders";
   label: string;
   title: string;
   className: string;
   icon: ReactNode;
   onClick: () => void;
+  pressed?: boolean;
 }
 
 export interface FileTreeHeaderRenderProps {
@@ -148,6 +149,8 @@ export interface FileTreeLabels {
   noFolderOpened: string;
   newFile: string;
   newFolder: string;
+  collapseAllFolders: string;
+  expandAllFolders: string;
   cut: string;
   copy: string;
   paste: string;
@@ -163,6 +166,8 @@ export const defaultFileTreeLabels: FileTreeLabels = {
   noFolderOpened: "No folder opened",
   newFile: "New File",
   newFolder: "New Folder",
+  collapseAllFolders: "Collapse All Folders",
+  expandAllFolders: "Expand All Folders",
   cut: "Cut",
   copy: "Copy",
   paste: "Paste",

@@ -4,6 +4,8 @@ import {
   Braces,
   ChevronDown,
   ChevronRight,
+  ChevronsDownUp,
+  ChevronsUpDown,
   Code2,
   Database,
   File,
@@ -459,6 +461,11 @@ interface CreatingItem {
   parentPath: string;
 }
 
+interface FolderExpansionCommand {
+  expanded: boolean;
+  token: number;
+}
+
 interface InlineCreateInputProps {
   type: "file" | "folder";
   depth: number;
@@ -684,6 +691,7 @@ interface FileTreeNodeProps {
   renderIcon?: (node: FileTreeNode, props: FileTreeIconRenderProps) => React.ReactNode;
   iconTheme: FileTreeIconTheme;
   clipboardSnapshot: FileTreeClipboardItem | null;
+  folderExpansionCommand: FolderExpansionCommand | null;
   contextMenuOptions?: FileTreeContextMenuOptions;
   monacoSelector: string;
   portalContainer?: Element | null;
@@ -716,6 +724,7 @@ function FileTreeNodeComponent({
   renderIcon,
   iconTheme,
   clipboardSnapshot,
+  folderExpansionCommand,
   contextMenuOptions,
   monacoSelector,
   portalContainer,
@@ -784,6 +793,25 @@ function FileTreeNodeComponent({
       void loadChildren();
     }
   }, [expanded, isCreatingHere, loadChildren]);
+
+  useEffect(() => {
+    if (node.type !== "directory" || !folderExpansionCommand) {
+      return;
+    }
+
+    if (folderExpansionCommand.expanded) {
+      setExpanded(true);
+      void loadChildren();
+      return;
+    }
+
+    setExpanded(false);
+  }, [
+    folderExpansionCommand?.expanded,
+    folderExpansionCommand?.token,
+    loadChildren,
+    node.type,
+  ]);
 
   useEffect(() => {
     if (expanded && typeof refreshTrigger === "number" && refreshTrigger > 0) {
@@ -1670,6 +1698,7 @@ function FileTreeNodeComponent({
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
+                folderExpansionCommand={folderExpansionCommand}
                 monacoSelector={monacoSelector}
                 portalContainer={portalContainer}
                 reportError={reportError}
@@ -1718,6 +1747,7 @@ function FileTreeNodeComponent({
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
+                folderExpansionCommand={folderExpansionCommand}
                 monacoSelector={monacoSelector}
                 portalContainer={portalContainer}
                 reportError={reportError}
@@ -1791,6 +1821,9 @@ const FileTree = React.memo(function FileTree({
   const [clipboardSnapshot, setClipboardSnapshot] = useState<FileTreeClipboardItem | null>(
     () => getFileTreeClipboard(),
   );
+  const [allFoldersCollapsed, setAllFoldersCollapsed] = useState(false);
+  const [folderExpansionCommand, setFolderExpansionCommand] =
+    useState<FolderExpansionCommand | null>(null);
   const resolvedPlatform = resolvePlatform(platform);
   const indentPx = resolvedPlatform === "windows" ? 16 : 28;
   const resolvedLabels = { ...defaultFileTreeLabels, ...labels };
@@ -1839,6 +1872,8 @@ const FileTree = React.memo(function FileTree({
 
   useEffect(() => {
     setSelectedNode(workspaceRoot ? { path: workspaceRoot, type: "directory" } : null);
+    setAllFoldersCollapsed(false);
+    setFolderExpansionCommand(null);
   }, [workspaceRoot]);
 
   useEffect(() => {
@@ -2150,6 +2185,16 @@ const FileTree = React.memo(function FileTree({
     }, 0);
   }, [selectedNode, workspaceRoot]);
 
+  const toggleAllFolders = useCallback(() => {
+    const nextAllFoldersCollapsed = !allFoldersCollapsed;
+
+    setAllFoldersCollapsed(nextAllFoldersCollapsed);
+    setFolderExpansionCommand((current) => ({
+      expanded: !nextAllFoldersCollapsed,
+      token: (current?.token ?? 0) + 1,
+    }));
+  }, [allFoldersCollapsed]);
+
   const headerActions: FileTreeHeaderActionRenderProps[] = workspaceRoot
     ? [
         {
@@ -2168,6 +2213,23 @@ const FileTree = React.memo(function FileTree({
           icon: <FolderPlus size={18} />,
           onClick: openCreateFolderInput,
         },
+        {
+          id: "toggle-folders",
+          label: allFoldersCollapsed
+            ? resolvedLabels.expandAllFolders
+            : resolvedLabels.collapseAllFolders,
+          title: allFoldersCollapsed
+            ? resolvedLabels.expandAllFolders
+            : resolvedLabels.collapseAllFolders,
+          className: "sft-tree-action-btn",
+          icon: allFoldersCollapsed ? (
+            <ChevronsUpDown size={18} />
+          ) : (
+            <ChevronsDownUp size={18} />
+          ),
+          onClick: toggleAllFolders,
+          pressed: allFoldersCollapsed,
+        },
       ]
     : [];
 
@@ -2179,6 +2241,8 @@ const FileTree = React.memo(function FileTree({
             type="button"
             className={action.className}
             title={action.title}
+            aria-label={action.label}
+            aria-pressed={action.pressed}
             onClick={(event) => {
               event.stopPropagation();
               action.onClick();
@@ -2454,6 +2518,7 @@ const FileTree = React.memo(function FileTree({
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
+                folderExpansionCommand={folderExpansionCommand}
                       contextMenuOptions={contextMenuOptions}
                       monacoSelector={monacoSelector}
                       portalContainer={portalContainer}
@@ -2526,6 +2591,7 @@ const FileTree = React.memo(function FileTree({
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
+                folderExpansionCommand={folderExpansionCommand}
                       contextMenuOptions={contextMenuOptions}
                       monacoSelector={monacoSelector}
                       portalContainer={portalContainer}

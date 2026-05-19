@@ -57,12 +57,13 @@ export interface FileTreeTheme {
     headerActionsOffsetY?: string | number;
 }
 export interface FileTreeHeaderActionRenderProps {
-    id: "new-file" | "new-folder";
+    id: "new-file" | "new-folder" | "toggle-folders";
     label: string;
     title: string;
     className: string;
     icon: ReactNode;
     onClick: () => void;
+    pressed?: boolean;
 }
 export interface FileTreeHeaderRenderProps {
     workspaceRoot: string | null;
@@ -126,6 +127,8 @@ export interface FileTreeLabels {
     noFolderOpened: string;
     newFile: string;
     newFolder: string;
+    collapseAllFolders: string;
+    expandAllFolders: string;
     cut: string;
     copy: string;
     paste: string;
