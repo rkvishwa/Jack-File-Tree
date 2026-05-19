@@ -35,7 +35,8 @@
     "./styles.css": "./dist/styles.css"
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json && node scripts/postbuild.mjs",
+    "generate:material-icons": "node scripts/generate-material-icons.mjs",
+    "build": "npm run generate:material-icons && vite build && tsc -p tsconfig.build.json && node scripts/postbuild.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
@@ -49,6 +50,7 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react": "^4.2.1",
+    "material-icon-theme": "^5.34.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.11"
   }

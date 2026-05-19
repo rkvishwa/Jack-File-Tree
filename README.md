@@ -13,6 +13,7 @@ Reusable React file tree sidebar for Electron based Editor. It ships as a ready-
 - Theme tokens for colors, fonts, borders, and top/titlebar offsets
 - Built-in context menus with per-action enable/disable controls
 - Bring-your-own context menu renderer
+- Offline built-in VS Code Material Icon Theme file and folder icons
 - Nested file and folder explorer
 - Inline create and rename
 - Drag and drop move
@@ -67,6 +68,8 @@ export function Explorer() {
 
 `@knurdz/jack-file-tree` now auto-injects its built-in styles when you import the package entry, so the extra stylesheet import is optional. If you want explicit stylesheet control for ordering or overrides, you can still import `@knurdz/jack-file-tree/styles.css` manually.
 
+The tree also ships with VS Code Material Icon Theme icons baked into the package. No CDN, VS Code extension, or host bundler asset-copy step is required at runtime, so packaged IDEs keep their default icons offline.
+
 ## Customization
 
 The default component is a full sidebar panel, but you can still swap in your own UI for key pieces while keeping the built-in tree behavior.
@@ -106,6 +109,17 @@ The default component is a full sidebar panel, but you can still swap in your ow
 />
 ```
 
+Use the current lucide icon style instead of Material icons:
+
+```tsx
+<FileTree
+  fs={fsAdapter}
+  workspaceRoot={workspaceRoot}
+  onFileClick={openFile}
+  iconTheme="lucide"
+/>
+```
+
 Useful props:
 
 - `sidebarPosition`: `"left"` or `"right"` styling for the built-in sidebar shell
@@ -119,6 +133,8 @@ Useful props:
 - `openFolderButtonPosition`: `"top"` or `"center"` in the empty state
 - `renderOpenFolderButton`: render your own open-folder button while keeping library behavior
 - `renderEmptyState`: replace the full empty-state UI
+- `iconTheme`: choose `"material"` (default) or `"lucide"` for the built-in icon renderer
+- `renderIcon`: replace file and folder icons; receives the node and icon render state
 - `theme`: set colors, fonts, borders, and inset offsets without overriding the stylesheet
 - `contextMenu.enabled`: enable or disable library context menus
 - `contextMenu.actions`: hide individual built-in menu actions

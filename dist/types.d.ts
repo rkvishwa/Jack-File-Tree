@@ -136,6 +136,14 @@ export interface FileTreeLabels {
 }
 export declare const defaultFileTreeLabels: FileTreeLabels;
 export type FileTreePlatform = "auto" | "windows" | "mac" | "linux";
+export type FileTreeIconTheme = "material" | "lucide";
+export interface FileTreeIconRenderProps {
+    expanded: boolean;
+    depth: number;
+    active: boolean;
+    selected: boolean;
+    iconTheme: FileTreeIconTheme;
+}
 export type FileTreeAction = "create-file" | "create-folder" | "delete-item" | "load-children" | "load-root" | "move-item" | "paste-item" | "rename-item" | "restore-item";
 export interface FileTreeError {
     action: FileTreeAction;
@@ -184,7 +192,8 @@ export interface FileTreeProps {
     showOpenFolderButton?: boolean;
     openFolderButtonPosition?: "top" | "center";
     renderOpenFolderButton?: (props: FileTreeOpenFolderButtonRenderProps) => ReactNode;
-    renderIcon?: (node: FileTreeNode) => ReactNode;
+    renderIcon?: (node: FileTreeNode, props: FileTreeIconRenderProps) => ReactNode;
+    iconTheme?: FileTreeIconTheme;
     labels?: Partial<FileTreeLabels>;
     platform?: FileTreePlatform;
     sidebarPosition?: FileTreeSidebarPosition;

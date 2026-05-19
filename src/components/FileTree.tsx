@@ -44,6 +44,8 @@ import {
   type FileTreeFooterRenderProps,
   type FileTreeHeaderActionRenderProps,
   type FileTreeHeaderRenderProps,
+  type FileTreeIconRenderProps,
+  type FileTreeIconTheme,
   type FileTreeItemType,
   type FileTreeLabels,
   type FileTreeNode,
@@ -54,6 +56,7 @@ import {
   type FileTreeSidebarPosition,
   type FileTreeTheme,
 } from "../types";
+import { renderMaterialFileTreeIcon } from "../icons/materialIcons";
 import {
   dedupeNodes,
   getBaseName,
@@ -462,6 +465,7 @@ interface InlineCreateInputProps {
   hasFolders: boolean;
   indentPx: number;
   labels: FileTreeLabels;
+  iconTheme: FileTreeIconTheme;
   monacoSelector: string;
   onSubmit: (name: string) => Promise<void> | void;
   onCancel: () => void;
@@ -473,6 +477,7 @@ function InlineCreateInput({
   hasFolders,
   indentPx,
   labels,
+  iconTheme,
   monacoSelector,
   onSubmit,
   onCancel,
@@ -606,11 +611,17 @@ function InlineCreateInput({
         <span className="sft-expand-icon sft-expand-icon-empty" />
       )}
       <span className="sft-file-icon">
-        {type === "folder" ? (
-          <Folder size={14} color="var(--sft-accent, var(--accent, #3b82f6))" />
-        ) : (
-          <File size={14} />
-        )}
+        {iconTheme === "material"
+          ? renderMaterialFileTreeIcon({
+              name: value || (type === "folder" ? "folder" : "file"),
+              type: type === "folder" ? "directory" : "file",
+              path: value || (type === "folder" ? "folder" : "file"),
+            })
+          : type === "folder" ? (
+              <Folder size={14} color="var(--sft-accent, var(--accent, #3b82f6))" />
+            ) : (
+              <File size={14} />
+            )}
       </span>
       <div className="sft-inline-create-field">
         <input
@@ -670,7 +681,8 @@ interface FileTreeNodeProps {
   onFileCopied?: (newPath: string, type: FileTreeItemType) => void;
   onFileMoved?: () => void;
   refreshTrigger?: number;
-  renderIcon?: (node: FileTreeNode) => React.ReactNode;
+  renderIcon?: (node: FileTreeNode, props: FileTreeIconRenderProps) => React.ReactNode;
+  iconTheme: FileTreeIconTheme;
   clipboardSnapshot: FileTreeClipboardItem | null;
   contextMenuOptions?: FileTreeContextMenuOptions;
   monacoSelector: string;
@@ -702,6 +714,7 @@ function FileTreeNodeComponent({
   onFileMoved,
   refreshTrigger,
   renderIcon,
+  iconTheme,
   clipboardSnapshot,
   contextMenuOptions,
   monacoSelector,
@@ -1428,6 +1441,17 @@ function FileTreeNodeComponent({
   const isSelected = selectedNode ? isSamePath(selectedNode.path, node.path) : false;
   const isSelectedFile = isSelected && node.type === "file";
   const isSelectedFolder = isSelected && node.type === "directory";
+  const iconRenderProps: FileTreeIconRenderProps = {
+    expanded,
+    depth,
+    active: isSelectedFile,
+    selected: isSelected,
+    iconTheme,
+  };
+  const defaultIcon =
+    iconTheme === "material"
+      ? renderMaterialFileTreeIcon(node, { expanded })
+      : renderDefaultIcon(node);
 
   return (
     <div className="sft-tree-node-wrapper" ref={nodeRef}>
@@ -1537,7 +1561,7 @@ function FileTreeNodeComponent({
           <span className="sft-expand-icon sft-expand-icon-empty" />
         )}
         <span className="sft-file-icon">
-          {renderIcon ? renderIcon(node) : renderDefaultIcon(node)}
+          {renderIcon ? renderIcon(node, iconRenderProps) : defaultIcon}
         </span>
         {renaming ? (
           <input
@@ -1610,6 +1634,7 @@ function FileTreeNodeComponent({
               hasFolders={hasChildFolders}
               indentPx={indentPx}
               labels={labels}
+              iconTheme={iconTheme}
               monacoSelector={monacoSelector}
               onSubmit={handleInlineCreate}
               onCancel={() => onSetCreating(null)}
@@ -1643,6 +1668,7 @@ function FileTreeNodeComponent({
                 onFileMoved={onFileMoved}
                 refreshTrigger={refreshTrigger}
                 renderIcon={renderIcon}
+                iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
                 monacoSelector={monacoSelector}
                 portalContainer={portalContainer}
@@ -1656,6 +1682,7 @@ function FileTreeNodeComponent({
               hasFolders={hasChildFolders}
               indentPx={indentPx}
               labels={labels}
+              iconTheme={iconTheme}
               monacoSelector={monacoSelector}
               onSubmit={handleInlineCreate}
               onCancel={() => onSetCreating(null)}
@@ -1689,6 +1716,7 @@ function FileTreeNodeComponent({
                 onFileMoved={onFileMoved}
                 refreshTrigger={refreshTrigger}
                 renderIcon={renderIcon}
+                iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
                 monacoSelector={monacoSelector}
                 portalContainer={portalContainer}
@@ -1742,6 +1770,7 @@ const FileTree = React.memo(function FileTree({
   openFolderButtonPosition = "top",
   renderOpenFolderButton,
   renderIcon,
+  iconTheme = "material",
   labels,
   platform = "auto",
   sidebarPosition = "left",
@@ -2370,6 +2399,7 @@ const FileTree = React.memo(function FileTree({
                     hasFolders={hasRootFolders}
                     indentPx={indentPx}
                     labels={resolvedLabels}
+                    iconTheme={iconTheme}
                     monacoSelector={monacoSelector}
                     onSubmit={async (name) => {
                       const fullPath = joinTreePath(normalizePath(workspaceRoot), name);
@@ -2420,9 +2450,10 @@ const FileTree = React.memo(function FileTree({
                       onFolderCreated={onFolderCreated}
                       onFileCopied={onFileCopied}
                       onFileMoved={onFileMoved}
-                      refreshTrigger={refreshTrigger}
-                      renderIcon={renderIcon}
-                      clipboardSnapshot={clipboardSnapshot}
+                refreshTrigger={refreshTrigger}
+                renderIcon={renderIcon}
+                iconTheme={iconTheme}
+                clipboardSnapshot={clipboardSnapshot}
                       contextMenuOptions={contextMenuOptions}
                       monacoSelector={monacoSelector}
                       portalContainer={portalContainer}
@@ -2439,6 +2470,7 @@ const FileTree = React.memo(function FileTree({
                     hasFolders={hasRootFolders}
                     indentPx={indentPx}
                     labels={resolvedLabels}
+                    iconTheme={iconTheme}
                     monacoSelector={monacoSelector}
                     onSubmit={async (name) => {
                       const fullPath = joinTreePath(normalizePath(workspaceRoot), name);
@@ -2490,9 +2522,10 @@ const FileTree = React.memo(function FileTree({
                       onFolderCreated={onFolderCreated}
                       onFileCopied={onFileCopied}
                       onFileMoved={onFileMoved}
-                      refreshTrigger={refreshTrigger}
-                      renderIcon={renderIcon}
-                      clipboardSnapshot={clipboardSnapshot}
+                refreshTrigger={refreshTrigger}
+                renderIcon={renderIcon}
+                iconTheme={iconTheme}
+                clipboardSnapshot={clipboardSnapshot}
                       contextMenuOptions={contextMenuOptions}
                       monacoSelector={monacoSelector}
                       portalContainer={portalContainer}

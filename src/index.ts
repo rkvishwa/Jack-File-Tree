@@ -30,6 +30,8 @@ export {
   type FileTreeFooterRenderProps,
   type FileTreeHeaderActionRenderProps,
   type FileTreeHeaderRenderProps,
+  type FileTreeIconRenderProps,
+  type FileTreeIconTheme,
   type FileTreeItemType,
   type FileTreeLabels,
   type FileTreeNode,
