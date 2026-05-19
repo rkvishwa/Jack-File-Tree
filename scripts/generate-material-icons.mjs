@@ -44,6 +44,7 @@ const source = `/* eslint-disable */\n` +
   `export const materialIconDataUrls: Record<string, string> = ${JSON.stringify(iconDataUrls)};\n\n` +
   `export const materialIconFileExtensions: Record<string, string> = ${JSON.stringify(manifest.fileExtensions ?? {})};\n\n` +
   `export const materialIconFileNames: Record<string, string> = ${JSON.stringify(manifest.fileNames ?? {})};\n\n` +
+  `export const materialIconLanguageIds: Record<string, string> = ${JSON.stringify(manifest.languageIds ?? {})};\n\n` +
   `export const materialIconFolderNames: Record<string, string> = ${JSON.stringify(manifest.folderNames ?? {})};\n\n` +
   `export const materialIconFolderNamesExpanded: Record<string, string> = ${JSON.stringify(manifest.folderNamesExpanded ?? {})};\n\n` +
   `export const materialIconDefaults = ${JSON.stringify({

@@ -6,6 +6,7 @@ import {
   materialIconDefaults,
   materialIconFileExtensions,
   materialIconFileNames,
+  materialIconLanguageIds,
   materialIconFolderNames,
   materialIconFolderNamesExpanded,
 } from "./materialIconData.generated";
@@ -13,6 +14,21 @@ import {
 interface MaterialFileTreeIconOptions {
   expanded?: boolean;
 }
+
+const extensionLanguageIds: Record<string, string> = {
+  cjs: "javascript",
+  cts: "typescript",
+  htm: "html",
+  html: "html",
+  js: "javascript",
+  jsx: "javascriptreact",
+  mjs: "javascript",
+  mts: "typescript",
+  php: "php",
+  ts: "typescript",
+  tsx: "typescriptreact",
+  vue: "vue",
+};
 
 function normalizeIconKey(value: string): string {
   return value.replace(/\\/g, "/").toLowerCase();
@@ -39,7 +55,7 @@ function resolveFileIconName(node: FileTreeNode): string {
   const candidates = [
     normalizedName,
     ...extensionParts.map((_, index, parts) => parts.slice(index).join(".")),
-    node.extension?.toLowerCase() ?? "",
+    node.extension?.replace(/^\.+/, "").toLowerCase() ?? "",
   ].filter((candidate, index, all) => candidate && all.indexOf(candidate) === index);
 
   for (const candidate of candidates) {
@@ -50,6 +66,15 @@ function resolveFileIconName(node: FileTreeNode): string {
 
     if (iconName) {
       return iconName;
+    }
+
+    const languageId = extensionLanguageIds[candidate];
+    if (languageId) {
+      const languageIcon = materialIconLanguageIds[languageId];
+
+      if (languageIcon) {
+        return languageIcon;
+      }
     }
   }
 
