@@ -197,6 +197,74 @@ function getOpenInFileManagerLabel(
   return labels.openInFileManager;
 }
 
+type NativeFileManagerOpener = (path: string) => Promise<void> | void;
+
+interface NativeFileManagerBridge {
+  electronAPI?: {
+    openInFileManager?: NativeFileManagerOpener;
+    openPath?: NativeFileManagerOpener;
+    fs?: {
+      openInFileManager?: NativeFileManagerOpener;
+    };
+    shell?: {
+      openPath?: NativeFileManagerOpener;
+    };
+  };
+  require?: (moduleName: string) => {
+    shell?: {
+      openPath?: NativeFileManagerOpener;
+    };
+  };
+}
+
+function resolveOpenInFileManager(
+  fs: FileTreeFsAdapter,
+  explicitOpener?: NativeFileManagerOpener,
+): NativeFileManagerOpener | null {
+  if (explicitOpener) {
+    return explicitOpener;
+  }
+
+  if (fs.openInFileManager) {
+    return fs.openInFileManager;
+  }
+
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const bridge = window as Window & NativeFileManagerBridge;
+
+  if (bridge.electronAPI?.openInFileManager) {
+    return bridge.electronAPI.openInFileManager;
+  }
+
+  if (bridge.electronAPI?.openPath) {
+    return bridge.electronAPI.openPath;
+  }
+
+  if (bridge.electronAPI?.fs?.openInFileManager) {
+    return bridge.electronAPI.fs.openInFileManager;
+  }
+
+  if (bridge.electronAPI?.shell?.openPath) {
+    return bridge.electronAPI.shell.openPath;
+  }
+
+  try {
+    const electron = bridge.require?.("electron");
+    return electron?.shell?.openPath ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function getMissingOpenInFileManagerError(): Error {
+  return new Error(
+    "No native file manager opener is configured. Provide onOpenInFileManager, fs.openInFileManager, or window.electronAPI.openInFileManager.",
+  );
+}
+
 function cx(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(" ");
 }
@@ -702,6 +770,7 @@ interface FileTreeNodeProps {
   onFolderCreated?: (path: string, isUndo?: boolean) => void;
   onFileCopied?: (newPath: string, type: FileTreeItemType) => void;
   onFileMoved?: () => void;
+  onOpenInFileManager?: (path: string) => Promise<void> | void;
   refreshTrigger?: number;
   renderIcon?: (node: FileTreeNode, props: FileTreeIconRenderProps) => React.ReactNode;
   iconTheme: FileTreeIconTheme;
@@ -735,6 +804,7 @@ function FileTreeNodeComponent({
   onFolderCreated,
   onFileCopied,
   onFileMoved,
+  onOpenInFileManager,
   refreshTrigger,
   renderIcon,
   iconTheme,
@@ -767,20 +837,16 @@ function FileTreeNodeComponent({
   const isCut =
     clipboardSnapshot?.action === "cut" &&
     isSamePath(clipboardSnapshot.path, node.path);
-  const canOpenInFileManager = typeof fs.openInFileManager === "function";
   const nodeContextMenuActionIds: FileTreeContextMenuActionId[] = [
     "new-file",
     "new-folder",
+    "open-in-file-manager",
     "cut",
     "copy",
     "paste",
     "rename",
     "delete",
   ];
-
-  if (canOpenInFileManager) {
-    nodeContextMenuActionIds.push("open-in-file-manager");
-  }
 
   const canOpenNodeContextMenu =
     isContextMenuEnabled(contextMenuOptions) &&
@@ -995,15 +1061,18 @@ function FileTreeNodeComponent({
   const handleOpenInFileManager = async () => {
     closeContextMenu();
 
-    const openInFileManager = fs.openInFileManager;
-    if (!openInFileManager) {
-      return;
-    }
-
     const targetPath =
       node.type === "directory" ? normalizePath(node.path) : getParentPath(node.path);
 
     try {
+      const openInFileManager = resolveOpenInFileManager(
+        fs,
+        onOpenInFileManager,
+      );
+      if (!openInFileManager) {
+        throw getMissingOpenInFileManagerError();
+      }
+
       await openInFileManager(targetPath);
     } catch (error) {
       reportError({
@@ -1458,7 +1527,6 @@ function FileTreeNodeComponent({
             : null,
         ],
         [
-          canOpenInFileManager &&
           isContextMenuActionVisible(contextMenuOptions, "open-in-file-manager")
             ? {
                 id: "open-in-file-manager",
@@ -1746,6 +1814,7 @@ function FileTreeNodeComponent({
                 onFolderCreated={onFolderCreated}
                 onFileCopied={onFileCopied}
                 onFileMoved={onFileMoved}
+                onOpenInFileManager={onOpenInFileManager}
                 refreshTrigger={refreshTrigger}
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}
@@ -1796,6 +1865,7 @@ function FileTreeNodeComponent({
                 onFolderCreated={onFolderCreated}
                 onFileCopied={onFileCopied}
                 onFileMoved={onFileMoved}
+                onOpenInFileManager={onOpenInFileManager}
                 refreshTrigger={refreshTrigger}
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}
@@ -1817,6 +1887,7 @@ const FileTree = React.memo(function FileTree({
   fs,
   workspaceRoot,
   onOpenFolder,
+  onOpenInFileManager,
   onFileClick,
   activeFilePath,
   onFileOpened,
@@ -1889,16 +1960,12 @@ const FileTree = React.memo(function FileTree({
     maxWidth,
     ...style,
   };
-  const canOpenInFileManager = typeof fs.openInFileManager === "function";
   const rootContextMenuActionIds: FileTreeContextMenuActionId[] = [
     "new-file",
     "new-folder",
+    "open-in-file-manager",
     "paste",
   ];
-
-  if (canOpenInFileManager) {
-    rootContextMenuActionIds.push("open-in-file-manager");
-  }
 
   const canOpenRootContextMenu =
     isContextMenuEnabled(contextMenuOptions) &&
@@ -2120,14 +2187,21 @@ const FileTree = React.memo(function FileTree({
   const handleRootOpenInFileManager = async () => {
     setContextMenu(null);
 
-    const openInFileManager = fs.openInFileManager;
-    if (!workspaceRoot || !openInFileManager) {
+    if (!workspaceRoot) {
       return;
     }
 
     const targetPath = normalizePath(workspaceRoot);
 
     try {
+      const openInFileManager = resolveOpenInFileManager(
+        fs,
+        onOpenInFileManager,
+      );
+      if (!openInFileManager) {
+        throw getMissingOpenInFileManagerError();
+      }
+
       await openInFileManager(targetPath);
     } catch (error) {
       reportError({
@@ -2444,7 +2518,6 @@ const FileTree = React.memo(function FileTree({
             : null,
         ],
         [
-          canOpenInFileManager &&
           isContextMenuActionVisible(contextMenuOptions, "open-in-file-manager")
             ? {
                 id: "open-in-file-manager",
@@ -2610,6 +2683,7 @@ const FileTree = React.memo(function FileTree({
                       onFolderCreated={onFolderCreated}
                       onFileCopied={onFileCopied}
                       onFileMoved={onFileMoved}
+                      onOpenInFileManager={onOpenInFileManager}
                 refreshTrigger={refreshTrigger}
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}
@@ -2683,6 +2757,7 @@ const FileTree = React.memo(function FileTree({
                       onFolderCreated={onFolderCreated}
                       onFileCopied={onFileCopied}
                       onFileMoved={onFileMoved}
+                      onOpenInFileManager={onOpenInFileManager}
                 refreshTrigger={refreshTrigger}
                 renderIcon={renderIcon}
                 iconTheme={iconTheme}

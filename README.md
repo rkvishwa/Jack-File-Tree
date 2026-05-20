@@ -138,6 +138,7 @@ Useful props:
 - `iconTheme`: choose `"material"` (default) or `"lucide"` for the built-in icon renderer
 - `renderIcon`: replace file and folder icons; receives the node and icon render state
 - `theme`: set colors, fonts, borders, and inset offsets without overriding the stylesheet
+- `onOpenInFileManager`: open the selected folder path from the built-in native file manager menu action
 - `contextMenu.enabled`: enable or disable library context menus
 - `contextMenu.actions`: hide individual built-in menu actions
 - `contextMenu.renderMenu`: render your own context menu UI
@@ -183,7 +184,7 @@ interface FileTreeFsAdapter {
 }
 ```
 
-If `openInFileManager` is provided, the built-in right-click menu shows `Open in File Explorer` on Windows, `Open in Finder` on macOS, and `Open in File Manager` on Linux. Directory nodes open that folder; file nodes open their containing folder; the root menu opens `workspaceRoot`. In Electron, wire this through your preload/main bridge with `shell.openPath(path)`.
+The built-in right-click menu includes `Open in File Explorer` on Windows, `Open in Finder` on macOS, and `Open in File Manager` on Linux. Directory nodes open that folder; file nodes open their containing folder; the root menu opens `workspaceRoot`. To make the action open natively, provide `onOpenInFileManager`, `fs.openInFileManager`, or expose an Electron preload bridge such as `window.electronAPI.openInFileManager(path)` / `window.electronAPI.openPath(path)` wired to `shell.openPath(path)`.
 
 ## Publishing checklist
 

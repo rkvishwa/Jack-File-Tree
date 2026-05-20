@@ -163,6 +163,7 @@ export interface FileTreeProps {
     fs: FileTreeFsAdapter;
     workspaceRoot: string | null;
     onOpenFolder?: () => void;
+    onOpenInFileManager?: (path: string) => Promise<void> | void;
     onFileClick: (path: string, name: string) => void;
     activeFilePath?: string | null;
     onFileOpened?: (path: string, name: string, isPreview?: boolean) => void;
