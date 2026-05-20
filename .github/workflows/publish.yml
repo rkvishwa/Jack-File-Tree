@@ -30,20 +30,17 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
-    # If using environment protections for maintainers, add your environment name here:
-    # environment: release
     permissions:
       contents: read
-      id-token: write # Required for Trusted Publishing OIDC handshake
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          # 👇 FIX 1: Explicitly tell setup-node to prepare the public npm registry.
-          # This safely isolates this step from a lingering repository `.npmrc`.
+          node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@knurdz'
       
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -51,18 +48,17 @@ jobs:
           name: dist
           path: dist/
       
-      - name: Publish to npm
-        # 👇 FIX 2: Explicitly clearing any local .npmrc overrides right before running publish
+      - name: Publish to npm with trusted publishing
         run: |
           rm -f .npmrc
-          npm publish --provenance --access public
+          npm publish --registry=https://registry.npmjs.org --access public
 
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write # Required to upload to GitHub Packages
+      packages: write
     steps:
       - uses: actions/checkout@v4
       
@@ -82,8 +78,6 @@ jobs:
         run: npm pkg set name="@rkvishwa/jack-file-tree"
       
       - name: Publish to GitHub Packages
-        run: |
-          rm -f .npmrc
-          npm publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
