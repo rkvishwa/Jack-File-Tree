@@ -47,7 +47,7 @@ jobs:
           path: dist/
       
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish --registry=https://registry.npmjs.org --provenance --access public
 
   publish-gpr:
     needs: build
