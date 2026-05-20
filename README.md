@@ -12,6 +12,7 @@ Reusable React file tree sidebar for Electron based Editor. It ships as a ready-
 - Bring-your-own header and footer UI hooks
 - Theme tokens for colors, fonts, borders, and top/titlebar offsets
 - Built-in context menus with per-action enable/disable controls
+- Optional native file manager action for Explorer/Finder host bridges
 - Bring-your-own context menu renderer
 - Offline built-in VS Code Material Icon Theme file and folder icons
 - Nested file and folder explorer
@@ -104,6 +105,7 @@ The default component is a full sidebar panel, but you can still swap in your ow
     actions: {
       cut: false,
       delete: false,
+      "open-in-file-manager": false,
     },
   }}
 />
@@ -173,12 +175,15 @@ The component is intentionally decoupled from Electron. Provide an adapter that 
 interface FileTreeFsAdapter {
   readDirectory(path: string): Promise<FileTreeNode[]>;
   readFile?(path: string): Promise<string>;
+  openInFileManager?(path: string): Promise<void> | void;
   createFile(path: string): Promise<string | void>;
   createFolder(path: string): Promise<string | void>;
   renameItem(oldPath: string, newPath: string): Promise<string | void>;
   copyItem(oldPath: string, newPath: string): Promise<string | void>;
 }
 ```
+
+If `openInFileManager` is provided, the built-in right-click menu shows `Open in File Explorer` on Windows, `Open in Finder` on macOS, and `Open in File Manager` on Linux. Directory nodes open that folder; file nodes open their containing folder; the root menu opens `workspaceRoot`. In Electron, wire this through your preload/main bridge with `shell.openPath(path)`.
 
 ## Publishing checklist
 

@@ -18,7 +18,7 @@ export interface FileTreeClipboardItem {
 }
 export type FileTreeSidebarPosition = "left" | "right";
 export type FileTreeContextMenuScope = "root" | "node";
-export type FileTreeContextMenuActionId = "new-file" | "new-folder" | "cut" | "copy" | "paste" | "rename" | "delete";
+export type FileTreeContextMenuActionId = "new-file" | "new-folder" | "open-in-file-manager" | "cut" | "copy" | "paste" | "rename" | "delete";
 export interface FileTreeOpenFolderButtonRenderProps {
     label: string;
     onClick?: () => void;
@@ -116,6 +116,7 @@ export interface FileTreeContextMenuOptions {
 export interface FileTreeFsAdapter {
     readDirectory: (path: string) => Promise<FileTreeNode[]>;
     readFile?: (path: string) => Promise<string>;
+    openInFileManager?: (path: string) => Promise<void> | void;
     createFile: (path: string) => Promise<string | void>;
     createFolder: (path: string) => Promise<string | void>;
     renameItem: (oldPath: string, newPath: string) => Promise<string | void>;
@@ -125,6 +126,9 @@ export interface FileTreeLabels {
     explorer: string;
     openFolder: string;
     noFolderOpened: string;
+    openInFileExplorer: string;
+    openInFinder: string;
+    openInFileManager: string;
     newFile: string;
     newFolder: string;
     collapseAllFolders: string;
@@ -147,7 +151,7 @@ export interface FileTreeIconRenderProps {
     selected: boolean;
     iconTheme: FileTreeIconTheme;
 }
-export type FileTreeAction = "create-file" | "create-folder" | "delete-item" | "load-children" | "load-root" | "move-item" | "paste-item" | "rename-item" | "restore-item";
+export type FileTreeAction = "create-file" | "create-folder" | "delete-item" | "load-children" | "load-root" | "move-item" | "open-in-file-manager" | "paste-item" | "rename-item" | "restore-item";
 export interface FileTreeError {
     action: FileTreeAction;
     error: unknown;

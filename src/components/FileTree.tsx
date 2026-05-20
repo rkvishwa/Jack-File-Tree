@@ -182,6 +182,21 @@ function getShortcutLabel(
   return `${modifier}${key}`;
 }
 
+function getOpenInFileManagerLabel(
+  labels: FileTreeLabels,
+  platform: "windows" | "mac" | "linux",
+): string {
+  if (platform === "windows") {
+    return labels.openInFileExplorer;
+  }
+
+  if (platform === "mac") {
+    return labels.openInFinder;
+  }
+
+  return labels.openInFileManager;
+}
+
 function cx(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(" ");
 }
@@ -752,21 +767,25 @@ function FileTreeNodeComponent({
   const isCut =
     clipboardSnapshot?.action === "cut" &&
     isSamePath(clipboardSnapshot.path, node.path);
+  const canOpenInFileManager = typeof fs.openInFileManager === "function";
+  const nodeContextMenuActionIds: FileTreeContextMenuActionId[] = [
+    "new-file",
+    "new-folder",
+    "cut",
+    "copy",
+    "paste",
+    "rename",
+    "delete",
+  ];
+
+  if (canOpenInFileManager) {
+    nodeContextMenuActionIds.push("open-in-file-manager");
+  }
+
   const canOpenNodeContextMenu =
     isContextMenuEnabled(contextMenuOptions) &&
-    [
-      "new-file",
-      "new-folder",
-      "cut",
-      "copy",
-      "paste",
-      "rename",
-      "delete",
-    ].some((actionId) =>
-      isContextMenuActionVisible(
-        contextMenuOptions,
-        actionId as FileTreeContextMenuActionId,
-      ),
+    nodeContextMenuActionIds.some((actionId) =>
+      isContextMenuActionVisible(contextMenuOptions, actionId),
     );
 
   const loadChildren = useCallback(async () => {
@@ -971,6 +990,29 @@ function FileTreeNodeComponent({
     const parentPath =
       node.type === "directory" ? normalizePath(node.path) : getParentPath(node.path);
     setTimeout(() => onSetCreating({ type: "folder", parentPath }), 0);
+  };
+
+  const handleOpenInFileManager = async () => {
+    closeContextMenu();
+
+    const openInFileManager = fs.openInFileManager;
+    if (!openInFileManager) {
+      return;
+    }
+
+    const targetPath =
+      node.type === "directory" ? normalizePath(node.path) : getParentPath(node.path);
+
+    try {
+      await openInFileManager(targetPath);
+    } catch (error) {
+      reportError({
+        action: "open-in-file-manager",
+        error,
+        node,
+        sourcePath: targetPath,
+      });
+    }
   };
 
   const handleInlineCreate = async (name: string) => {
@@ -1416,6 +1458,16 @@ function FileTreeNodeComponent({
             : null,
         ],
         [
+          canOpenInFileManager &&
+          isContextMenuActionVisible(contextMenuOptions, "open-in-file-manager")
+            ? {
+                id: "open-in-file-manager",
+                label: getOpenInFileManagerLabel(labels, platform),
+                onSelect: handleOpenInFileManager,
+              }
+            : null,
+        ],
+        [
           isContextMenuActionVisible(contextMenuOptions, "cut")
             ? {
                 id: "cut",
@@ -1699,6 +1751,7 @@ function FileTreeNodeComponent({
                 iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
                 folderExpansionCommand={folderExpansionCommand}
+                contextMenuOptions={contextMenuOptions}
                 monacoSelector={monacoSelector}
                 portalContainer={portalContainer}
                 reportError={reportError}
@@ -1748,6 +1801,7 @@ function FileTreeNodeComponent({
                 iconTheme={iconTheme}
                 clipboardSnapshot={clipboardSnapshot}
                 folderExpansionCommand={folderExpansionCommand}
+                contextMenuOptions={contextMenuOptions}
                 monacoSelector={monacoSelector}
                 portalContainer={portalContainer}
                 reportError={reportError}
@@ -1835,13 +1889,21 @@ const FileTree = React.memo(function FileTree({
     maxWidth,
     ...style,
   };
+  const canOpenInFileManager = typeof fs.openInFileManager === "function";
+  const rootContextMenuActionIds: FileTreeContextMenuActionId[] = [
+    "new-file",
+    "new-folder",
+    "paste",
+  ];
+
+  if (canOpenInFileManager) {
+    rootContextMenuActionIds.push("open-in-file-manager");
+  }
+
   const canOpenRootContextMenu =
     isContextMenuEnabled(contextMenuOptions) &&
-    ["new-file", "new-folder", "paste"].some((actionId) =>
-      isContextMenuActionVisible(
-        contextMenuOptions,
-        actionId as FileTreeContextMenuActionId,
-      ),
+    rootContextMenuActionIds.some((actionId) =>
+      isContextMenuActionVisible(contextMenuOptions, actionId),
     );
 
   const reportError = useCallback(
@@ -2051,6 +2113,27 @@ const FileTree = React.memo(function FileTree({
         error,
         sourcePath: clipboard.path,
         targetPath: newPath,
+      });
+    }
+  };
+
+  const handleRootOpenInFileManager = async () => {
+    setContextMenu(null);
+
+    const openInFileManager = fs.openInFileManager;
+    if (!workspaceRoot || !openInFileManager) {
+      return;
+    }
+
+    const targetPath = normalizePath(workspaceRoot);
+
+    try {
+      await openInFileManager(targetPath);
+    } catch (error) {
+      reportError({
+        action: "open-in-file-manager",
+        error,
+        sourcePath: targetPath,
       });
     }
   };
@@ -2357,6 +2440,19 @@ const FileTree = React.memo(function FileTree({
                 shortcut: getShortcutLabel("paste", resolvedPlatform),
                 disabled: !clipboardSnapshot,
                 onSelect: handleRootPaste,
+              }
+            : null,
+        ],
+        [
+          canOpenInFileManager &&
+          isContextMenuActionVisible(contextMenuOptions, "open-in-file-manager")
+            ? {
+                id: "open-in-file-manager",
+                label: getOpenInFileManagerLabel(
+                  resolvedLabels,
+                  resolvedPlatform,
+                ),
+                onSelect: handleRootOpenInFileManager,
               }
             : null,
         ],

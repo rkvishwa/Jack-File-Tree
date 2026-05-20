@@ -28,6 +28,7 @@ export type FileTreeContextMenuScope = "root" | "node";
 export type FileTreeContextMenuActionId =
   | "new-file"
   | "new-folder"
+  | "open-in-file-manager"
   | "cut"
   | "copy"
   | "paste"
@@ -137,6 +138,7 @@ export interface FileTreeContextMenuOptions {
 export interface FileTreeFsAdapter {
   readDirectory: (path: string) => Promise<FileTreeNode[]>;
   readFile?: (path: string) => Promise<string>;
+  openInFileManager?: (path: string) => Promise<void> | void;
   createFile: (path: string) => Promise<string | void>;
   createFolder: (path: string) => Promise<string | void>;
   renameItem: (oldPath: string, newPath: string) => Promise<string | void>;
@@ -147,6 +149,9 @@ export interface FileTreeLabels {
   explorer: string;
   openFolder: string;
   noFolderOpened: string;
+  openInFileExplorer: string;
+  openInFinder: string;
+  openInFileManager: string;
   newFile: string;
   newFolder: string;
   collapseAllFolders: string;
@@ -164,6 +169,9 @@ export const defaultFileTreeLabels: FileTreeLabels = {
   explorer: "Explorer",
   openFolder: "Open Folder",
   noFolderOpened: "No folder opened",
+  openInFileExplorer: "Open in File Explorer",
+  openInFinder: "Open in Finder",
+  openInFileManager: "Open in File Manager",
   newFile: "New File",
   newFolder: "New Folder",
   collapseAllFolders: "Collapse All Folders",
@@ -196,6 +204,7 @@ export type FileTreeAction =
   | "load-children"
   | "load-root"
   | "move-item"
+  | "open-in-file-manager"
   | "paste-item"
   | "rename-item"
   | "restore-item";
