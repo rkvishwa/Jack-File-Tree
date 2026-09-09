@@ -1,4 +1,8 @@
-# Jack File Tree
+<p align="center">
+  <img src="docs/logo.png" alt="Jack File Tree logo" width="160" />
+</p>
+
+<h1 align="center">Jack File Tree</h1>
 
 Reusable React file tree sidebar for Electron based Editor. It ships as a ready-made explorer panel out of the box, but also exposes the hooks you need to restyle or replace the shell pieces in Electron apps, web sandboxes, IDEs, or any host that can implement the file operations.
 
